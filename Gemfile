@@ -35,7 +35,7 @@ gem 'rails_12factor'
 
 gem 'pg'
 gem 'devise'
-
+gem 'omniauth-facebook'
 #angular rails
 # gem 'angularjs-rails', '~> 1.4', '>= 1.4.8'
 
@@ -45,7 +45,7 @@ group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'pry'
   gem 'byebug'
-
+  
   # Access an IRB console on exception pages or by using <%= console %> in views
   gem 'web-console', '~> 2.0'
 
