@@ -1,4 +1,8 @@
 <nav class="navbar navbar-default navbar-static-top">
+
+
+
+
 	<div class="container">
 		<div class="navbar-header">
 			<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
@@ -10,12 +14,13 @@
 			<a class="navbar-brand" href="#"><img src="<%= asset_url('Want_logo_white.png') %>" width="80"></a>
 		</div>
 		<div id="navbar" class="navbar-collapse collapse">
+		
 			<ul class="nav navbar-nav navbar-right">
 				<li><a href="#">Become a Mechant</a></li>
 				<% if user_signed_in? %>
 					<li><a rel="nofollow" data-method="delete" href="/users/sign_out">Log Out</a></li>
 				<% else %>
-					<li><%= link_to "Login", new_user_session_path %></li>
+					<li><%= link_to "Login", new_user_session_path() %></li>
 					<li><%= link_to "Sign Up", new_user_registration_path,{:class => 'nav-cta'} %></li>
 					<!-- <li><a href="#" data-toggle="modal" data-target="#signin">Login</a></li> -->
 					<!-- <li><a href="#" class="nav-cta" data-toggle="modal" data-target="#signup">Sign Up</a></li> -->
