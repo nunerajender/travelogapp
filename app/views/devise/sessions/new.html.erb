@@ -3,39 +3,39 @@
   <!-- Projects Row -->
   <div class="row">
     <div class="col-md-offset-3 col-md-6 col-lg-6 signin-page text-center">
-       <h3>Welcome Back!</h3>
-       <hr>
-       <%= form_for(resource, :html=> {:class => 'text-left'}, as: resource_name, url: session_path(resource_name)) do |f| %>
+      <h3>Welcome Back!</h3>
+      <hr>
+      <%= form_for(resource, :html=> {:class => 'text-left'}, as: resource_name, url: session_path(resource_name)) do |f| %>
      
 
-          <div class="form-group">
-            <%= f.label :email %><br />
-            <%= f.email_field :email, autofocus: true, :class=>'form-control' %>
+        <div class="form-group">
+          <%= f.label :email %><br />
+          <%= f.email_field :email, autofocus: true, :class=>'form-control' %>
+        </div>
+
+        <div class="form-group">
+          <%= f.label :password %><br />
+          <%= f.password_field :password, autocomplete: "off",:class=>'form-control' %>
+        </div>
+
+        <% if devise_mapping.rememberable? -%>
+          <div class="field" style="float:left">
+            <%= f.check_box :remember_me %>
+            <%= f.label :remember_me %>
           </div>
-
-          <div class="form-group">
-            <%= f.label :password %><br />
-            <%= f.password_field :password, autocomplete: "off",:class=>'form-control' %>
-          </div>
-
-          <% if devise_mapping.rememberable? -%>
-            <div class="field" style="float:left">
-              <%= f.check_box :remember_me %>
-              <%= f.label :remember_me %>
-            </div>
-          <% end -%>
+        <% end -%>
 
 
-          <%= f.submit "Log in", :class=> 'btn btn-default signin-btn' %>
-          <%- if devise_mapping.recoverable? && controller_name != 'passwords' && controller_name != 'registrations' %>
-            <%= link_to "Forgot your password?", new_password_path(resource_name) %><br />
-          <% end -%>
-        <% end %>
+        <%= f.submit "Log in", :class=> 'btn btn-default signin-btn' %>
+        <%- if devise_mapping.recoverable? && controller_name != 'passwords' && controller_name != 'registrations' %>
+          <%= link_to "Forgot your password?", new_password_path(resource_name) %><br />
+        <% end -%>
+      <% end %>
 
-        <%= link_to "Sign in with Facebook", user_omniauth_authorize_path(:facebook) %>
-       <div class="col-md-12 text-center">
-          <p class="signinToLogin">Not yet a member? <strong><%= link_to "Sign Up", new_user_registration_path %></strong></p>
-       </div>
+      <%= link_to "Sign in with Facebook", user_omniauth_authorize_path(:facebook) %>
+      <div class="col-md-12 text-center">
+        <p class="signinToLogin">Not yet a member? <strong><%= link_to "Sign Up", new_user_registration_path %></strong></p>
+      </div>
     </div>
   </div>
 </div>

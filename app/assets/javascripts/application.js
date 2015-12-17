@@ -16,8 +16,10 @@
 //= require angular-animate
 //= require angular-route
 //= require angular-resource
-//= require places-form
-//= require ngAutocomplete
-//= require bootstrap
+//= require lib/bootstrap
+//= require lib/nouislider.min
+//= require lib/owlcarousel
 //= require jquery.mockjax
 //= require bootstrap-typeahead
+//= require places-form
+//= require ngAutocomplete

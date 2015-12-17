@@ -40,6 +40,8 @@ gem 'omniauth-facebook'
 # gem 'angularjs-rails', '~> 1.4', '>= 1.4.8'
 
 gem "mailcatcher", :group => :development
+gem 'fog'
+gem 'carrierwave', github: 'carrierwaveuploader/carrierwave'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
