@@ -1,8 +1,10 @@
 class Product < ActiveRecord::Base
-	mount_uploaders :attachments, AttachmentUploader
+	
 	
 	belongs_to :user
-	has_one :product_category
+	belongs_to :product_category
+	has_many :product_attachments, dependent: :destroy
+	accepts_nested_attributes_for :product_attachments
 
 	enum payment_type: {
 		visa: 0,

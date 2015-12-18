@@ -19,11 +19,14 @@
 				  		<tr>
 				  			<th scope="row"><%= index.to_s %></th>
 				  			<td><%= product.name %></td>
-				  			<td><%= get_product_category_name(product.product_category_id) %></td>
+				  			<td><%= product.product_category.name %></td>
 				  			<td><%= product.payment_type %></td>
 				  			<td>
-				  				<% if product.attachments.present? && product.attachments.kind_of?(Array) && product.attachments.count > 0 %>
-				  					<%= product.attachments[0].url %>
+				  				<% product.product_attachments.each do |attachment| %>
+				  					<div style="border-bottom: 1px solid red;">
+				  						<%= attachment.attachment.url %>
+				  					</div>
+				  					
 				  				<% end %>
 				  			</td>
 				  		</tr>
