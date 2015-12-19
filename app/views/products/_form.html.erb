@@ -1,0 +1,196 @@
+<%= form_for(@product) do |f| %>
+	<div class="form-group  col-md-12 ">
+		<%= f.label :name, 'Name:' %><br />
+		<%= f.text_field :name, autofocus: true, :class => 'form-control' %>
+	</div>
+
+	<div class="form-group col-md-12 ">
+		<label for="product-category-id">Product Category:</label>
+		<%= f.select(:product_category_id, ProductCategory.all.collect {|p| [ p.name, p.id ] }, {include_blank: false} , :class => 'form-control') %>
+	</div>
+
+	<div class="form-group col-md-12 ">
+		<button type="button" id="add-photo-button" class="btn btn-default btn-lg active">Add Photo</button>
+	</div>
+
+	<div class="attachments-container">
+		<input name="file_attachment" type="file" id="file_upload">
+		<% if !@product.new_record? %>
+			<% @product.product_attachments.each do |attachment| %>
+				<div class="form-group col-md-4">
+					<img src="<%= attachment.attachment.url %>">
+					<input type="hidden" name="product_attachment[id][]" value="<%= attachment.id %>">
+					<button type="button" class="btn btn-default delete-attachment">Delete</button>
+				</div>
+			<% end %>
+		<% end %>
+		
+	</div>
+
+	
+
+	<div class="form-group col-md-12 ">
+		<div class="radio">
+		  <label>
+		    <%= f.radio_button :payment_type, "visa", checked: @product.payment_type == 'visa' %>
+		    Visa
+		  </label>
+		</div>
+		<div class="radio">
+		  <label>
+		  	<%= f.radio_button :payment_type, "master", checked: @product.payment_type == 'master' %>
+		    MasterCard
+		  </label>
+		</div>
+		<div class="radio">
+		  <label>
+		  	<%= f.radio_button :payment_type, "american_express", checked: @product.payment_type == 'american_express' %>
+		    American Express
+		  </label>
+		</div>
+		<div class="radio">
+		  <label>
+		  	<%= f.radio_button :payment_type, "paypal", checked: @product.payment_type == 'paypal' %>
+		    Paypal
+		  </label>
+		</div>
+	</div>
+
+	<div class="form-group col-md-12 ">
+		<label>
+			<input type="checkbox" id="chk-agree" value="option1"> Agree the terms
+		</label>
+	</div>
+
+	<div class="form-group col-md-12 ">
+		<%= f.submit 'Submit', :class => 'blue btn-block btn btn-primary' %>
+	</div>
+	
+<% end %>
+
+<script>
+$(window).load(function() {
+	$(document).ready(function() {
+		var adjustProductAttachments = function() {
+			$('.attachments-container .clearfix').remove();
+			index = 0;
+			$('.attachments-container .col-md-4').each(function() {
+				index++;
+				if (index % 3 == 0) {
+					$(this).after('<div class="clearfix"></div>');
+				};
+			})
+		}
+
+		// $('select').selectpicker({
+		// 	liveSearch: false,
+		// 	maxOptions: 1
+		// });
+		$('input[type="submit"]').prop('disabled', !$('#chk-agree').prop('checked'));
+		adjustProductAttachments();
+
+		$(document).on('change', '#chk-agree', function() {
+			$('input[type="submit"]').prop('disabled', !$('#chk-agree').prop('checked'))
+		})
+
+		$(document).on('click', '#add-photo-button', function() {
+			attachment_count = $('.attachments-container .col-md-4').length
+			if (attachment_count < 5) {
+				$('#file_upload').trigger('click');
+			} else {
+				alert("Can't upload more than 5.");
+			}
+			
+		})
+
+		$('.attachments-container').on('change', '#file_upload', function() {
+			var formData = new FormData();
+			formData.append('product_attachment[attachment]', this.files[0]);
+			$.ajax({
+			  url: '/product_attachments',
+			  dataType: "json",
+			  data: formData,
+			  cache: false,
+			  contentType: false,
+			  processData: false,
+			  type: 'POST',
+			  success: function(data) {
+			  	console.log('success');
+			  	append_html = '<div class="form-group col-md-4">';
+			  	append_html += '<img src="' + data.attachment.url + '" data-id="' + data.id + '">';
+			  	append_html += '<input type="hidden" name="product_attachment[id][]" value="' + data.id + '">';
+			  	append_html += '<button type="button" class="btn btn-default delete-attachment">Delete</button>';
+			  	append_html += '</div>';
+			  	$('.attachments-container').append(append_html);
+			  	$('#file_upload').val('');
+			  	adjustProductAttachments();
+			  },
+			  error: function(error) {
+	      	console.log(error);
+	      }
+			});
+		})
+
+		$('.attachments-container').on('click', '.delete-attachment', function(event) {
+			$(this).parent().fadeOut('slow', function() {
+				$(this).remove();
+			});
+			var attachment_id = $(this).parent().find('input[name="product_attachment[id][]"]').val();
+			$.ajax({
+			  type: "POST",
+        url: "/product_attachments/" + attachment_id,
+        dataType: "json",
+        data: { "_method": "delete" },
+        complete: function(){
+          console.log('deleted attachment');
+        }
+			});
+			event.preventDefault();
+
+		})
+
+	});
+
+});
+
+$(function() {
+	function displayResult(item) {
+		$('.alert').show().html('You selected <strong>' + item.value + '</strong>: <strong>' + item.text + '</strong>');
+	}
+	$('#demo6').typeahead({
+		source: [
+			'Genting',
+			'Zoo Negara',
+			'Tioman',
+			'Petronas Towers',
+			'Batu Caves',
+			'Gunung Mulu',
+			'Mount Kinabalu',
+			'Bako Park',
+			'Sunway Lagoon',
+			'Pangkor island'
+		],
+		onSelect: displayResult
+	});
+
+});
+</script>
+
+<style type="text/css">
+	input[type=file] {
+		display: none;
+	}
+	.section-details .btn.delete-attachment {
+		position: absolute;
+    top: 0;
+    right: 15px;
+    height: inherit;
+    padding: 2px 10px;
+    border-radius: 0;
+    opacity: 0.8;
+    background-color: #ccc;
+	}
+	.attachments-container .form-group.col-md-4 {
+		position: relative;
+	}
+</style>
