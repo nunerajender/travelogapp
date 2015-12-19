@@ -137,7 +137,9 @@ $(window).load(function() {
 		})
 
 		$('.attachments-container').on('click', '.delete-attachment', function(event) {
-			$(this).parent().fadeOut('slow');
+			$(this).parent().fadeOut('slow', function() {
+				$(this).remove();
+			});
 			var attachment_id = $(this).parent().find('input[name="product_attachment[id][]"]').val();
 			$.ajax({
 			  type: "POST",
