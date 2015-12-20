@@ -18,7 +18,7 @@
 		<% if !@product.new_record? %>
 			<% @product.product_attachments.each do |attachment| %>
 				<div class="form-group col-md-4">
-					<img src="<%= attachment.attachment.url %>">
+					<img src="<%= attachment.attachment.medium.url %>">
 					<input type="hidden" name="product_attachment[id][]" value="<%= attachment.id %>">
 					<button type="button" class="btn btn-default delete-attachment">Delete</button>
 				</div>
@@ -32,7 +32,11 @@
 	<div class="form-group col-md-12 ">
 		<div class="radio">
 		  <label>
-		    <%= f.radio_button :payment_type, "visa", checked: @product.payment_type == 'visa' %>
+		  	<% if @product.new_record? %>
+		    	<%= f.radio_button :payment_type, "visa", checked: true %>
+		    <% else %>
+		    	<%= f.radio_button :payment_type, "visa", checked: @product.payment_type == 'visa' %>
+		    <% end %>
 		    Visa
 		  </label>
 		</div>
