@@ -15,7 +15,9 @@
  *= require lib/fontawesome
  *= require lib/nouislider.min
  *= require lib/owlcarousel
+ *= require variables
  *= require style
  *= require custom
+ *= require store_setting
  *= require_self
  */

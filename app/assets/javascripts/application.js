@@ -23,3 +23,4 @@
 //= require bootstrap-typeahead
 //= require places-form
 //= require ngAutocomplete
+//= require store_setting
