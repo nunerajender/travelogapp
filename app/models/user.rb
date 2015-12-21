@@ -5,6 +5,14 @@ class User < ActiveRecord::Base
          :recoverable, :rememberable, :trackable, :validatable, :omniauthable, :omniauth_providers => [:facebook]
 
   has_many :products
+  has_one :profile
+  has_one :store_setting
+
+  enum status: {
+    normal: 0,
+    merchant: 1
+  }
+  
   def self.from_omniauth(auth)
   	
 	  	where(provider: auth.provider, uid: auth.uid).first_or_create do |user|

@@ -16,7 +16,10 @@
 		<div id="navbar" class="navbar-collapse collapse">
 		
 			<ul class="nav navbar-nav navbar-right">
-				<li><a href="#">Become a Mechant</a></li>
+				<!-- <li><a href="#">Become a Mechant</a></li> -->
+				<li>
+					<%= link_to "Become a merchant", become_merchant_path %>
+				</li>
 				<% if user_signed_in? %>
 					<li><a rel="nofollow" data-method="delete" href="/users/sign_out">Log Out</a></li>
 				<% else %>
