@@ -28,7 +28,7 @@
 									<%= current_user.email %>
 								<% end %>
 								<% if current_user.profile.present? && current_user.profile.user_avatar.present? %>
-									<img src="<%= current_user.profile.user_avatar.thumb.url %>" width="30" class="img-circle profile-nav"/>
+									<img src="<%= current_user.profile.user_avatar.avatar.thumb.url %>" width="30" class="img-circle profile-nav"/>
 								<% else %>
 									<img src="<%= asset_url('default-avatar.png') %>" width="30" class="img-circle profile-nav"/>
 								<% end %>
