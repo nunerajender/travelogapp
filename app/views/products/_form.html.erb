@@ -126,7 +126,7 @@ $(window).load(function() {
 			  success: function(data) {
 			  	console.log('success');
 			  	append_html = '<div class="form-group col-md-4">';
-			  	append_html += '<img src="' + data.attachment.url + '" data-id="' + data.id + '">';
+			  	append_html += '<img src="' + data.attachment.medium.url + '" data-id="' + data.id + '">';
 			  	append_html += '<input type="hidden" name="product_attachment[id][]" value="' + data.id + '">';
 			  	append_html += '<button type="button" class="btn btn-default delete-attachment">Delete</button>';
 			  	append_html += '</div>';

@@ -1,0 +1,134 @@
+<div class="container">
+	<div class="profile">
+		<%= form_for @profile, url: {action: "profile"} do |f| %>
+			<div class="form-group">
+				<%= f.label :first_name, 'First Name:' %>
+				<%= f.text_field :first_name, :class => 'form-control', :placeholder => 'First Name' %>
+			</div>
+			<div class="form-group">
+				<%= f.label :last_name, 'Last Name:' %>
+				<%= f.text_field :last_name, :class => 'form-control', :placeholder => 'Last Name' %>
+			</div>
+
+			<div class="form-group">
+				<label for="user_new_password">New Password:</label>
+				<input class="form-control" placeholder="New Password" type="password" name="user[new_password]" id="user_new_password">
+			</div>
+
+			<div class="form-group">
+				<label for="user_new_password">Confirm Password:</label>
+				<input class="form-control" placeholder="Confirm Password" type="password" name="user[confirm_password]" id="user_confirm_password">
+			</div>
+
+			<div class="attachments-container">
+				<div class="form-group">
+					<button type="button" id="add-avatar-button" class="btn btn-default active">Add Avatar</button>
+					<input name="file_attachment" type="file" id="file_upload">
+				</div>
+
+				<% if @profile.user_avatar.present? %>
+					<div class="form-group col-md-4">
+						<img src="<%= @profile.user_avatar.avatar.medium.url %>">
+						<input type="hidden" name="user_avatar[id]" value="<%= @profile.user_avatar.id %>">
+						<button type="button" class="btn btn-default delete-attachment">Delete</button>
+					</div>
+				<% end %>
+			</div>
+			<div class="clearfix"></div>
+			<div class="form-group">
+				<%= f.submit 'Submit', :class => 'blue btn btn-primary' %>
+			</div>
+		<% end %>
+	</div>
+</div>
+
+
+<style type="text/css">
+	.profile {
+		padding: 70px 30px;
+	}
+	input[type=file] {
+		display: none;
+	}
+	.attachments-container .btn.delete-attachment {
+		position: absolute;
+    top: 0;
+    right: 15px;
+    height: inherit;
+    padding: 2px 10px;
+    border-radius: 0;
+    opacity: 0.8;
+    background-color: #ccc;
+	}
+	.attachments-container .form-group.col-md-4 {
+		position: relative;
+	}
+</style>
+
+<script>
+	$(document).ready(function() {
+		$(document).on('click', '#add-avatar-button', function() {
+			attachment_count = $('.attachments-container .col-md-4').length
+			if (attachment_count < 1) {
+				$('#file_upload').trigger('click');
+			} else {
+				alert("Can't upload more than 1.");
+			}
+		})
+
+		$('.attachments-container').on('change', '#file_upload', function() {
+
+			var formData = new FormData();
+			formData.append('user_avatar[avatar]', this.files[0]);
+			$.ajax({
+			  url: '/user_avatars',
+			  dataType: "json",
+			  data: formData,
+			  cache: false,
+			  contentType: false,
+			  processData: false,
+			  type: 'POST',
+			  success: function(data) {
+			  	console.log('success');
+			  	append_html = '<div class="form-group col-md-4">';
+			  	append_html += '<img src="' + data.avatar.medium.url + '" data-id="' + data.id + '">';
+			  	append_html += '<input type="hidden" name="user_avatar[id]" value="' + data.id + '">';
+			  	append_html += '<button type="button" class="btn btn-default delete-attachment">Delete</button>';
+			  	append_html += '</div>';
+			  	$('.attachments-container').append(append_html);
+			  	$('#file_upload').val('');
+			  },
+			  error: function(error) {
+	      	console.log(error);
+	      }
+			});
+		})
+
+		$('.attachments-container').on('click', '.delete-attachment', function(event) {
+			$(this).parent().fadeOut('slow', function() {
+				$(this).remove();
+			});
+			var attachment_id = $(this).parent().find('input[name="user_avatar[id]"]').val();
+			$.ajax({
+			  type: "POST",
+	      url: "/user_avatars/" + attachment_id,
+	      dataType: "json",
+	      data: { "_method": "delete" },
+	      complete: function(){
+	        console.log('deleted attachment');
+	      }
+			});
+			event.preventDefault();
+
+		})
+
+		$(document).on('click', 'input[type="submit"]', function(event) {
+			if ($('#user_new_password').val() != '') {
+				if ($('#user_new_password').val() != $('#user_confirm_password').val()) {
+					event.preventDefault();
+					alert("Password is not match.");
+				};
+			};
+		})
+	})
+</script>

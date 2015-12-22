@@ -1,6 +1,10 @@
 class UsersController < ApplicationController
 	skip_before_action :authenticate_user!, only:[:become_merchant]
 
+	def layout_by_resource
+    "product"
+  end
+
 	def become_merchant
 		if user_signed_in?
 			if current_user.status != 'merchant'
@@ -10,6 +14,37 @@ class UsersController < ApplicationController
 			end	
 		else
 			redirect_to new_user_registration_path
+		end
+	end
+
+	def profile
+		if request.get?
+			@profile = current_user.profile
+			@profile = Profile.new({:user_id => current_user.id}) if @profile.blank?
+		else
+			@profile = current_user.profile
+			if @profile.blank?
+				@profile = Profile.new(profile_params)
+				@profile.user_id = current_user.id
+				@profile.save
+			else
+				@profile.update(profile_params)
+			end
+			
+			if params[:user_avatar].present? && params[:user_avatar][:id].present?
+				user_avatar = UserAvatar.find(params[:user_avatar][:id])
+				if @profile.save
+					user_avatar.profile = @profile
+					user_avatar.save
+				end
+			end
+			
+			if params[:user][:new_password].present?
+				current_user.password = params[:user][:new_password]
+				current_user.save
+			end
+
+			redirect_to root_path
 		end
 		
 	end
@@ -45,5 +80,8 @@ class UsersController < ApplicationController
 	private
 		def store_setting_params
 			params.require(:store_setting).permit(:phone_hp, :store_username, :store_name)
+		end
+		def profile_params
+			params.require(:profile).permit(:first_name, :last_name)
 		end
 end
