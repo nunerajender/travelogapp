@@ -18,15 +18,15 @@ test:
   username: siva
   password: 
   encoding: utf8
-  pool: 20
+  pool: 20ca
   timeout: 5000
 
 production:
-  host: localhost
+  host: travelogpsql.c4ti23uotlqc.us-west-2.rds.amazonaws.com:5432
   adapter: postgresql
   database: travelog_production
-  username: siva
-  password: 
+  username: root
+  password: travelogdb
   encoding: utf8
   pool: 30
   timeout: 5000

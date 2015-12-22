@@ -22,6 +22,6 @@ CarrierWave.configure do |config|
     :region                 => 'us-west-2'
   }
   config.fog_directory  = 'travelog'
-  config.fog_public = false
+  config.fog_public = true
   config.fog_attributes = { 'Cache-Control' => "max-age=#{365.day.to_i}"}
 end
