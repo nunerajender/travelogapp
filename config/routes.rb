@@ -11,6 +11,9 @@ Rails.application.routes.draw do
 
   get 'become_merchant' => 'users#become_merchant'
   post 'become_merchant' => 'users#become_merchant'
+  get 'profile' => 'users#profile'
+  post 'profile' => 'users#profile'
+  patch 'profile' => 'users#profile'
   post 'complete_merchant' => 'users#complete_merchant'
 
   # The priority is based upon order of creation: first created -> highest priority.
