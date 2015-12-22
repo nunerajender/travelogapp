@@ -7,7 +7,7 @@ class User < ActiveRecord::Base
   has_many :products
   has_one :profile
   has_one :store_setting
-
+  after_create :send_welcome_message
   enum status: {
     normal: 0,
     merchant: 1
@@ -23,12 +23,21 @@ class User < ActiveRecord::Base
 	  end
 	end
 
+  
+
 	def self.new_with_session(params, session)
     super.tap do |user|
       if data = session["devise.facebook_data"] && session["devise.facebook_data"]["extra"]["raw_info"]
         user.email = data["email"] if user.email.blank?
       end
     end
+  end
+
+  private
+
+  def send_welcome_message
+    UserMailer.welcome_message(self).deliver
+    
   end
 
 

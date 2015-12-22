@@ -2,6 +2,7 @@ class UsersController < ApplicationController
 	skip_before_action :authenticate_user!, only:[:become_merchant]
 
 	def become_merchant
+
 		if user_signed_in?
 			if current_user.status != 'merchant'
 				@store_setting = StoreSetting.new({:user_id => current_user.id})
@@ -27,6 +28,7 @@ class UsersController < ApplicationController
 						# change status of the current user
 						current_user.status = 'merchant'
 						current_user.save
+						UserMailer.welcome_merchant(current_user,@store_setting)
 						redirect_to products_path
 					end
 				end
