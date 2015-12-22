@@ -1,21 +1,141 @@
-<div class="stepsForm">
-	
-		<div class="sf-steps">
-		</div>
+<div class="container">
+	<div class="become_merchant">
+		<div class="stepsForm">
+			<%= render 'shared/store_setting_errors', :obj => @store_setting %>
+			<%= form_for @store_setting, url: {action: "complete_merchant"} do |f| %>
+				<div class="sf-steps">
+					<div class="sf-steps-content">
+		        <div>
+		          Contact Information
+		        </div>
+		        <div>
+		          Create a Store
+		        </div>
+		        <div>
+		          Photo Upload
+		        </div>
+		        
+		      </div>
+				</div>
 
-		<div class="sf-steps-form sf-radius">
-		</div>
+				<div class="sf-steps-form sf-radius">
+					<ul class="sf-content"> <!-- form step one --> 
+						<div class="form-group">
+							<%= f.label :phone_hp, 'Phone number:' %>
+							<%= f.text_field :phone_hp, :class => 'form-control', :placeholder => 'Enter Phone number', 'data-required' => 'true' %>
+						</div>
+					</ul>
 
-		<div class="sf-steps-navigation sf-align-right">
-			<span id="sf-msg" class="sf-msg-error"></span>
-      <button id="sf-prev" type="button" class="sf-button">Back</button>
-      <button id="sf-next" type="button" class="sf-button sf-next">Next</button>
+					<ul class="sf-content"> <!-- form step two --> 
+						<div class="form-group">
+							<%= f.label :store_username, 'Store Username:' %>
+							<%= f.text_field :store_username, :class => 'form-control', :placeholder => 'Store Username', 'data-required' => 'true' %>
+						</div>
+						<div class="form-group">
+							<%= f.label :store_name, 'Store Name:' %>
+							<%= f.text_field :store_name, :class => 'form-control', :placeholder => 'Store Name', 'data-required' => 'true' %>
+						</div>
+					</ul>
+
+					<ul class="sf-content"> <!-- form step tree -->
+						<div class="attachments-container">
+							<div class="form-group">
+								<button type="button" id="add-photo-button" class="btn btn-default btn-lg active">Add Photo</button>
+								<input name="file_attachment" type="file" id="file_upload">
+							</div>
+						</div>
+					</ul>
+				</div>
+
+				<div class="sf-steps-navigation sf-align-right">
+					<span id="sf-msg" class="sf-msg-error"></span>
+		      <button id="sf-prev" type="button" class="sf-button">Back</button>
+		      <button id="sf-next" type="button" class="sf-button sf-next">Next</button>
+				</div>
+			<% end %>
 		</div>
-	
+	</div>
 </div>
 
 <style type="text/css">
 	.navbar {
 		background-color: black;
 	}
+	input[type=file] {
+		display: none;
+	}
+	.attachments-container .btn.delete-attachment {
+		position: absolute;
+    top: 0;
+    right: 15px;
+    height: inherit;
+    padding: 2px 10px;
+    border-radius: 0;
+    opacity: 0.8;
+    background-color: #ccc;
+	}
+	.attachments-container .form-group.col-md-4 {
+		position: relative;
+	}
 </style>
+
+<script>
+	$(document).ready(function() {
+		$(document).on('click', '#add-photo-button', function() {
+			attachment_count = $('.attachments-container .col-md-4').length
+			if (attachment_count < 1) {
+				$('#file_upload').trigger('click');
+			} else {
+				alert("Can't upload more than 1.");
+			}
+		})
+
+		$('.attachments-container').on('change', '#file_upload', function() {
+
+			var formData = new FormData();
+			formData.append('store_image[store_img]', this.files[0]);
+			$.ajax({
+			  url: '/store_images',
+			  dataType: "json",
+			  data: formData,
+			  cache: false,
+			  contentType: false,
+			  processData: false,
+			  type: 'POST',
+			  success: function(data) {
+			  	console.log('success');
+			  	append_html = '<div class="form-group col-md-4">';
+			  	append_html += '<img src="' + data.store_img.medium.url + '" data-id="' + data.id + '">';
+			  	append_html += '<input type="hidden" name="store_image[id]" value="' + data.id + '">';
+			  	append_html += '<button type="button" class="btn btn-default delete-attachment">Delete</button>';
+			  	append_html += '</div>';
+			  	$('.attachments-container').append(append_html);
+			  	$('#file_upload').val('');
+			  },
+			  error: function(error) {
+	      	console.log(error);
+	      }
+			});
+		})
+
+		$('.attachments-container').on('click', '.delete-attachment', function(event) {
+			$(this).parent().fadeOut('slow', function() {
+				$(this).remove();
+			});
+			var attachment_id = $(this).parent().find('input[name="store_image[id][]"]').val();
+			$.ajax({
+			  type: "POST",
+	      url: "/store_images/" + attachment_id,
+	      dataType: "json",
+	      data: { "_method": "delete" },
+	      complete: function(){
+	        console.log('deleted attachment');
+	      }
+			});
+			event.preventDefault();
+
+		})
+	})
+
+	
+</script>

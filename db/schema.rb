@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151221144853) do
+ActiveRecord::Schema.define(version: 20151222034855) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -64,6 +64,15 @@ ActiveRecord::Schema.define(version: 20151221144853) do
 
   add_index "profiles", ["user_id"], name: "index_profiles_on_user_id", using: :btree
 
+  create_table "store_images", force: :cascade do |t|
+    t.integer  "store_setting_id"
+    t.string   "store_img"
+    t.datetime "created_at",       null: false
+    t.datetime "updated_at",       null: false
+  end
+
+  add_index "store_images", ["store_setting_id"], name: "index_store_images_on_store_setting_id", using: :btree
+
   create_table "store_settings", force: :cascade do |t|
     t.integer  "user_id"
     t.string   "store_name"
@@ -79,6 +88,15 @@ ActiveRecord::Schema.define(version: 20151221144853) do
   end
 
   add_index "store_settings", ["user_id"], name: "index_store_settings_on_user_id", using: :btree
+
+  create_table "user_avatars", force: :cascade do |t|
+    t.integer  "profile_id"
+    t.string   "avatar"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_index "user_avatars", ["profile_id"], name: "index_user_avatars_on_profile_id", using: :btree
 
   create_table "users", force: :cascade do |t|
     t.string   "email",                            default: "", null: false
