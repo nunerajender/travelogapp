@@ -15,15 +15,19 @@ test:
   host: localhost
   adapter: postgresql
   database: travelog_test
-  username: cale
-  password: tigertiger
+  username: siva
+  password: 
   encoding: utf8
   pool: 20
   timeout: 5000
 
 production:
+  host: localhost
   adapter: postgresql
   database: travelog_production
+  username: siva
+  password: 
   encoding: utf8
-  pool: 20
+  pool: 30
+  timeout: 5000
 
