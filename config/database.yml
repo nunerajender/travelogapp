@@ -22,7 +22,7 @@ test:
   timeout: 5000
 
 production:
-  host: travelogpsql.c4ti23uotlqc.us-west-2.rds.amazonaws.com:5432
+  host: travelogpsql.c4ti23uotlqc.us-west-2.rds.amazonaws.com
   adapter: postgresql
   database: travelog_production
   username: root
