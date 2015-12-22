@@ -6,8 +6,11 @@ Rails.application.routes.draw do
   root 'home#index'
   resources :products
   resources :product_attachments
+  resources :store_images
+  resources :user_avatars
 
   get 'become_merchant' => 'users#become_merchant'
+  post 'become_merchant' => 'users#become_merchant'
   post 'complete_merchant' => 'users#complete_merchant'
 
   # The priority is based upon order of creation: first created -> highest priority.

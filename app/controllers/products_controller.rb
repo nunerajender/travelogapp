@@ -6,28 +6,39 @@ class ProductsController < ApplicationController
   end
 
   def index
-  	@products = Product.all
-    @product_attachments = ProductAttachment.all
+    if current_user.status == 'merchant'
+      @products = Product.all
+      @product_attachments = ProductAttachment.all  
+    else
+      redirect_to root_path
+    end
   end
 
   def new
-  	@product = Product.new
-  	@categories = ProductCategory.all
-    @product_attachment = @product.product_attachments.build
-    @product_attachments = ProductAttachment.all
+    if current_user.status == 'merchant'
+      @product = Product.new
+      @categories = ProductCategory.all
+      @product_attachment = @product.product_attachments.build
+      @product_attachments = ProductAttachment.all
+    else
+      redirect_to root_path
+    end
   end
 
   def create
   	@product = Product.new(product_params)
   	respond_to do |format|
       if @product.save
-        params[:product_attachment]['id'].each do |a|
-          product_attachment = ProductAttachment.find(a)
-          if product_attachment.present?
-            product_attachment.product = @product
-            product_attachment.save
+        if params[:product_attachment].present?
+          params[:product_attachment]['id'].each do |a|
+            product_attachment = ProductAttachment.find(a)
+            if product_attachment.present?
+              product_attachment.product = @product
+              product_attachment.save
+            end
           end
         end
+        
 
         # format.html { redirect_to @product, notice: 'product was successfully created.' }
         format.html { redirect_to products_path, notice: 'Product was successfully created.' }

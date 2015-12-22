@@ -5,7 +5,7 @@
         active: 0,
         errormsg: 'Check faulty fields.',
         sendbtntext: 'Create Account',
-        posturl: 'core/demo_steps_form.php',
+        posturl: '/complete_merchant',
         theme: 'default'
       },
       t = $.extend(e, t);
@@ -298,8 +298,8 @@ $(document).ready(function(e) {
     width: '100%',
     active: 0,
     errormsg: 'Check faulty fields.',
-    sendbtntext: 'Save & Preview',
-    posturl: '/forms',
+    sendbtntext: 'Complete',
+    posturl: '/complete_merchant',
     theme: 'blue'
   });
   $('.container .themes>span').click(function(e) {
