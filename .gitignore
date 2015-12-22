@@ -5,6 +5,8 @@
 #   git config --global core.excludesfile '~/.gitignore_global'
 
 # Ignore bundler config.
+/config/config.yml
+/config/initializers/carrier_wave.rb
 /.bundle
 
 # Ignore the default SQLite database.
