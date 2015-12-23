@@ -142,5 +142,33 @@
 		})
 	})
 
+	// validate for store_username
+	$(document).on('click', '#sf-next', function() {
+		
+	})
+
+	$(document).on('change', 'input[name="store_setting[store_username]"]', function() {
+		store_username = $(this).val();
+		if (store_username != '') {
+			$store_username = $(this);
+			$store_username.parent().find('label.error').remove();
+			$.ajax({
+				type: "GET",
+				url: "/users/verify_store_username",
+				dataType: "json",
+				data: {
+					"store_username": $(this).val()
+				},
+				success: function(data) {
+					console.log(data.result);
+					if (!data.result) {
+						$store_username.parent().append('<label class="error">' + $store_username.prop('placeholder') + ' is not available</label>');
+					};
+				}
+			});
+		}
+		
+	})
+
 	
 </script>

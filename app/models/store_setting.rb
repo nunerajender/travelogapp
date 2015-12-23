@@ -1,6 +1,6 @@
 class StoreSetting < ActiveRecord::Base
 	belongs_to :user
-	has_one :store_image
+	has_one :store_image, dependent: :destroy
 
 	validates :user_id, :presence => true
 	validates :store_username, :presence => true, :uniqueness => true

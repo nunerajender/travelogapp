@@ -5,6 +5,7 @@ class UsersController < ApplicationController
     "product"
   end
 
+  # click become merchant 
 	def become_merchant
 
 		if user_signed_in?
@@ -50,6 +51,7 @@ class UsersController < ApplicationController
 		
 	end
 
+	# complete become merchant
 	def complete_merchant
 		if user_signed_in?
 			@store_setting = StoreSetting.new(store_setting_params)
@@ -74,9 +76,21 @@ class UsersController < ApplicationController
 	        format.json {render json: { :errors => @store_setting.errors, :store_setting => @store_setting }, status: 422}
 	      end
 			end	
-			
 		end
+	end
 
+	# verify the store username for uniquness
+	def verify_store_username
+		store_setting = StoreSetting.where(:store_username => params[:store_username])
+		if store_setting.blank?
+			respond_to do |format|
+				format.json { render json: {:result => true}}
+			end
+		else
+			respond_to do |format|
+				format.json { render json: {:result => false}}
+			end
+		end
 	end
 
 	private

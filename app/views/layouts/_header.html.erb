@@ -23,8 +23,8 @@
 						<% end %>
 						<li class="dropdown">
 							<a href="#"  onmouseover="javascript:stickDropdown(this);" class="dropdown-toggle usernavprofile"  data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-								<% if current_user.profile.present? && current_user.profile.last_name.present? %>
-									<%= current_user.profile.last_name %>
+								<% if current_user.profile.present? && current_user.profile.first_name.present? %>
+									<%= current_user.profile.first_name %>
 								<% else %>
 									<%= current_user.email %>
 								<% end %>
