@@ -1,3 +1,6 @@
+<% content_for :page_title do %>
+	<%= 'Edit Profile' %>
+<% end %>
 <div class="container">
 	<div class="profile">
 		<%= form_for @profile, url: {action: "profile"} do |f| %>
@@ -28,7 +31,7 @@
 
 				<% if @profile.user_avatar.present? %>
 					<div class="form-group col-md-4">
-						<img src="<%= @profile.user_avatar.avatar.medium.url %>">
+						<img src="<%= @profile.user_avatar.avatar.small.url %>">
 						<input type="hidden" name="user_avatar[id]" value="<%= @profile.user_avatar.id %>">
 						<button type="button" class="btn btn-default delete-attachment">Delete</button>
 					</div>
@@ -63,6 +66,9 @@
 	.attachments-container .form-group.col-md-4 {
 		position: relative;
 	}
+	.attachments-container img {
+		width: 100%
+	}
 </style>
 
 <script>
@@ -91,7 +97,7 @@
 			  success: function(data) {
 			  	console.log('success');
 			  	append_html = '<div class="form-group col-md-4">';
-			  	append_html += '<img src="' + data.avatar.medium.url + '" data-id="' + data.id + '">';
+			  	append_html += '<img src="' + data.avatar.small.url + '" data-id="' + data.id + '">';
 			  	append_html += '<input type="hidden" name="user_avatar[id]" value="' + data.id + '">';
 			  	append_html += '<button type="button" class="btn btn-default delete-attachment">Delete</button>';
 			  	append_html += '</div>';

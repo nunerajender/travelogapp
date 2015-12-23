@@ -1,4 +1,16 @@
+<% content_for :page_title do %>
+  <%= 'Travelog - Signin' %>
+<% end %>
 <div class="header-gradient"></div>
+<nav class="navbar navbar-white  navbar-static-top">
+  <div class="container">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="/"><img src="<%= asset_url('dummylogo.png') %>" width="30"></a>
+
+    </div>
+    <!--/.nav-collapse -->
+  </div>
+</nav>
 <div class="container signupLogin-content">
   <!-- Projects Row -->
   <div class="row">
@@ -9,33 +21,30 @@
      
 
         <div class="form-group">
-          <%= f.label :email %><br />
-          <%= f.email_field :email, autofocus: true, :class=>'form-control' %>
+          <%= f.label :email, 'Email address' %><br />
+          <%= f.email_field :email, autofocus: true, :class=>'form-control', :placeholder => 'Email' %>
         </div>
 
         <div class="form-group">
           <%= f.label :password %><br />
-          <%= f.password_field :password, autocomplete: "off",:class=>'form-control' %>
+          <%= f.password_field :password, autocomplete: "off",:class=>'form-control', :placeholder => 'Password' %>
         </div>
 
-        <% if devise_mapping.rememberable? -%>
-          <div class="field" style="float:left">
-            <%= f.check_box :remember_me %>
-            <%= f.label :remember_me %>
-          </div>
-        <% end -%>
-
-
-        <%= f.submit "Log in", :class=> 'btn btn-default signin-btn' %>
+        <%= f.submit "Sign in", :class=> 'btn btn-default signin-btn' %>
         <%- if devise_mapping.recoverable? && controller_name != 'passwords' && controller_name != 'registrations' %>
           <%= link_to "Forgot your password?", new_password_path(resource_name) %><br />
         <% end -%>
+        <%= link_to "Sign in with Facebook", user_omniauth_authorize_path(:facebook) %>
+
+        <div class="col-md-12 text-center">
+          <p class="signinToLogin">Not yet a member? <strong><%= link_to "Sign Up", new_user_registration_path %></strong></p>
+        </div>
+
+        
       <% end %>
 
-      <%= link_to "Sign in with Facebook", user_omniauth_authorize_path(:facebook) %>
-      <div class="col-md-12 text-center">
-        <p class="signinToLogin">Not yet a member? <strong><%= link_to "Sign Up", new_user_registration_path %></strong></p>
-      </div>
+      
+      
     </div>
   </div>
 </div>

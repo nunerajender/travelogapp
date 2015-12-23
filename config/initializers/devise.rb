@@ -239,7 +239,8 @@ Devise.setup do |config|
   # Add a new OmniAuth provider. Check the wiki for more information on setting
   # up on your models and hooks.
   # config.omniauth :github, 'APP_ID', 'APP_SECRET', scope: 'user,public_repo'
-  config.omniauth :facebook, "1532030150450881", "440ce6647b3d880f5cb1d7de9d1ee6d7",callback_url: "http://localhost:3000/users/auth/facebook/callback", :client_options => {:ssl => {:ca_file => 'C:\wamp\www\travelog\config\ca-bundle.crt'}} 
+  #config.omniauth :facebook, "1532030150450881", "440ce6647b3d880f5cb1d7de9d1ee6d7",callback_url: "http://localhost:3000/users/auth/facebook/callback", :client_options => {:ssl => {:ca_file => 'C:\wamp\www\travelog\config\ca-bundle.crt'}} 
+  config.omniauth :facebook, "1632020863726307", "91aad5c7bd4662601e159cf60c824975",callback_url: "http://travelog.elasticbeanstalk.com/users/auth/facebook/callback", :client_options => {:ssl => {:ca_file => 'C:\wamp\www\travelog\config\ca-bundle.crt'}}
   # ==> Warden configuration
   # If you want to use other strategies, that are not supported by Devise, or
   # change the failure app, you can configure them inside the config.warden block.

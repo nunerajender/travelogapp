@@ -19,8 +19,12 @@
 //= require lib/bootstrap
 //= require lib/nouislider.min
 //= require lib/owlcarousel
-//= require jquery.mockjax
-//= require bootstrap-typeahead
 //= require places-form
 //= require ngAutocomplete
+//= require jquery.mockjax
+//= require bootstrap-typeahead
 //= require store_setting
+
+function stickDropdown(_elem){
+  $(_elem).parent().removeClass('open').addClass('open');
+}

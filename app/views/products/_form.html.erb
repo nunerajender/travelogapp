@@ -23,7 +23,7 @@
 		<% if !@product.new_record? %>
 			<% @product.product_attachments.each do |attachment| %>
 				<div class="form-group col-md-4">
-					<img src="<%= attachment.attachment.medium.url %>">
+					<img src="<%= attachment.attachment.small.url %>">
 					<input type="hidden" name="product_attachment[id][]" value="<%= attachment.id %>">
 					<button type="button" class="btn btn-default delete-attachment">Delete</button>
 				</div>
@@ -126,7 +126,7 @@ $(window).load(function() {
 			  success: function(data) {
 			  	console.log('success');
 			  	append_html = '<div class="form-group col-md-4">';
-			  	append_html += '<img src="' + data.attachment.medium.url + '" data-id="' + data.id + '">';
+			  	append_html += '<img src="' + data.attachment.small.url + '" data-id="' + data.id + '">';
 			  	append_html += '<input type="hidden" name="product_attachment[id][]" value="' + data.id + '">';
 			  	append_html += '<button type="button" class="btn btn-default delete-attachment">Delete</button>';
 			  	append_html += '</div>';
@@ -201,5 +201,9 @@ $(function() {
 	}
 	.attachments-container .form-group.col-md-4 {
 		position: relative;
+	}
+
+	.attachments-container img {
+		width: 100%
 	}
 </style>
