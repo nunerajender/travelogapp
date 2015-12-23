@@ -5,7 +5,7 @@
 #   git config --global core.excludesfile '~/.gitignore_global'
 
 # Ignore bundler config.
-/config/config.yml
+/config/database.yml
 /config/initializers/carrier_wave.rb
 /.bundle
 
