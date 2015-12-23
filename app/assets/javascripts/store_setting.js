@@ -171,12 +171,12 @@
       f.find('.sf-steps-content>div').on('click', function() {
         // 'sf-active' != $(this).attr('class') && (t.active > $(this).index() ? (t.active = $(this).index(), n()) : e($(this).index()));
 
-        if ('sf-active' != $(this).attr('class') && t.active > $(this).index()) {
-          t.active = $(this).index();
-          n();
-        } else {
-          e($(this).index());
-        }
+        // if ('sf-active' != $(this).attr('class') && t.active > $(this).index()) {
+        //   t.active = $(this).index();
+        //   n();
+        // } else {
+        //   e($(this).index());
+        // }
       });
       f.find('#sf-next').on('click', function() {
         requredcontrol = !1; 
@@ -200,50 +200,59 @@
         });
         d();
         h.length = 0;
-        if (requredcontrol) {
-          // f.find('#sf-msg').html(t.errormsg)
-        } else {
-          o();
-          u.length = 0;
-          if (f.find('#sf-next').text() == t.sendbtntext || f.find('#sf-next').text() == 'Update') {
-            f.find('form').submit();
-          } else {
-            if ($('#temp_sharing_url').length > 0) {
-              console.log('aaa');
-              var arr = f.find('form').serializeArray();
-              $.ajax({
-                url: "/forms/get_slug.json",
-                type: "POST",
-                data: arr,
-                dataType:'json',
-                timeout: 20000,
-                success: function(data) {
-                  console.log('success');
-                  // console.log(data);
-                  $('#slug-input').val(data);
-                  if ($('#form_sharing_url').val() == "") {
-                    temp_sharing_url = $('#temp_sharing_url').val();
-                    populated_sharing_url = temp_sharing_url.substring(0, temp_sharing_url.length - 4) + data
-                    $('#form_sharing_url').val(populated_sharing_url);
-                    $('#span-sharing-url').text(populated_sharing_url);
-                  };
-                },
-                error: function(data) {
-                  console.log('error');
-                  // console.log(data);
-                }
-                
-              })
-            };
+
+        // validate for store user name
+        if (!requredcontrol) {
+          if ($('input[name="store_setting[store_username]"]').is(':visible')) {
             
-            t.active++;
-            if (t.active > c - 1) {
-              t.active--, f.find('#sf-msg').text('');
+            $store_username = $('input[name="store_setting[store_username]"]');
+            $store_username.parent().find('label.error').remove();
+            $.ajax({
+              type: "GET",
+              url: "/users/verify_store_username",
+              dataType: "json",
+              data: {
+                "store_username": $store_username.val()
+              },
+              success: function(data) {
+                console.log(data.result);
+                if (!data.result) {
+                  requredcontrol = !0;
+                  $store_username.parent().append('<label class="error">' + $store_username.prop('placeholder') + ' is not available</label>');
+                }
+                if (!requredcontrol) {
+                  o();
+                  u.length = 0;
+                  if (f.find('#sf-next').text() == t.sendbtntext) {
+                    f.find('form').submit();
+                  } else {
+                    t.active++;
+                    if (t.active > c - 1) {
+                      t.active--, f.find('#sf-msg').text('');
+                    } else {
+                      n(), requredcontrol = !1, f.find('#sf-msg').text('');
+                    }
+                  }      
+                }
+              }
+            });
+          }
+          else {
+            o();
+            u.length = 0;
+            if (f.find('#sf-next').text() == t.sendbtntext) {
+              f.find('form').submit();
             } else {
-              n(), requredcontrol = !1, f.find('#sf-msg').text('');
+              t.active++;
+              if (t.active > c - 1) {
+                t.active--, f.find('#sf-msg').text('');
+              } else {
+                n(), requredcontrol = !1, f.find('#sf-msg').text('');
+              }
             }
           }
-        }
+        };
+        
       });
       
       f.find('#sf-next1').on('click', function() {
