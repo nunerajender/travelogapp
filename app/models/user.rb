@@ -16,8 +16,10 @@ class User < ActiveRecord::Base
   def self.from_omniauth(auth)
   	
 	  	where(provider: auth.provider, uid: auth.uid).first_or_create do |user|
+      logger.info "status=from_omniauth first_name=#{auth.info.first_name} first_last_name=#{auth.info.last_name}"
 	    user.email = auth.info.email
 	    user.password = Devise.friendly_token[0,20]
+      user.build_profile(auth)
 	    #user.name = auth.info.name   # assuming the user model has a name
 	    #user.image = auth.info.image # assuming the user model has an image
 	  end
@@ -33,10 +35,14 @@ class User < ActiveRecord::Base
     end
   end
 
+  def build_profile(auth)
+    self.Profile.new(first_name:auth.info.first_name)
+  end
+
   private
 
   def send_welcome_message
-    UserMailer.welcome_message(self).deliver
+    #UserMailer.welcome_message(self).deliver
     
   end
 
