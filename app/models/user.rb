@@ -3,7 +3,8 @@ class User < ActiveRecord::Base
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable, :omniauthable, :omniauth_providers => [:facebook]
-
+  attr_accessor :first_name, :last_name
+  
   has_many :products
   has_one :profile
   has_one :store_setting
@@ -38,12 +39,37 @@ class User < ActiveRecord::Base
     end
   end
 
- 
+  def self.build(opts = {})
+    
+    u = User.new(opts.except(:first_name,:last_name,:id))
+    u.setup(opts)
+    u
+  end
 
+  def setup(opts)
+    logger.info "status=Check opts value opts=#{opts[:first_name]}"
+    self.email = opts[:email]
+    self.valid?
+    self.set_profile(Profile.new(first_name:opts[:first_name].capitalize, last_name:opts[:last_name].capitalize))
+    self
+  end
+
+  def set_profile(profile)
+    self.profile = profile
+
+  end
+
+
+
+ def sign_up
+   save
+ end
   private
 
+  
+
   def send_welcome_message
-    #UserMailer.welcome_message(self).deliver
+    UserMailer.welcome_message(self).deliver
     
   end
 
