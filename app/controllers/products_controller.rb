@@ -27,8 +27,21 @@ class ProductsController < ApplicationController
 
   def create
   	@product = Product.new(product_params)
+    @product.user = current_user
   	respond_to do |format|
       if @product.save
+        if params[:variant].present? && params[:variant].count > 0
+          params[:variant].each do |param_variant|
+            if param_variant[:name].present?
+              variant = Variant.new
+              variant.name = param_variant[:name]
+              variant.price_cents = param_variant[:price_cents].to_i * 100
+              variant.product = @product
+              variant.save  
+            end
+          end
+        end
+
         if params[:product_attachment].present?
           params[:product_attachment]['id'].each do |a|
             product_attachment = ProductAttachment.find(a)
@@ -44,8 +57,8 @@ class ProductsController < ApplicationController
         format.html { redirect_to products_path, notice: 'Product was successfully created.' }
         format.json { render :show, status: :created, location: @product }
       else
-        # format.html { render :new }
-        format.html { redirect_to products_path }
+        format.html { render :new }
+        # format.html { redirect_to products_path }
         format.json { render json: @product.errors, status: :unprocessable_entity }
       end
     end
@@ -60,6 +73,24 @@ class ProductsController < ApplicationController
   def update
     respond_to do |format|
       if @product.update(product_params)
+        @product.variants.delete_all
+        if params[:variant].present? && params[:variant].count > 0
+          params[:variant].each do |param_variant|
+            # if param_variant[:id].blank?
+              
+            # else
+            #   Variant.update(param_variant[:id].to_i, param_variant)
+            # end
+            # binding.pry
+            if param_variant[:name].present?
+              variant = Variant.new
+              variant.name = param_variant[:name]
+              variant.price_cents = param_variant[:price_cents].to_i * 100
+              variant.product = @product
+              variant.save  
+            end
+          end
+        end
         if params[:product_attachment].present?
           params[:product_attachment]['id'].each do |a|
             product_attachment = ProductAttachment.find(a)
@@ -96,9 +127,14 @@ class ProductsController < ApplicationController
 
   	def product_params
       op = params.require(:product).permit(:name, :product_category_id, :payment_type, :location_id, 
-        :country, :address, :apt, :city, :state, :zip, :price_cents, :currency)
+        :country, :address, :apt, :city, :state, :zip, :price_cents, :currency, :description, 
+        :highlight, :refundable, :refund_day, :refund_percent, :variants_attributes => [:id, :name, :price_cents])
       op[:price_cents] = op[:price_cents].to_i * 100
+      # op[:variants_attributes] = params[:variant]
+      # binding.pry
       op
     end
+
+
 
 end

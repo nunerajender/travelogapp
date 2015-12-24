@@ -1,11 +1,14 @@
 @import "variables";
 @import "lib/bootstrap";
 @import "lib/bootstrap-select";
-@import "lib/fontawesome";
+@import "font-awesome";
+@import "froala_editor.min";
+@import "froala_style.min";
+
 @import "lib/nouislider.min";
 @import "lib/owlcarousel";
 // @import "style";
 @import "custom";
 @import "store_setting";
 @import "users";
-@import "profile"
+// @import "profile"

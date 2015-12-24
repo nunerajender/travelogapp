@@ -17,6 +17,7 @@
 //= require angular-route
 //= require angular-resource
 //= require lib/bootstrap
+//= require froala_editor.min
 //= require lib/nouislider.min
 //= require lib/owlcarousel
 //= require places-form
