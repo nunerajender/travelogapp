@@ -38,6 +38,16 @@ class User < ActiveRecord::Base
     end
   end
 
+  def avatar_url
+    ret = ''
+    if self.profile.present? && self.profile.user_avatar.present?
+      ret = self.profile.user_avatar.avatar.thumb.url
+    end
+    if ret.blank? && self.provider == 'facebook'
+      ret = self.profile.avatar
+    end
+    ret
+  end
  
 
   private

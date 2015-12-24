@@ -49,6 +49,8 @@ gem 'google_currency'
 gem 'money-rails', '~> 1.4.1'
 gem "wysiwyg-rails"
 gem "font-awesome-rails"
+gem 'yaml_db'
+
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console

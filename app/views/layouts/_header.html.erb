@@ -28,10 +28,10 @@
 								<% else %>
 									<%= current_user.email %>
 								<% end %>
-								<% if current_user.profile.present? && current_user.profile.user_avatar.present? %>
-									<img src="<%= current_user.profile.user_avatar.avatar.thumb.url %>" width="30" class="img-circle profile-nav"/>
+								<% if current_user.avatar_url.present? %>
+									<img src="<%= current_user.avatar_url %>" width="30" height = "30" class="img-circle profile-nav"/>
 								<% else %>
-									<img src="<%= asset_url('default-avatar.png') %>" width="30" class="img-circle profile-nav"/>
+									<img src="<%= asset_url('default-avatar.png') %>" width="30" height = "30" class="img-circle profile-nav"/>
 								<% end %>
 								<!-- <img src="https://s3.amazonaws.com/uifaces/faces/twitter/ladylexy/128.jpg" width="30" class="img-circle profile-nav"/> -->
 							</a>
