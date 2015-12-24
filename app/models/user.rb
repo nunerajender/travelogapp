@@ -16,10 +16,13 @@ class User < ActiveRecord::Base
   def self.from_omniauth(auth)
   	
 	  	where(provider: auth.provider, uid: auth.uid).first_or_create do |user|
-      logger.info "status=from_omniauth first_name=#{auth.info.first_name} first_last_name=#{auth.info.last_name}"
+      
+      auth.info.image = auth.info.image+"?type=large"
+      logger.info "status=facebook image type Auth #{auth.info.image}"
 	    user.email = auth.info.email
 	    user.password = Devise.friendly_token[0,20]
-      user.build_profile(auth)
+
+      user.build_profile(first_name:auth.info.first_name,last_name:auth.info.last_name,avatar:auth.info.image)
 	    #user.name = auth.info.name   # assuming the user model has a name
 	    #user.image = auth.info.image # assuming the user model has an image
 	  end
@@ -35,9 +38,7 @@ class User < ActiveRecord::Base
     end
   end
 
-  def build_profile(auth)
-    self.Profile.new(first_name:auth.info.first_name)
-  end
+ 
 
   private
 

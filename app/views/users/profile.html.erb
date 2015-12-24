@@ -1,6 +1,9 @@
 <% content_for :page_title do %>
 	<%= 'Edit Profile' %>
 <% end %>
+
+
+
 <div class="container">
 	<div class="profile">
 		<%= form_for @profile, url: {action: "profile"} do |f| %>
@@ -44,6 +47,7 @@
 		<% end %>
 	</div>
 </div>
+
 
 
 <style type="text/css">

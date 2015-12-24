@@ -16,27 +16,27 @@
 
 	<div class="form-group  col-md-12 ">
 		<%= f.label :address, 'Street Address:', :placeholder => 'House name/number + street/road' %><br />
-		<%= f.text_field :address, :class => 'form-control', :autocomplete => 'off', :onfocus => "geolocate()" %>
+		<%= f.text_field :address, :class => 'form-control', :autocomplete => 'off'%>
 	</div>
 
 	<div class="form-group  col-md-12 ">
 		<%= f.label :apt, 'Apt, Suite, Bldg. (optional)' %><br />
-		<%= f.text_field :apt, :class => 'form-control', :placeholder => 'Apt., suite, building access code' %>
+		<%= f.text_field :apt, :class => 'form-control', :placeholder => 'Apt., suite, building access code', :id => 'route'%>
 	</div>
 
 	<div class="form-group  col-md-12 ">
 		<%= f.label :city, 'City:' %><br />
-		<%= f.text_field :city, :class => 'form-control', :placeholder => 'City' %>
+		<%= f.text_field :city, :class => 'form-control', :placeholder => 'City', :id => 'locality'%>
 	</div>
 
 	<div class="form-group  col-md-12 ">
 		<%= f.label :state, 'State:' %><br />
-		<%= f.text_field :state, :class => 'form-control', :placeholder => 'State' %>
+		<%= f.text_field :state, :class => 'form-control', :placeholder => 'State', :id => 'administrative_area_level_1'%>
 	</div>
 
 	<div class="form-group  col-md-12 ">
 		<%= f.label :zip, 'Zip:' %><br />
-		<%= f.text_field :zip, :class => 'form-control' %>
+		<%= f.text_field :zip, :class => 'form-control', :id => 'postal_code'%>
 	</div>
 
 	<div class="col-md-12 form-group">
@@ -230,11 +230,11 @@ $(function() {
 
 var placeSearch, autocomplete;
 var componentForm = {
-  street_number: 'short_name',
+  // street: 'short_name',
   route: 'long_name',
   locality: 'long_name',
   administrative_area_level_1: 'short_name',
-  country: 'long_name',
+  // country: 'long_name',
   postal_code: 'short_name'
 };
 
@@ -253,22 +253,22 @@ function initAutocomplete() {
 // [START region_fillform]
 function fillInAddress() {
   // // Get the place details from the autocomplete object.
-  // var place = autocomplete.getPlace();
+  var place = autocomplete.getPlace();
 
-  // for (var component in componentForm) {
-  //   document.getElementById(component).value = '';
-  //   document.getElementById(component).disabled = false;
-  // }
+  for (var component in componentForm) {
+    document.getElementById(component).value = '';
+    document.getElementById(component).disabled = false;
+  }
 
   // // Get each component of the address from the place details
   // // and fill the corresponding field on the form.
-  // for (var i = 0; i < place.address_components.length; i++) {
-  //   var addressType = place.address_components[i].types[0];
-  //   if (componentForm[addressType]) {
-  //     var val = place.address_components[i][componentForm[addressType]];
-  //     document.getElementById(addressType).value = val;
-  //   }
-  // }
+  for (var i = 0; i < place.address_components.length; i++) {
+    var addressType = place.address_components[i].types[0];
+    if (componentForm[addressType]) {
+      var val = place.address_components[i][componentForm[addressType]];
+      document.getElementById(addressType).value = val;
+    }
+  }
 }
 // [END region_fillform]
 

@@ -2,8 +2,9 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
 	def facebook
     # You need to implement the method below in your model (e.g. app/models/user.rb)
     @user = User.from_omniauth(request.env["omniauth.auth"])
-    
-   
+    #logger.info "status=facebook omniauth user#{@user.profile.avatar?type=large}"
+    @user_avatar = UserAvatar.new(profile_id: @user.profile.id, avatar:@user.profile.avatar)
+    @user_avatar.save
     if @user.persisted?
       sign_in_and_redirect @user, :event => :authentication #this will throw if @user is not activated
       set_flash_message(:notice, :success, :kind => "Facebook") if is_navigational_format?
