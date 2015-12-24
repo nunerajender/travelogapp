@@ -60,11 +60,13 @@ class ProductsController < ApplicationController
   def update
     respond_to do |format|
       if @product.update(product_params)
-        params[:product_attachment]['id'].each do |a|
-          product_attachment = ProductAttachment.find(a)
-          if product_attachment.present?
-            product_attachment.product = @product
-            product_attachment.save
+        if params[:product_attachment].present?
+          params[:product_attachment]['id'].each do |a|
+            product_attachment = ProductAttachment.find(a)
+            if product_attachment.present?
+              product_attachment.product = @product
+              product_attachment.save
+            end
           end
         end
         format.html { redirect_to products_path, notice: 'Product was successfully updated.' }
@@ -93,7 +95,10 @@ class ProductsController < ApplicationController
     end
 
   	def product_params
-      params.require(:product).permit(:name, :product_category_id, :payment_type, :location_id)
+      op = params.require(:product).permit(:name, :product_category_id, :payment_type, :location_id, 
+        :country, :address, :apt, :city, :state, :zip, :price_cents, :currency)
+      op[:price_cents] = op[:price_cents].to_i * 100
+      op
     end
 
 end

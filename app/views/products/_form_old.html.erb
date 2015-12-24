@@ -14,46 +14,14 @@
 		<%= f.select(:country, get_country_list.collect {|p| [ p[:country], p[:country] ] }, {include_blank: false} , :class => 'form-control') %>
 	</div>
 
-	<div class="form-group  col-md-12 ">
-		<%= f.label :address, 'Street Address:', :placeholder => 'House name/number + street/road' %><br />
-		<%= f.text_field :address, :class => 'form-control', :autocomplete => 'off', :onfocus => "geolocate()" %>
+	<div class="form-group col-md-12 ">
+		<%= f.label :country, 'Country:' %>
+		<%= f.select(:country, get_country_list.collect {|p| [ p[:country], p[:country] ] }, {include_blank: false} , :class => 'form-control') %>
 	</div>
 
-	<div class="form-group  col-md-12 ">
-		<%= f.label :apt, 'Apt, Suite, Bldg. (optional)' %><br />
-		<%= f.text_field :apt, :class => 'form-control', :placeholder => 'Apt., suite, building access code' %>
-	</div>
-
-	<div class="form-group  col-md-12 ">
-		<%= f.label :city, 'City:' %><br />
-		<%= f.text_field :city, :class => 'form-control', :placeholder => 'City' %>
-	</div>
-
-	<div class="form-group  col-md-12 ">
-		<%= f.label :state, 'State:' %><br />
-		<%= f.text_field :state, :class => 'form-control', :placeholder => 'State' %>
-	</div>
-
-	<div class="form-group  col-md-12 ">
-		<%= f.label :zip, 'Zip:' %><br />
-		<%= f.text_field :zip, :class => 'form-control' %>
-	</div>
-
-	<div class="col-md-12 form-group">
-		<h1>Set a nightly price for your space</h1>
-		<p>
-			You can see a price to reflect the space, amenities, and hospitality you'll be providing.
-		</p>
-		<hr/>
-		<label>Base price</label>
-		<div class="amount-inner">
-			<div class="input-group clearfix">
-				<span class="input-group-addon currency-value">$</span>
-				<input name="product[price_cents]" type="text" value="<%= @product.price_cents / 100 if @product.price_cents.present? %>">
-			</div>
-		</div>
-		<%= f.label :currency, 'Currency' %>
-		<%= f.select(:currency, get_currency_list.collect {|p| [ p[:currency], p[:currency] ] }, {include_blank: false} , :class => 'form-control') %>
+	<div class="form-group col-md-12 ">
+		<%= f.label :location_id, 'State:' %>
+		<%= f.select(:location_id, Location.all.collect {|p| [ p.state, p.id ] }, {include_blank: false} , :class => 'form-control') %>
 	</div>
 
 	<div class="form-group col-md-12 ">
@@ -73,6 +41,8 @@
 		<% end %>
 		
 	</div>
+
+	
 
 	<div class="form-group col-md-12 ">
 		<div class="radio">
@@ -198,7 +168,6 @@ $(window).load(function() {
 
 		})
 
-
 	});
 
 });
@@ -224,77 +193,6 @@ $(function() {
 	});
 
 });
-
-// This example displays an address form, using the autocomplete feature
-// of the Google Places API to help users fill in the information.
-
-var placeSearch, autocomplete;
-var componentForm = {
-  street_number: 'short_name',
-  route: 'long_name',
-  locality: 'long_name',
-  administrative_area_level_1: 'short_name',
-  country: 'long_name',
-  postal_code: 'short_name'
-};
-
-function initAutocomplete() {
-  // Create the autocomplete object, restricting the search to geographical
-  // location types.
-  autocomplete = new google.maps.places.Autocomplete(
-      /** @type {!HTMLInputElement} */(document.getElementById('product_address')),
-      {types: ['geocode']});
-
-  // When the user selects an address from the dropdown, populate the address
-  // fields in the form.
-  autocomplete.addListener('place_changed', fillInAddress);
-}
-
-// [START region_fillform]
-function fillInAddress() {
-  // // Get the place details from the autocomplete object.
-  // var place = autocomplete.getPlace();
-
-  // for (var component in componentForm) {
-  //   document.getElementById(component).value = '';
-  //   document.getElementById(component).disabled = false;
-  // }
-
-  // // Get each component of the address from the place details
-  // // and fill the corresponding field on the form.
-  // for (var i = 0; i < place.address_components.length; i++) {
-  //   var addressType = place.address_components[i].types[0];
-  //   if (componentForm[addressType]) {
-  //     var val = place.address_components[i][componentForm[addressType]];
-  //     document.getElementById(addressType).value = val;
-  //   }
-  // }
-}
-// [END region_fillform]
-
-// [START region_geolocation]
-// Bias the autocomplete object to the user's geographical location,
-// as supplied by the browser's 'navigator.geolocation' object.
-function geolocate() {
-  if (navigator.geolocation) {
-    navigator.geolocation.getCurrentPosition(function(position) {
-      var geolocation = {
-        lat: position.coords.latitude,
-        lng: position.coords.longitude
-      };
-      var circle = new google.maps.Circle({
-        center: geolocation,
-        radius: position.coords.accuracy
-      });
-      autocomplete.setBounds(circle.getBounds());
-    });
-  }
-}
-// [END region_geolocation]
-</script>
-
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCK70SDLsZG5fYn8kLfMj1I7Dy2zXoq6Qk&signed_in=true&libraries=places&callback=initAutocomplete" async defer>
-	
 </script>
 
 <style type="text/css">
@@ -317,23 +215,5 @@ function geolocate() {
 
 	.attachments-container img {
 		width: 100%
-	}
-
-	.form-control {
-		border: 1px solid #ccc;
-	}
-	.amount-inner .input-group {
-		display: table-row;
-		line-height: 44px;
-	}
-	.amount-inner span.input-group-addon.currency-value {
-		font-size: 1.8rem;
-    padding: 1rem;
-    background: none repeat scroll 0 0 #f1f2f2;
-    display: table-cell;
-	}
-	.amount-inner .input-group input {
-		margin: 0;
-    display: table-cell;
 	}
 </style>
