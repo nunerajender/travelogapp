@@ -3,4 +3,8 @@ class HomeController < ApplicationController
 
 	def index
 	end
+
+	# def search
+	# 	render :template => "products/result"
+	# end
 end

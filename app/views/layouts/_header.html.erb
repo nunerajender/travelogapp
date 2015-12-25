@@ -28,8 +28,8 @@
 								<% else %>
 									<%= current_user.email %>
 								<% end %>
-								<% if current_user.avatar_url.present? %>
-									<img src="<%= current_user.avatar_url %>" width="30" height = "30" class="img-circle profile-nav"/>
+								<% if current_user.get_avatar_url.present? %>
+									<img src="<%= current_user.get_avatar_url %>" width="30" height = "30" class="img-circle profile-nav"/>
 								<% else %>
 									<img src="<%= asset_url('default-avatar.png') %>" width="30" height = "30" class="img-circle profile-nav"/>
 								<% end %>
@@ -47,18 +47,6 @@
 						<li><%= link_to "Login", new_user_session_path() %></li>
 						<li><%= link_to "Sign Up", new_user_registration_path %></li>
 					<% end %>
-					<!-- <li><a href="#">Become a Mechant</a></li>
-					<li><a href="#">Login</a></li>
-					<li><a href="#" >Sign Up</a></li>
-					<li class="dropdown">
-						<a href="#"  onmouseover="javascript:stickDropdown(this);" class="dropdown-toggle usernavprofile"  data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Sarah <img src="https://s3.amazonaws.com/uifaces/faces/twitter/ladylexy/128.jpg" width="30" class="img-circle profile-nav"/></a>
-						<ul class="dropdown-menu profile-nav-dropdown">
-							<li><a href="#">Edit Profile</a></li>
-							<li><a href="#">Invite Friends</a></li>
-							<li><a href="#">Account Settings</a></li>
-							<li><a href="#">Log Out</a></li>
-						</ul>
-					</li> -->
 				</ul>
 			</nav>
 		</div>

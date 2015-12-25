@@ -4,6 +4,12 @@ Rails.application.routes.draw do
   
   devise_for :users, :controllers => {:omniauth_callbacks => "users/omniauth_callbacks"}
   root 'home#index'
+
+  get 'products/result' => 'products#result'
+  post 'products/result' => 'products#result'
+  post 'home/search' => 'home#search'
+
+
   resources :products
   resources :product_attachments
   resources :store_images
@@ -17,7 +23,7 @@ Rails.application.routes.draw do
   post 'complete_merchant' => 'users#complete_merchant'
 
   get 'users/verify_store_username' => 'users#verify_store_username'
-
+  
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 

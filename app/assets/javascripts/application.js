@@ -16,7 +16,7 @@
 //= require angular-animate
 //= require angular-route
 //= require angular-resource
-//= require lib/bootstrap
+//= require bootstrap-sprockets
 //= require froala_editor.min
 //= require lib/nouislider.min
 //= require lib/owlcarousel
