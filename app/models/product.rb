@@ -5,7 +5,9 @@ class Product < ActiveRecord::Base
 	belongs_to :product_category
 	belongs_to :location
 	has_many :product_attachments, dependent: :destroy
-	accepts_nested_attributes_for :product_attachments
+	accepts_nested_attributes_for :product_attachments, allow_destroy: true
+	has_many :variants, dependent: :destroy
+	accepts_nested_attributes_for :variants, reject_if: proc { |attributes| attributes['name'].blank? }
 
 	enum payment_type: {
 		visa: 0,

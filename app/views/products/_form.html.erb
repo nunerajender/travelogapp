@@ -1,3 +1,4 @@
+<%= render 'shared/store_setting_errors', :obj => @product %>
 <%= form_for(@product) do |f| %>
 	<div class="form-group  col-md-12 ">
 		<%= f.label :name, 'Name:' %><br />
@@ -16,12 +17,12 @@
 
 	<div class="form-group  col-md-12 ">
 		<%= f.label :address, 'Street Address:', :placeholder => 'House name/number + street/road' %><br />
-		<%= f.text_field :address, :class => 'form-control', :autocomplete => 'off'%>
+		<%= f.text_field :address, :class => 'form-control', :autocomplete => 'off', :id => 'route' %>
 	</div>
 
 	<div class="form-group  col-md-12 ">
 		<%= f.label :apt, 'Apt, Suite, Bldg. (optional)' %><br />
-		<%= f.text_field :apt, :class => 'form-control', :placeholder => 'Apt., suite, building access code', :id => 'route'%>
+		<%= f.text_field :apt, :class => 'form-control', :placeholder => 'Apt., suite, building access code', :id => 'street_number'%>
 	</div>
 
 	<div class="form-group  col-md-12 ">
@@ -31,7 +32,7 @@
 
 	<div class="form-group  col-md-12 ">
 		<%= f.label :state, 'State:' %><br />
-		<%= f.text_field :state, :class => 'form-control', :placeholder => 'State', :id => 'administrative_area_level_1'%>
+		<%= f.text_field :state, :class => 'form-control', :placeholder => 'State', :id => 'administrative_area_level_1' %>
 	</div>
 
 	<div class="form-group  col-md-12 ">
@@ -57,7 +58,59 @@
 	</div>
 
 	<div class="form-group col-md-12 ">
-		<button type="button" id="add-photo-button" class="btn btn-default btn-lg active">Add Photo</button>
+		<%= f.label :description, 'Description:' %><br />
+		<%= f.text_area :description, :class => 'form-control' %>
+	</div>
+
+	<div class="form-group col-md-12 ">
+		<%= f.label :highlight, 'Highlight:' %><br />
+		<%= f.text_area :highlight, :class => 'form-control' %>
+	</div>
+
+	<div class="form-group col-md-12 ">
+		<label>
+			<!-- <input type="checkbox" id="chk-agree" value="option1"> Agree the terms -->
+			<%= f.check_box :refundable, checked: @product.refundable == 1 %>
+			Refundable
+		</label>
+	</div>
+
+	<div class="form-group  col-md-12 refund-area">
+		<%= f.label :refund_day, 'Refund Day:' %><br />
+		<%= f.text_field :refund_day, :class => 'form-control', :placeholder => 'Refund Day' %>
+	</div>
+
+	<div class="form-group  col-md-12 refund-area">
+		<%= f.label :refund_percent, 'Refund Percent:' %><br />
+		<%= f.text_field :refund_percent, :class => 'form-control', :placeholder => 'Refund Percent' %>
+	</div>
+
+	<div class="form-group col-md-12 ">
+		<button type="button" id="add-variant-button" class="btn btn-default btn-sm active">Add Variant</button>
+	</div>
+	<div class="variants-container form-group col-md-12">
+		<% if !@product.new_record? %>
+			<% @product.variants.each do |variant| %>
+				<div class="form-group col-md-12 ">
+					<label for="variant_name">Variant Name:</label><br>
+					<input class="form-control" type="text" value="<%= variant.name %>" name="variant[][name]" id="variant_name">
+					<label for="variant_name">Variant Price:</label><br>
+					<input class="form-control" type="text" value="<%= variant.price_cents / 100 %>" name="variant[][price_cents]" id="variant_price">
+				</div>
+			<% end %>
+			<!-- <div class="form-group col-md-12 ">
+				<label for="variant_name">Variant Name:</label><br>
+				<input class="form-control" placeholder="Variant Name" type="text" value="10" name="variant[][name]" id="variant_name">
+			</div>
+			<div class="form-group col-md-12 ">
+				<label for="variant_name">Variant Price:</label><br>
+				<input class="form-control" placeholder="Variant Price" type="text" value="10" name="variant[][price_cents]" id="variant_price">
+			</div> -->
+		<% end %>
+	</div>
+
+	<div class="form-group col-md-12 ">
+		<button type="button" id="add-photo-button" class="btn btn-default btn-sm active">Add Photo</button>
 	</div>
 
 	<div class="attachments-container">
@@ -120,6 +173,7 @@
 <script>
 $(window).load(function() {
 	$(document).ready(function() {
+
 		var adjustProductAttachments = function() {
 			$('.attachments-container .clearfix').remove();
 			index = 0;
@@ -131,12 +185,52 @@ $(window).load(function() {
 			})
 		}
 
+		var updateCurrencySymbol = function() {
+			switch($('#product_currency').val()) {
+				case 'USD':
+					$('.amount-inner .currency-value').text('$');
+					break;
+				case 'MYR':
+					$('.amount-inner .currency-value').text('RM');
+					break;
+				case 'SGD':
+					$('.amount-inner .currency-value').text('$');
+					break;
+				case 'THB':
+					$('.amount-inner .currency-value').text('฿');
+					break;
+				case 'PHO':
+					$('.amount-inner .currency-value').text('$');
+					break;
+				case 'TWD':
+					$('.amount-inner .currency-value').text('NT$');
+					break;
+			}
+		}
+
+		var showRefundableFields = function() {
+			if ($('#product_refundable').prop('checked')) {
+				$('.refund-area').css('display', 'block');
+			} else {
+				$('.refund-area').css('display', 'none');
+			}
+		}
+
+		$('#product_description').froalaEditor();
+		$('#product_highlight').froalaEditor();
+
 		// $('select').selectpicker({
 		// 	liveSearch: false,
 		// 	maxOptions: 1
 		// });
 		$('input[type="submit"]').prop('disabled', !$('#chk-agree').prop('checked'));
 		adjustProductAttachments();
+		showRefundableFields();
+		updateCurrencySymbol();
+
+		$(document).on('change', '#product_refundable', function() {
+			showRefundableFields();
+		})
 
 		$(document).on('change', '#chk-agree', function() {
 			$('input[type="submit"]').prop('disabled', !$('#chk-agree').prop('checked'))
@@ -198,6 +292,16 @@ $(window).load(function() {
 
 		})
 
+		$(document).on('click', '#add-variant-button', function() {
+			var append_html = '<div class="form-group col-md-12 "><label for="variant_name">Variant Name:</label><br><input class="form-control" type="text" name="variant[][name]" id="variant_name"><label for="variant_name">Variant Price:</label><br><input class="form-control" type="text" name="variant[][price_cents]" id="variant_price"></div>'
+			$('.variants-container').append(append_html);
+		})
+
+		// change currency symbol
+		$(document).on('change', '#product_currency', function() {
+			updateCurrencySymbol();
+		})
+
 
 	});
 
@@ -230,7 +334,7 @@ $(function() {
 
 var placeSearch, autocomplete;
 var componentForm = {
-  // street: 'short_name',
+  street_number: 'short_name',
   route: 'long_name',
   locality: 'long_name',
   administrative_area_level_1: 'short_name',
@@ -242,7 +346,7 @@ function initAutocomplete() {
   // Create the autocomplete object, restricting the search to geographical
   // location types.
   autocomplete = new google.maps.places.Autocomplete(
-      /** @type {!HTMLInputElement} */(document.getElementById('product_address')),
+      /** @type {!HTMLInputElement} */(document.getElementById('route')),
       {types: ['geocode']});
 
   // When the user selects an address from the dropdown, populate the address
@@ -254,6 +358,7 @@ function initAutocomplete() {
 function fillInAddress() {
   // // Get the place details from the autocomplete object.
   var place = autocomplete.getPlace();
+  console.log(place.address_components);
 
   for (var component in componentForm) {
     document.getElementById(component).value = '';
@@ -262,6 +367,7 @@ function fillInAddress() {
 
   // // Get each component of the address from the place details
   // // and fill the corresponding field on the form.
+
   for (var i = 0; i < place.address_components.length; i++) {
     var addressType = place.address_components[i].types[0];
     if (componentForm[addressType]) {
@@ -335,5 +441,12 @@ function geolocate() {
 	.amount-inner .input-group input {
 		margin: 0;
     display: table-cell;
+	}
+
+	input[type=checkbox]:focus, .checkbox input[type="checkbox"]:focus + label:before {
+		-webkit-appearance: checkbox !important;	
+	}
+	input[type=checkbox]:hover {
+		-webkit-appearance: checkbox !important;	
 	}
 </style>
