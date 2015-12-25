@@ -118,6 +118,7 @@ class ProductsController < ApplicationController
       @products = @products.where("lower(name) LIKE ?", "%#{params[:search_free_text].downcase}%")
     end
     @products = Product.all if @products.blank?
+    @products = @products.page(params[:page]).per(10)
     @products.each do |product|
       if product.product_attachments.present? && product.product_attachments.count > 0
         product.product_overview_url = product.product_attachments[0].attachment.medium.url
