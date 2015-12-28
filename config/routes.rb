@@ -7,6 +7,7 @@ Rails.application.routes.draw do
 
   get 'products/result' => 'products#result'
   post 'products/result' => 'products#result'
+  post 'products/result_filter' => 'products#result_filter'
   post 'home/search' => 'home#search'
 
 

@@ -21,6 +21,9 @@
 							<div class="form-group" ng-controller='DefaultCtrl'>
 								<input type="text" id="demo6" name="search_free_text" class="form-control name-form"  auto-complete ui-items="names" ng-model="selected" placeholder="Search Names" autocomplete="off" >
 							</div>
+							<% ProductCategory.order('id').each do |category| %>
+								<input type="hidden" name="category_<%= category.id %>" value="1">
+							<% end %>
 							<button type="submit" class="btn btn-default search-btn">Search</button>
 						</form>
 					</div>

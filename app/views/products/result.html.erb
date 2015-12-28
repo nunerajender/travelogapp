@@ -6,48 +6,26 @@
 					<div class="col-md-2 col-sm-12 col-xs-12 text-left pull-left ">
 						<h5>Category </h5>
 					</div>
-					<div class="col-md-10 col-sm-12 col-xs-12">
-						<div class="checkbox checkbox-default">
-							<span class="text-label">
-							Adventure</span>
-							<input id="checkbox2" type="checkbox" checked="">
-							<label for="checkbox2">
-							</label>
+					<form method="POST" action="/products/result">
+						<%= tag(:input, :name => 'authenticity_token', :type => "hidden", :value => form_authenticity_token) %>
+						<div class="col-md-10 col-sm-12 col-xs-12">
+							<% ProductCategory.order('id').each do |category| %>
+								<div class="checkbox checkbox-default">
+									<span class="text-label">
+									<%= category[:name] %></span>
+									<input id="checkbox_<%= category.id %>" name="category_<%= category.id %>" type="checkbox" <%= "checked" if @categories["category_#{category.id}"].present? && @categories["category_#{category.id}"].to_i %>>
+									<label for="checkbox_<%= category.id %>">
+									</label>
+								</div>
+							<% end %>
 						</div>
-						<div class="checkbox checkbox-default">
-							<span class="text-label">
-							Discover</span>
-							<input id="checkbox3" type="checkbox" checked="">
-							<label for="checkbox3">
-							</label>
-						</div>
-						<div class="checkbox checkbox-default"><span class="text-label">
-							Flying</span>
-							<input id="checkbox4" type="checkbox" checked="">
-							<label for="checkbox4"   >
-							</label>
-						</div>
-						<div class="checkbox checkbox-default">
-							<span class="text-label">
-							Tickets</span>
-							<input id="checkbox5" type="checkbox" checked="">
-							<label for="checkbox5">
-							</label>
-						</div>
-						<div class="checkbox checkbox-default"><span class="text-label">
-							Tour</span>
-							<input id="checkbox6" type="checkbox" checked="">
-							<label for="checkbox6">
-							</label>
-						</div>
-						<div class="checkbox checkbox-default">
-							<span class="text-label">
-							Watersport</span>
-							<input id="checkbox7" type="checkbox" checked="">
-							<label for="checkbox7">
-							</label>
-						</div>
-					</div>
+						<% if @city.present? %>
+							<input type="hidden" name="city" value="<%= @city %>">
+						<% end %>
+						<% if @search_free_text.present? %>
+							<input type="hidden" name="search_free_text" value="<%= @search_free_text %>">
+						<% end %>
+					</form>
 				</div>
 			</div>
 			<div class="row row-filter  slider-filter">
@@ -80,7 +58,8 @@
 		<div class="container landing-content">
 			<div class="row">
 				<div class="col-md-12 text-right content-title">
-					<h4> <%= @products.count %> attractions, Petaling Jaya</h4>
+					<h4> Total: <%= @total_count %> attractions</h4>
+					<h5> Display: <%= @products.count %> attractions</h5>
 				</div>
 				<% @products.each do |product| %>
 					<div class="col-xs-12 col-sm-6 col-md-3 portfolio-item">
@@ -121,61 +100,66 @@
 <script>    
 
 	function stickDropdown(_elem){
-			$(_elem).parent().removeClass('open').addClass('open');
+		$(_elem).parent().removeClass('open').addClass('open');
 	}
 
 	function initResponsiveHeader() {
-			  var sideslider = $('[data-toggle=collapse-side]');
-			  var sel = sideslider.attr('data-target');
-			  var sel2 = sideslider.attr('data-target-2');
-			  sideslider.click(function(event) {
-					$(sel).toggleClass('in');
-					$(sel2).toggleClass('out');
-			  }); 
+	  var sideslider = $('[data-toggle=collapse-side]');
+	  var sel = sideslider.attr('data-target');
+	  var sel2 = sideslider.attr('data-target-2');
+	  sideslider.click(function(event) {
+			$(sel).toggleClass('in');
+			$(sel2).toggleClass('out');
+	  }); 
 	}
 	
-		 $(document).ready(function() {
+	$(document).ready(function() {
+
+	  initResponsiveHeader();
+
+	  var nonLinearSlider = document.getElementById('nonlinear');
+	  noUiSlider.create(nonLinearSlider, {
+			connect: true,
+			behaviour: 'tap',
+			start: [500, 4000],
+			range: {
+				 // Starting at 500, step the value by 500,
+				 // until 4000 is reached. From there, step by 1000.
+				 'min': [0],
+				 '10%': [500, 500],
+				 '50%': [4000, 1000],
+				 'max': [10000]
+			}
+	  });
+
+	  $(document).on('change', 'form input[type="checkbox"]', function() {
+	  	console.log('checkbox click');
+	  	$form = $(this).closest('form');
+	  	console.log($form.serialize());
+	  	$form.submit();
+	  })
+	});
 	
-			  initResponsiveHeader();
-	
-			  var nonLinearSlider = document.getElementById('nonlinear');
-			  noUiSlider.create(nonLinearSlider, {
-					connect: true,
-					behaviour: 'tap',
-					start: [500, 4000],
-					range: {
-						 // Starting at 500, step the value by 500,
-						 // until 4000 is reached. From there, step by 1000.
-						 'min': [0],
-						 '10%': [500, 500],
-						 '50%': [4000, 1000],
-						 'max': [10000]
-					}
-			  });
-		 });
-	
-	
-	
-		 $(function() {
-			  function displayResult(item) {
-					$('.alert').show().html('You selected <strong>' + item.value + '</strong>: <strong>' + item.text + '</strong>');
-			  }
-			  $('#demo6').typeahead({
-					source: [
-						 'Genting',
-						 'Zoo Negara',
-						 'Tioman',
-						 'Petronas Towers',
-						 'Batu Caves',
-						 'Gunung Mulu',
-						 'Mount Kinabalu',
-						 'Bako Park',
-						 'Sunway Lagoon',
-						 'Pangkor island'
-					],
-					onSelect: displayResult
-			  });
-	
-		 });
+	$(function() {
+	  function displayResult(item) {
+			$('.alert').show().html('You selected <strong>' + item.value + '</strong>: <strong>' + item.text + '</strong>');
+	  }
+	  $('#demo6').typeahead({
+			source: [
+				 'Genting',
+				 'Zoo Negara',
+				 'Tioman',
+				 'Petronas Towers',
+				 'Batu Caves',
+				 'Gunung Mulu',
+				 'Mount Kinabalu',
+				 'Bako Park',
+				 'Sunway Lagoon',
+				 'Pangkor island'
+			],
+			onSelect: displayResult
+	  });
+
+	});
 		 
 </script>

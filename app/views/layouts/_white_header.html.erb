@@ -13,7 +13,8 @@
 			</button>
 
 			<a class="navbar-brand" href="/"><img src="<%= asset_url('dummylogo.png') %>" width="30"></a>
-			<form class="form-inline search-white-nav">
+			<form class="form-inline search-white-nav" id="result-filter" method="POST" action="/products/result_filter">
+				<%= tag(:input, :name => 'authenticity_token', :type => "hidden", :value => form_authenticity_token) %>
 			  <div class="form-group">
 				<span class="glyphicon glyphicon-search" aria-hidden="true"></span>
 			  </div>
