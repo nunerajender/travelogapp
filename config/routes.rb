@@ -2,10 +2,13 @@ Rails.application.routes.draw do
 
  
   
+  
+
   devise_for :users, :controllers => {:omniauth_callbacks => "users/omniauth_callbacks",
                                       :registrations => "registrations"}
   root 'home#index'
   resources :products
+  resources :store
   resources :product_attachments
   resources :store_images
   resources :user_avatars

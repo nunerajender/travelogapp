@@ -39,6 +39,10 @@ class User < ActiveRecord::Base
     end
   end
 
+  def is_merchant?
+    false
+  end
+
   def self.build(opts = {})
     
     u = User.new(opts.except(:first_name,:last_name,:id))
@@ -56,8 +60,21 @@ class User < ActiveRecord::Base
 
   def set_profile(profile)
     self.profile = profile
-
   end
+  
+  def avatar_url
+    ret = ''
+    if self.profile.present? && self.profile.user_avatar.present?
+      ret = self.profile.user_avatar.avatar.thumb.url
+    end
+    if ret.blank? && self.provider == 'facebook'
+      ret = self.profile.avatar
+    end
+    ret
+  end
+ 
+
+  
 
 
 
