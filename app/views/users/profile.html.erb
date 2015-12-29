@@ -30,7 +30,7 @@
       </style>
 
 <div class="side-collapse-container">
-	<!-- <section class="header-11-sub profile-page">
+	<section class="header-11-sub profile-page">
             <div class="container">
                <div class="row ">
                   <div class="col-md-4">
@@ -45,17 +45,17 @@
                   </div>
                   <div class="col-md-8">
                      <div class="profile-details">
-                        <form class="form-horizontal profile-form">
+                        <%= form_for @profile, url: {action: "profile"}, :html => {:class => "form-horizontal profile-form" } do |f| %>
                            <div class="form-group">
-                              <label for="" class="col-sm-2 control-label">First name</label>
+                           	<%= f.label :first_name, :class=>"col-sm-2 control-label" 'First Name:' %>
                               <div class="col-sm-10">
-                                 <input type="text" class="form-control" id="" placeholder="">
+                                 <%= f.text_field :first_name, :class => 'form-control', :placeholder => 'First Name' %>
                               </div>
                            </div>
                            <div class="form-group">
-                              <label for="" class="col-sm-2 control-label">Last Name</label>
+                              <%= f.label :last_name, :class=>"col-sm-2 control-label" 'Last Name:' %>
                               <div class="col-sm-10">
-                                 <input type="text" class="form-control" id="" placeholder="">
+                                 <%= f.text_field :last_name, :class => 'form-control', :placeholder => 'Last Name' %>
                               </div>
                            </div>
                            <div class="form-group">
@@ -95,13 +95,13 @@
                                  <button type="submit" class="btn btn-default">Save</button>
                               </div>
                            </div>
-                        </form>
+                        <% end %>
                      </div>
                   </div>
                </div>
             </div>
-         </section> -->
-	<div class="profile">
+         </section>
+	<!-- <div class="profile">
 		<%= form_for @profile, url: {action: "profile"} do |f| %>
 			<div class="form-group">
 				<%= f.label :first_name, 'First Name:' %>
@@ -141,7 +141,7 @@
 				<%= f.submit 'Submit', :class => 'blue btn btn-primary' %>
 			</div>
 		<% end %>
-	</div>
+	</div> -->
 </div>
 
 

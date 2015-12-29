@@ -241,10 +241,10 @@ Devise.setup do |config|
   # config.omniauth :github, 'APP_ID', 'APP_SECRET', scope: 'user,public_repo'
   # config.omniauth :facebook, "1532030150450881", "440ce6647b3d880f5cb1d7de9d1ee6d7",info_fields: 'email,first_name,last_name',callback_url: "http://localhost:3000/users/auth/facebook/callback", :client_options => {:ssl => {:ca_file => 'C:\wamp\www\travelog\config\ca-bundle.crt'}}, :display =>  'popup'
   # config.omniauth :facebook, "1532030150450881", "440ce6647b3d880f5cb1d7de9d1ee6d7",info_fields: 'email,first_name,last_name',callback_url: "http://localhost:3000/users/auth/facebook/callback", :display =>  'popup'
-  #config.omniauth :facebook, "918274341576308", "3f00fe4b9cce4b559b42d2c040976d32", info_fields: 'email,first_name,last_name',callback_url: "http://localhost:3000/users/auth/facebook/callback", :display =>  'popup'
+  config.omniauth :facebook, "918274341576308", "3f00fe4b9cce4b559b42d2c040976d32", info_fields: 'email,first_name,last_name',callback_url: "http://localhost:3000/users/auth/facebook/callback", :display =>  'popup'
 
 
-  config.omniauth :facebook, "1632020863726307", "91aad5c7bd4662601e159cf60c824975", info_fields: 'email,first_name,last_name',callback_url: "http://travelog.elasticbeanstalk.com/users/auth/facebook/callback", :client_options => {:ssl => {:ca_file => 'C:\wamp\www\travelog\config\ca-bundle.crt'}}
+  #config.omniauth :facebook, "1632020863726307", "91aad5c7bd4662601e159cf60c824975", info_fields: 'email,first_name,last_name',callback_url: "http://travelog.elasticbeanstalk.com/users/auth/facebook/callback", :client_options => {:ssl => {:ca_file => 'C:\wamp\www\travelog\config\ca-bundle.crt'}}
   # ==> Warden configuration
   # If you want to use other strategies, that are not supported by Devise, or
   # change the failure app, you can configure them inside the config.warden block.
