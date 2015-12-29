@@ -30,7 +30,7 @@
       </style>
 
 <div class="side-collapse-container">
-	<section class="header-11-sub profile-page">
+	<!-- <section class="header-11-sub profile-page">
             <div class="container">
                <div class="row ">
                   <div class="col-md-4">
@@ -100,8 +100,49 @@
                   </div>
                </div>
             </div>
-         </section>
-	
+         </section> -->
+	<div class="profile">
+		<%= form_for @profile, url: {action: "profile"} do |f| %>
+			<div class="form-group">
+				<%= f.label :first_name, 'First Name:' %>
+				<%= f.text_field :first_name, :class => 'form-control', :placeholder => 'First Name' %>
+			</div>
+			<div class="form-group">
+				<%= f.label :last_name, 'Last Name:' %>
+				<%= f.text_field :last_name, :class => 'form-control', :placeholder => 'Last Name' %>
+			</div>
+
+			<div class="form-group">
+				<label for="user_new_password">New Password:</label>
+				<input class="form-control" placeholder="New Password" type="password" name="user[new_password]" id="user_new_password">
+			</div>
+
+			<div class="form-group">
+				<label for="user_new_password">Confirm Password:</label>
+				<input class="form-control" placeholder="Confirm Password" type="password" name="user[confirm_password]" id="user_confirm_password">
+			</div>
+
+			<div class="attachments-container">
+				<div class="form-group">
+					<button type="button" id="add-avatar-button" class="btn btn-default active">Add Avatar</button>
+					<input name="file_attachment" type="file" id="file_upload">
+				</div>
+
+				<% if @profile.user_avatar.present? %>
+					<div class="form-group col-md-4">
+						<img src="<%= @profile.user_avatar.avatar.small.url %>">
+						<input type="hidden" name="user_avatar[id]" value="<%= @profile.user_avatar.id %>">
+						<button type="button" class="btn btn-default delete-attachment">Delete</button>
+					</div>
+				<% end %>
+			</div>
+			<div class="clearfix"></div>
+			<div class="form-group">
+				<%= f.submit 'Submit', :class => 'blue btn btn-primary' %>
+			</div>
+		<% end %>
+	</div>
+</div>
 
 
 
