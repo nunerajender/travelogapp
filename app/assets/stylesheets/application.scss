@@ -1,6 +1,10 @@
 @import "variables";
-@import "lib/bootstrap";
+@import "bootstrap-sprockets";
+@import "bootstrap";
 @import "lib/bootstrap-select";
+@import "lib/beautycheckbox";
+@import "lib/nouislider.min";
+
 @import "font-awesome";
 @import "froala_editor.min";
 @import "froala_style.min";

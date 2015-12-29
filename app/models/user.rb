@@ -13,6 +13,8 @@ class User < ActiveRecord::Base
     normal: 0,
     merchant: 1
   }
+
+  attr_accessor :avatar_url
   
   def self.from_omniauth(auth)
   	
@@ -62,7 +64,8 @@ class User < ActiveRecord::Base
     self.profile = profile
   end
   
-  def avatar_url
+
+  def get_avatar_url
     ret = ''
     if self.profile.present? && self.profile.user_avatar.present?
       ret = self.profile.user_avatar.avatar.thumb.url

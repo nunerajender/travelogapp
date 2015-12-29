@@ -16,7 +16,11 @@ class Product < ActiveRecord::Base
 		paypal: 3
 	}
 
+	attr_accessor :product_overview_url
+	attr_accessor :user_avatar_url
+
 	validates :name, :presence => true
 	validates :product_category_id, :presence => true
 	validates :payment_type, :presence => true
+	
 end

@@ -50,6 +50,8 @@ gem 'money-rails', '~> 1.4.1'
 gem "wysiwyg-rails"
 gem "font-awesome-rails"
 gem 'yaml_db'
+gem 'bootstrap-sass', '~> 3.3.6'
+gem 'kaminari'
 
 
 group :development, :test do

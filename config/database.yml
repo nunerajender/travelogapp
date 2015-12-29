@@ -2,8 +2,8 @@ development:
   host: localhost
   adapter: postgresql
   database: travelog_development
-  username: cale
-  password: tigertiger
+  username: siva
+  password: 
   encoding: utf8
   pool: 30
   timeout: 5000
@@ -22,7 +22,10 @@ test:
   timeout: 5000
 
 production:
+  host: travelogpsql.c4ti23uotlqc.us-west-2.rds.amazonaws.com
   adapter: postgresql
   database: travelog_production
   encoding: utf8
+  username: root
+  password: travelogdb
   pool: 20

@@ -75,21 +75,21 @@ class ProductsController < ApplicationController
       if @product.update(product_params)
         @product.variants.delete_all
         if params[:variant].present? && params[:variant].count > 0
+          base_price_cents = params[:variant][0][:price_cents].to_i * 100
           params[:variant].each do |param_variant|
-            # if param_variant[:id].blank?
-              
-            # else
-            #   Variant.update(param_variant[:id].to_i, param_variant)
-            # end
-            # binding.pry
             if param_variant[:name].present?
               variant = Variant.new
               variant.name = param_variant[:name]
               variant.price_cents = param_variant[:price_cents].to_i * 100
+              if variant.price_cents < base_price_cents
+                base_price_cents = variant.price_cents
+              end
               variant.product = @product
-              variant.save  
+              variant.save
             end
           end
+          @product.price_cents = base_price_cents
+          @product.save
         end
         if params[:product_attachment].present?
           params[:product_attachment]['id'].each do |a|
@@ -107,6 +107,63 @@ class ProductsController < ApplicationController
         format.json { render json: @product_attachment.errors, status: :unprocessable_entity }
       end
     end
+  end
+
+  def result
+    # @products = Product.where("name LIKE ? OR city LIKE ?", "%#{params[:name]}%", "%#{params[:city]}%")
+    # str_query = 'product_category_id = -1'
+    if params[:city].present?
+      # str_query += " or (lower(city) LIKE '%#{params[:city].downcase}%' or lower(country) like '%#{params[:city].downcase}%')"
+      @products = Product.where("lower(city) LIKE ? or lower(country) like ?", "%#{params[:city].downcase}%", "%#{params[:city].downcase}%")
+      @city = params[:city]
+
+      if params[:search_free_text].present?
+        # str_query += " and (lower(name) LIKE %#{params[:search_free_text].downcase}%)"
+        @products = @products.where("lower(name) LIKE ?", "%#{params[:search_free_text].downcase}%")
+        @search_free_text = params[:search_free_text]
+      end
+    else
+      @products = Product.all
+    end
+    
+    # @products = Product.all if @products.blank?
+    # @products = [] if @products.blank?
+    # binding.pry
+    # @products = Product.where(str_query)
+    
+
+    @categories = {}
+    str_query = 'product_category_id = -1'
+    temp_index = 0
+    ProductCategory.order('id').each do |category|
+      @categories["category_#{category.id}"] = params["category_#{category.id}"]
+      if @categories["category_#{category.id}"].present? && @categories["category_#{category.id}"].to_i
+        temp_index += 1
+        str_query += " or product_category_id = #{category.id}"
+      end
+    end
+    @products = @products.where(str_query)
+    
+    @total_count = @products.count
+    @products = @products.page(params[:page]).per(8)
+    @products.each do |product|
+      if product.product_attachments.present? && product.product_attachments.count > 0
+        product.product_overview_url = product.product_attachments[0].attachment.medium.url
+      end
+      product.user_avatar_url = product.user.get_avatar_url
+    end
+  end
+
+  def result_filter
+    @products = Product.all if @products.blank?
+    @products = @products.page(params[:page]).per(8)
+    @products.each do |product|
+      if product.product_attachments.present? && product.product_attachments.count > 0
+        product.product_overview_url = product.product_attachments[0].attachment.medium.url
+      end
+      product.user_avatar_url = product.user.get_avatar_url
+    end
+    render :result
   end
 
   # DELETE /products/1

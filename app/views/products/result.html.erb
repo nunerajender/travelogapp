@@ -1,0 +1,165 @@
+<div class="side-collapse-container">
+	<div class="search-box-wrapper">
+		<div class="container container-filter ">
+			<div class="row row-filter filter-search">
+				<div class="col-md-12  ">
+					<div class="col-md-2 col-sm-12 col-xs-12 text-left pull-left ">
+						<h5>Category </h5>
+					</div>
+					<form method="POST" action="/products/result">
+						<%= tag(:input, :name => 'authenticity_token', :type => "hidden", :value => form_authenticity_token) %>
+						<div class="col-md-10 col-sm-12 col-xs-12">
+							<% ProductCategory.order('id').each do |category| %>
+								<div class="checkbox checkbox-default">
+									<span class="text-label">
+									<%= category[:name] %></span>
+									<input id="checkbox_<%= category.id %>" name="category_<%= category.id %>" type="checkbox" <%= "checked" if @categories["category_#{category.id}"].present? && @categories["category_#{category.id}"].to_i %>>
+									<label for="checkbox_<%= category.id %>">
+									</label>
+								</div>
+							<% end %>
+						</div>
+						<% if @city.present? %>
+							<input type="hidden" name="city" value="<%= @city %>">
+						<% end %>
+						<% if @search_free_text.present? %>
+							<input type="hidden" name="search_free_text" value="<%= @search_free_text %>">
+						<% end %>
+					</form>
+				</div>
+			</div>
+			<div class="row row-filter  slider-filter">
+				<div class="col-md-12   ">
+					<div class="col-md-2 col-sm-12 col-xs-12 text-left pull-left  ">
+						<h5>Price Range </h5>
+					</div>
+					<div class="col-md-10 col-sm-12 col-xs-12">
+						<h5>          </h5>
+						<div class="slider" id="slider1"></div>
+						<span class="example-val" id="slider1-span"></span>
+						<div id="nonlinear"></div>
+						<span class="example-val" id="lower-value"></span>
+						<span id="lower-offset"></span>
+						<span class="example-val" id="upper-value"></span>
+						<span id="upper-offset"></span>
+					</div>
+					<div class="col-md-2 col-sm-12 col-xs-12"> </div>
+					<div class="label-description col-md-10 col-sm-12 col-xs-12">
+						<h5> </h5>
+						<label class="pull-left">RM500</label>
+						<label class="pull-right">RM5,000</label>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- full-box-border -->
+	<div class="container-result">
+		<div class="container landing-content">
+			<div class="row">
+				<div class="col-md-12 text-right content-title">
+					<h4> Total: <%= @total_count %> attractions</h4>
+					<h5> Display: <%= @products.count %> attractions</h5>
+				</div>
+				<% @products.each do |product| %>
+					<div class="col-xs-12 col-sm-6 col-md-3 portfolio-item">
+						<p class="price"><%= product.currency %> <%= product.price_cents / 100 %></p>
+						<p class="heart-wrapper ">
+							<input id="heart8" type="checkbox" class="heart-checkbox" />
+							<label for="heart8"> </label>
+						</p>
+						<a href="#"><img src="<%= product.user_avatar_url %>" class="img-circle user-thumb" width="52" /></a>
+						<a href="#">
+						<img class="" src="<%= product.product_overview_url %>" width="262" alt="">
+						</a>
+						<h4>
+							<a href="#"><%= product.name %></a>
+						</h4>
+						<a href="#">
+							<p><%= product.city %>, <%= product.country %>
+							</p>
+							<p class="star-rating">
+								<span class="icon-star selected"></span>
+								<span class="icon-star"></span>
+								<span class="icon-star"></span>
+								<span class="icon-star"></span>
+								<span class="icon-star"></span>
+							</p>
+						</a>
+						<p></p>
+					</div>
+				<% end %>
+				<div class="col-md-12 text-center view-more">
+					<%= paginate @products %>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script>    
+
+	function stickDropdown(_elem){
+		$(_elem).parent().removeClass('open').addClass('open');
+	}
+
+	function initResponsiveHeader() {
+	  var sideslider = $('[data-toggle=collapse-side]');
+	  var sel = sideslider.attr('data-target');
+	  var sel2 = sideslider.attr('data-target-2');
+	  sideslider.click(function(event) {
+			$(sel).toggleClass('in');
+			$(sel2).toggleClass('out');
+	  }); 
+	}
+	
+	$(document).ready(function() {
+
+	  initResponsiveHeader();
+
+	  var nonLinearSlider = document.getElementById('nonlinear');
+	  noUiSlider.create(nonLinearSlider, {
+			connect: true,
+			behaviour: 'tap',
+			start: [500, 4000],
+			range: {
+				 // Starting at 500, step the value by 500,
+				 // until 4000 is reached. From there, step by 1000.
+				 'min': [0],
+				 '10%': [500, 500],
+				 '50%': [4000, 1000],
+				 'max': [10000]
+			}
+	  });
+
+	  $(document).on('change', 'form input[type="checkbox"]', function() {
+	  	console.log('checkbox click');
+	  	$form = $(this).closest('form');
+	  	console.log($form.serialize());
+	  	$form.submit();
+	  })
+	});
+	
+	$(function() {
+	  function displayResult(item) {
+			$('.alert').show().html('You selected <strong>' + item.value + '</strong>: <strong>' + item.text + '</strong>');
+	  }
+	  $('#demo6').typeahead({
+			source: [
+				 'Genting',
+				 'Zoo Negara',
+				 'Tioman',
+				 'Petronas Towers',
+				 'Batu Caves',
+				 'Gunung Mulu',
+				 'Mount Kinabalu',
+				 'Bako Park',
+				 'Sunway Lagoon',
+				 'Pangkor island'
+			],
+			onSelect: displayResult
+	  });
+
+	});
+		 
+</script>
