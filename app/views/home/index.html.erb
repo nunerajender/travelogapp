@@ -38,118 +38,26 @@
 			<div class="col-md-12 text-center content-title">
 				<h3>Now trending in Kuala Lumpur</h3>
 			</div>
+			<% @products.each do |product| %>
 			<div class="col-md-3 portfolio-item">
-				<p class="price">RM 999</p>
-				<a href="#"><img src="https://s3.amazonaws.com/uifaces/faces/twitter/nuraika/128.jpg" class="img-circle user-thumb" width="52"/></a>
+				<p class="price">RM <%= product.price_cents/100 %></p>
+				<a href="#"><img src="<%= product.user.store_setting.store_image.store_img.small%>" class="img-circle user-thumb" width="52"/></a>
 				<a href="#">
-				<img class="img-responsive" src="<%= asset_url('1.png') %>" width="262" alt="">
+				<img class="img-responsive" src="<%= product.product_attachments.first.attachment.small.url%>" width="262" alt="">
 				</a>
 				<h4>
-					<a href="#">Genting Highlands</a>
+					<a href="#"><%= product.name %></a>
 				</h4>
 				<a href="#">
-					<p>Kuala Lumpur, Malaysia</p>
+					<p><%= product.city%>, <%= product.country%></p>
 				</a>
 			</div>
-			<div class="col-md-3 portfolio-item">
-				<p class="price">RM 999</p>
-				<a href="#"><img src="https://s3.amazonaws.com/uifaces/faces/twitter/liang/128.jpg" class="img-circle user-thumb" width="52"/></a>
-				<a href="#">
-				<img class="img-responsive" src="<%= asset_url('2.png') %>" width="262" alt="">
-				</a>
-				<h4>
-					<a href="#">Genting Highlands</a>
-				</h4>
-				<a href="#">
-					<p>Kuala Lumpur, Malaysia</p>
-				</a>
-			</div>
-			<div class="col-md-3 portfolio-item">
-				<p class="price">RM 999</p>
-				<a href="#"><img src="https://s3.amazonaws.com/uifaces/faces/twitter/rickyyean/128.jpg" class="img-circle user-thumb" width="52"/></a>
-				<a href="#">
-				<img class="img-responsive" src="<%= asset_url('3.png') %>" width="262" alt="">
-				</a>
-				<h4>
-					<a href="#">Genting Highlands</a>
-				</h4>
-				<a href="#">
-					<p>Kuala Lumpur, Malaysia</p>
-				</a>
-			</div>
-			<div class="col-md-3 portfolio-item">
-				<p class="price">RM 999</p>
-				<a href="#"><img src="https://s3.amazonaws.com/uifaces/faces/twitter/jeanniehuang/128.jpg" class="img-circle user-thumb" width="52"/></a>
-				<a href="#">
-				<img class="img-responsive" src="<%= asset_url('4.png') %>" width="262" alt="">
-				</a>
-				<h4>
-					<a href="#">Genting Highlands</a>
-				</h4>
-				<a href="#">
-					<p>Kuala Lumpur, Malaysia</p>
-				</a>
-			</div>
+			<% end %>
+			
 		</div>
 		<!-- /.row -->
 		<!-- Projects Row -->
-		<div class="row">
-			<div class="col-md-3 portfolio-item">
-				<p class="price">RM 999</p>
-				<a href="#"><img src="https://s3.amazonaws.com/uifaces/faces/twitter/andrea211087/128.jpg" class="img-circle user-thumb" width="52"/></a>
-				<a href="#">
-				<img class="img-responsive" src="<%= asset_url('5.png') %>" width="262" alt="">
-				</a>
-				<h4>
-					<a href="#">Genting Highlands</a>
-				</h4>
-				<a href="#">
-					<p>Kuala Lumpur, Malaysia</p>
-				</a>
-			</div>
-			<div class="col-md-3 portfolio-item">
-				<p class="price">RM 999</p>
-				<a href="#"><img src="https://s3.amazonaws.com/uifaces/faces/twitter/chloepark/128.jpg" class="img-circle user-thumb" width="52"/></a>
-				<a href="#">
-				<img class="img-responsive" src="<%= asset_url('6.png') %>" width="262" alt="">
-				</a>
-				<h4>
-					<a href="#">Genting Highlands</a>
-				</h4>
-				<a href="#">
-					<p>Kuala Lumpur, Malaysia</p>
-				</a>
-			</div>
-			<div class="col-md-3 portfolio-item">
-				<p class="price">RM 999</p>
-				<a href="#"><img src="https://s3.amazonaws.com/uifaces/faces/twitter/kirstyllee/128.jpg" class="img-circle user-thumb" width="52"/></a>
-				<a href="#">
-				<img class="img-responsive" src="<%= asset_url('7.png') %>" width="262" alt="">
-				</a>
-				<h4>
-					<a href="#">Genting Highlands</a>
-				</h4>
-				<a href="#">
-					<p>Kuala Lumpur, Malaysia</p>
-				</a>
-			</div>
-			<div class="col-md-3 portfolio-item">
-				<p class="price">RM 999</p>
-				<a href="#"><img src="https://s3.amazonaws.com/uifaces/faces/twitter/wintopia/128.jpg" class="img-circle user-thumb" width="52"/></a>
-				<a href="#">
-				<img class="img-responsive" src="<%= asset_url('8.png') %>" width="262" alt="">
-				</a>
-				<h4>
-					<a href="#">Genting Highlands</a>
-				</h4>
-				<a href="#">
-					<p>Kuala Lumpur, Malaysia</p>
-				</a>
-			</div>
-			<div class="col-md-12 text-center view-more">
-				<a href="#" class="view-more-btn">Discover More</a>
-			</div>
-		</div>
+		
 		<!-- /.row -->
 		<div class="row">
 			<div class="col-md-12 text-center content-title">

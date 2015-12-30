@@ -27,8 +27,9 @@
          padding-top: 70px;
          background: #fafafa;
          }
+        
       </style>
-
+<%= render "shared/settings_nav" %>
 <div class="side-collapse-container">
 	<section class="header-11-sub profile-page">
             <div class="container">
@@ -47,17 +48,39 @@
                      <div class="profile-details">
                         <%= form_for @profile, url: {action: "profile"}, :html => {:class => "form-horizontal profile-form" } do |f| %>
                            <div class="form-group">
-                           	<%= f.label :first_name, :class=>"col-sm-2 control-label" 'First Name:' %>
+                           	<%= f.label :first_name, 'First Name', :class=>"col-sm-2 control-label"  %>
                               <div class="col-sm-10">
                                  <%= f.text_field :first_name, :class => 'form-control', :placeholder => 'First Name' %>
                               </div>
                            </div>
                            <div class="form-group">
-                              <%= f.label :last_name, :class=>"col-sm-2 control-label" 'Last Name:' %>
+                              <%= f.label :last_name, 'Last Name', :class=>"col-sm-2 control-label"  %>
                               <div class="col-sm-10">
                                  <%= f.text_field :last_name, :class => 'form-control', :placeholder => 'Last Name' %>
                               </div>
                            </div>
+                           <div class="form-group">
+															<%= f.label :user_new_password, 'New Password', :class=>"col-sm-2 control-label"  %>
+															<div class="col-sm-10">
+															<input class="form-control" placeholder="New Password" type="password" name="user[new_password]" id="user_new_password">
+															</div>
+														</div>
+														<div class="form-group">
+															<%= f.label :user_new_password, 'Confirm Password', :class=>"col-sm-2 control-label"  %>
+															<div class="col-sm-10">
+															<input class="form-control" placeholder="Confirm Password" type="password" name="user[confirm_password]" id="user_new_password">
+															</div>
+														</div>
+
+														<div class="form-group">
+															<%= f.label :gender, 'Gender', :class=>"col-sm-2 control-label"  %>
+															<div class="col-sm-10">
+															
+															<%= f.select(:gender, [ ['Male',1],['Female',2] ] , :class => 'form-control') %>
+															
+															</div>
+														</div>
+
                            <div class="form-group">
                               <label for="" class="col-sm-2 control-label">I Am</label>
                               <div class="col-sm-10">
@@ -92,7 +115,7 @@
                            </div>
                            <div class="form-group">
                               <div class="col-sm-offset-2 col-sm-10">
-                                 <button type="submit" class="btn btn-default">Save</button>
+                                 <%= f.submit 'Submit', :class => 'btn btn-default' %>
                               </div>
                            </div>
                         <% end %>

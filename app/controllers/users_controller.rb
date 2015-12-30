@@ -98,6 +98,6 @@ class UsersController < ApplicationController
 			params.require(:store_setting).permit(:phone_hp, :store_username, :store_name)
 		end
 		def profile_params
-			params.require(:profile).permit(:first_name, :last_name)
+			params.require(:profile).permit(:first_name, :last_name, :gender)
 		end
 end
