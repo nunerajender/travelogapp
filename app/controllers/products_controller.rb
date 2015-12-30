@@ -14,6 +14,12 @@ class ProductsController < ApplicationController
     end
   end
 
+  def show
+    @user = @product.user
+    @other_products = Product.order('random()').limit(4)
+    set_product_attributs(@other_products)
+  end
+
   def new
     if current_user.status == 'merchant'
       @product = Product.new
@@ -170,7 +176,11 @@ class ProductsController < ApplicationController
     
     @total_count = @products.count
     @products = @products.page(params[:page]).per(8)
-    @products.each do |product|
+    set_product_attributs(@products)
+  end
+
+  def set_product_attributs(products)
+    products.each do |product|
       if product.product_attachments.present? && product.product_attachments.count > 0
         product.product_overview_url = product.product_attachments[0].attachment.medium.url
       end
@@ -213,7 +223,5 @@ class ProductsController < ApplicationController
       op[:price_cents] = op[:price_cents].to_i * 100
       op
     end
-
-
 
 end

@@ -8,4 +8,23 @@ module ApplicationHelper
 		cities = Product.select(:city).distinct.where("city is not null and city <> ''").pluck(:city)
 		countries += cities
 	end
+
+	def get_currency_symbol(currency)
+		ret = '$'
+		case currency.upcase
+		when 'USD'
+			ret = '$'
+		when 'MYR'
+			ret = 'RM'
+		when 'SGD'
+			ret = '$'
+		when 'THB'
+			ret = '฿'
+		when 'PHO'
+			ret = '$'
+		when 'TWD'
+			ret = 'NT$'
+		end
+		ret
+	end
 end

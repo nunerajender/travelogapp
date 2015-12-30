@@ -77,13 +77,19 @@ class User < ActiveRecord::Base
   end
  
 
-  
+  def get_store_thumb_url
+    ret = ''
+    if self.store_setting.present? && self.store_setting.store_image.present?
+      ret = self.store_setting.store_image.store_img.thumb.url
+    end
+    ret
+  end
 
 
 
- def sign_up
-   save
- end
+  def sign_up
+    save
+  end
   private
 
   

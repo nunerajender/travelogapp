@@ -68,14 +68,14 @@
 							<input id="heart8" type="checkbox" class="heart-checkbox" />
 							<label for="heart8"> </label>
 						</p>
-						<a href="#"><img src="<%= product.user_avatar_url %>" class="img-circle user-thumb" width="52" /></a>
-						<a href="#">
-						<img class="" src="<%= product.product_overview_url %>" width="262" alt="">
+						<a href="<%= product_path product %>"><img src="<%= product.user_avatar_url %>" class="img-circle user-thumb" width="52" /></a>
+						<a href="<%= product_path product %>">
+							<img class="" src="<%= product.product_overview_url %>" width="262" alt="">
 						</a>
 						<h4>
-							<a href="#"><%= product.name %></a>
+							<a href="<%= product_path product %>"><%= product.name %></a>
 						</h4>
-						<a href="#">
+						<a href="<%= product_path product %>">
 							<p><%= product.city %>, <%= product.country %>
 							</p>
 							<p class="star-rating">
