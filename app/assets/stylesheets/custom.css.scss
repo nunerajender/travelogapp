@@ -1575,3 +1575,7 @@ p.totalprice{ font-size: 24px;font-weight: normal;line-height: 1.43;
     border-bottom-color: rgba(0,0,0,.2);
     content: '';
 }
+.nav>li>a:focus,
+.nav>li>a:hover {
+    background-color: none;
+}
