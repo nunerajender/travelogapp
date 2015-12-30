@@ -9,8 +9,8 @@
 			<div class="row">
 				<div class="col-md-1 picture-block pull-left">
 					<a href="#">
-						<% if @user.get_avatar_url.present? %>
-							<img src="<%= @user.get_avatar_url %>" class="img-circle" width="90">
+						<% if @user.get_store_thumb_url.present? %>
+							<img src="<%= @user.get_store_thumb_url %>" class="img-circle" width="90">
 						<% else %>
 							<img src="<%= asset_url('default-avatar.png') %>" class="img-circle" width="90">
 						<% end %>
