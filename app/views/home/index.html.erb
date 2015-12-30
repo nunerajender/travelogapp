@@ -16,7 +16,7 @@
 						<form class="form-inline landing-page-search" method="POST" action="/products/result">
 							<%= tag(:input, :name => 'authenticity_token', :type => "hidden", :value => form_authenticity_token) %>
 							<div class="form-group">
-								<input type="text" name="city" class="form-control places-form" id="Autocomplete"  ng-autocomplete="result1" placeholder="Where do you want to go?">
+								<input type="text" name="city" class="form-control places-form" id="search-location"  ng-autocomplete="result1" placeholder="Where do you want to go?">
 							</div>
 							<div class="form-group" ng-controller='DefaultCtrl'>
 								<input type="text" id="demo6" name="search_free_text" class="form-control name-form"  auto-complete ui-items="names" ng-model="selected" placeholder="Search Names" autocomplete="off" >
@@ -228,6 +228,10 @@
 				'Sunway Lagoon',
 				'Pangkor island'],
 		  onSelect: displayResult
+		});
+		$('#search-location').typeahead({
+			source: gon.search_location_list,
+			onSelect: displayResult
 		});
 	
 	});

@@ -30,8 +30,16 @@ class ProductsController < ApplicationController
     @product.user = current_user
   	respond_to do |format|
       if @product.save
-        if params[:variant].present? && params[:variant].count > 0
-          params[:variant].each do |param_variant|
+
+        param_variants = params[:variant]
+        if param_variants.present?
+          param_variants.delete_if{|sa| !sa.stringify_keys['name'].present? }
+        else
+          param_variants = []
+        end
+        
+        if param_variants.count > 0
+          param_variants.each do |param_variant|
             if param_variant[:name].present?
               variant = Variant.new
               variant.name = param_variant[:name]
@@ -74,9 +82,17 @@ class ProductsController < ApplicationController
     respond_to do |format|
       if @product.update(product_params)
         @product.variants.delete_all
-        if params[:variant].present? && params[:variant].count > 0
-          base_price_cents = params[:variant][0][:price_cents].to_i * 100
-          params[:variant].each do |param_variant|
+
+        param_variants = params[:variant]
+        if param_variants.present?
+          param_variants.delete_if{|sa| !sa.stringify_keys['name'].present? }
+        else
+          param_variants = []
+        end
+        
+        if param_variants.count > 0
+          base_price_cents = param_variants[0][:price_cents].to_i * 100
+          param_variants.each do |param_variant|
             if param_variant[:name].present?
               variant = Variant.new
               variant.name = param_variant[:name]
@@ -110,8 +126,16 @@ class ProductsController < ApplicationController
   end
 
   def result
+
+    @is_search = true
+    countries = Product.select(:country).distinct.where("country is not null and country <> ''").pluck(:country)
+    cities = Product.select(:city).distinct.where("city is not null and city <> ''").pluck(:city)
+    gon.search_location_list = countries + cities
+
     # @products = Product.where("name LIKE ? OR city LIKE ?", "%#{params[:name]}%", "%#{params[:city]}%")
     # str_query = 'product_category_id = -1'
+    
+
     if params[:city].present?
       # str_query += " or (lower(city) LIKE '%#{params[:city].downcase}%' or lower(country) like '%#{params[:city].downcase}%')"
       @products = Product.where("lower(city) LIKE ? or lower(country) like ?", "%#{params[:city].downcase}%", "%#{params[:city].downcase}%")
@@ -187,8 +211,6 @@ class ProductsController < ApplicationController
         :country, :address, :apt, :city, :state, :zip, :price_cents, :currency, :description, 
         :highlight, :refundable, :refund_day, :refund_percent, :variants_attributes => [:id, :name, :price_cents])
       op[:price_cents] = op[:price_cents].to_i * 100
-      # op[:variants_attributes] = params[:variant]
-      # binding.pry
       op
     end
 

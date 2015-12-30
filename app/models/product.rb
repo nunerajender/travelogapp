@@ -21,6 +21,8 @@ class Product < ActiveRecord::Base
 
 	validates :name, :presence => true
 	validates :product_category_id, :presence => true
-	validates :payment_type, :presence => true
+	validates :description, :presence => true
+	validates :highlight, :presence => true
+	# validates :payment_type, :presence => true
 	
 end

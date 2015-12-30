@@ -13,15 +13,20 @@
 			</button>
 
 			<a class="navbar-brand" href="/"><img src="<%= asset_url('dummylogo.png') %>" width="30"></a>
-			<form class="form-inline search-white-nav" id="result-filter" method="POST" action="/products/result_filter">
-				<%= tag(:input, :name => 'authenticity_token', :type => "hidden", :value => form_authenticity_token) %>
-			  <div class="form-group">
-				<span class="glyphicon glyphicon-search" aria-hidden="true"></span>
-			  </div>
-			  <div class="form-group">
-					<input type="text" class="form-control search-nav" id="" placeholder="Search">
-			  </div>
-			</form>
+			<% if @is_search %>
+				<form class="form-inline search-white-nav" id="result-filter" method="POST" action="/products/result">
+					<%= tag(:input, :name => 'authenticity_token', :type => "hidden", :value => form_authenticity_token) %>
+					<% ProductCategory.order('id').each do |category| %>
+						<input type="hidden" name="category_<%= category.id %>" value="<%= "1" if @categories["category_#{category.id}"].present? && @categories["category_#{category.id}"].to_i %>">
+					<% end %>
+				  <div class="form-group">
+					<span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+				  </div>
+				  <div class="form-group">
+						<input type="text" class="form-control search-nav" id="search-location" name="city" placeholder="Search" value="<%= @city %>">
+				  </div>
+				</form>
+			<% end %>
 		</div>
 		<div id="navbar" class="navbar-collapse   side-collapse in">
 			<nav role="navigation" class="navbar-collapse">

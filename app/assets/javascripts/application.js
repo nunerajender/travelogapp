@@ -18,8 +18,11 @@
 //= require angular-resource
 //= require bootstrap-sprockets
 //= require froala_editor.min
+//= require lib/formValidation.min
+//= require lib/formValidation_bootstrap.min
 //= require lib/nouislider.min
 //= require lib/owlcarousel
+//= require lib/loading
 //= require places-form
 //= require ngAutocomplete
 //= require jquery.mockjax
