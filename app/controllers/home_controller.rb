@@ -3,7 +3,7 @@ class HomeController < ApplicationController
 
 	def index
 
-		@products = Product.all
+		@products = Product.all.limit(8)
 		@product_attachments = ProductAttachment.all 
 		#logger.info "status=Fetching Home Product image=#{@products.product_attachments.try(:first).attachment}" 
 
