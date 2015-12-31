@@ -19,6 +19,7 @@ class ProductsController < ApplicationController
     @other_products = Product.order('random()').limit(4)
     set_product_attributs(@other_products)
     gon.product_cover_image_url = @product.product_attachments.order('id')[0].attachment.url if @product.product_attachments.count > 0
+    @is_variants = true if @product.variants.count > 0
   end
 
   def new
