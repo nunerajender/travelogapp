@@ -41,14 +41,14 @@
 			<% @products.each do |product| %>
 			<div class="col-md-3 portfolio-item">
 				<p class="price">RM <%= product.price_cents/100 %></p>
-				<a href="<%= product_path product %>"><img src="<%= product.user.store_setting.store_image.store_img.small%>" class="img-circle user-thumb" width="52"/></a>
-				<a href="<%= product_path product %>">
+				<a href="#"><img src="<%= product.user.store_setting.store_image.store_img.small%>" class="img-circle user-thumb" width="52"/></a>
+				<a href="#">
 				<img class="img-responsive" src="<%= product.product_attachments.first.attachment.small.url%>" width="262" alt="">
 				</a>
 				<h4>
-					<a href="<%= product_path product %>"><%= product.name %></a>
+					<a href="#"><%= product.name %></a>
 				</h4>
-				<a href="<%= product_path product %>">
+				<a href="#">
 					<p><%= product.city%>, <%= product.country%></p>
 				</a>
 			</div>
