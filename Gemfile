@@ -53,6 +53,7 @@ gem 'yaml_db'
 gem 'bootstrap-sass', '~> 3.3.6'
 gem 'kaminari'
 gem 'gon'
+gem 'google_currency'
 
 
 group :development, :test do

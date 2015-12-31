@@ -24,9 +24,9 @@
 				<div class="col-md-4">
 					<div class="book-now-block book-widget-detail-page" style="width: 400px; right: 0; ">
 						<div class="productdetail">
-							<form method="POST">
+							<form method="POST" id="booking-form">
 								<%= tag(:input, :name => 'authenticity_token', :type => "hidden", :value => form_authenticity_token) %>
-								<p class="totalprice">Total : <%= get_currency_symbol(@product.currency) %><%= @product.price_cents / 100 %></p>
+								<p class="totalprice">Total : <%= get_all_currency_symbols[@product.currency] %><%= @product.price_cents / 100 %></p>
 								<hr>
 								<p><strong>When would you like to visit</strong></p>
 								<input type="text" id="datetimepicker" class="form-control date-book" placeholder="Date">
@@ -204,8 +204,18 @@
 
 	$(document).ready(function () {
 		$('.header-11-sub .background.mountain-empty').css({'background-image': 'url(' + gon.product_cover_image_url + ')'})
-		var currency_symbol = "<%= get_currency_symbol(@product.currency) %>";
+		var product_currency = "<%= @product.currency %>";
+		var product_price_cents = parseInt("<%= @product.price_cents %>");
+		var selected_currency_symbol = gon.currency_symbols[product_currency];
+		var selected_currency_rate = parseFloat(gon.currency_rates[product_currency]);
 
+		// console.log(gon.currency_rates);
+
+		// set footer currency
+		$('#footer-currency').val(product_currency);
+
+		var product_currency_symbol = gon.currency_symbols[product_currency];
+		
 		var showResultBooking = function() {
 
 			$('.booking-result-container').empty();
@@ -219,19 +229,23 @@
 				variant_price = $(this).find('[name="variant-price"]').val();
 				if (variant_count > 0) {
 					is_booking = true;
-					$clone = $template.clone().removeClass('hide').removeAttr('id');
-					$clone.find('.result-item-name label').text(currency_symbol + variant_price + ' x ' + variant_count + ' ' + variant_name);
-					$clone.find('.result-item-price label').text(currency_symbol + variant_price * variant_count);
+					$clone = $template.clone().removeClass('hide').removeAttr('id').addClass('item');
+					$clone.find('.result-item-name label').text(product_currency_symbol + variant_price + ' x ' + variant_count + ' ' + variant_name)
+						.attr({'data-item-price': variant_price, 'data-item-count': variant_count, 'data-item-name': variant_name})
+					$clone.find('.result-item-price label').text(product_currency_symbol + variant_price * variant_count)
+						.attr('data-price', variant_count * variant_price)
 					total_price += variant_price * variant_count;
 					$('.booking-result-container').append($clone);
 				};
 			})
 			if (is_booking) {
-				$clone = $template.clone().removeClass('hide').removeAttr('id');
+				$clone = $template.clone().removeClass('hide').removeAttr('id').addClass('total');
 				$clone.find('.result-item-name label').text('Total');
-				$clone.find('.result-item-price label').text(currency_symbol + total_price);
+				$clone.find('.result-item-price label').text(product_currency_symbol + total_price).attr('data-total-price', total_price);
 				$('.booking-result-container').append($clone);
 			};
+
+			showResultBookingWithMultiCurrency();
 		}
 
 		$('.booking-variants-container').on('click', 'button.addButton', function() {
@@ -259,5 +273,37 @@
 			$variant_count.val(count.toString());
 			showResultBooking();
 		})
+
+		$('#footer-currency').on('change', function() {
+			selected_currency_symbol = gon.currency_symbols[$(this).val()];
+			selected_currency_rate = parseFloat(gon.currency_rates[$(this).val()]);
+			showResultBookingWithMultiCurrency();
+		})
+
+		var showResultBookingWithMultiCurrency = function() {
+			converted_price = (product_price_cents * selected_currency_rate / 100).toFixed(2);
+			$('#booking-form .totalprice').text('Total : ' + selected_currency_symbol + converted_price.toString());
+
+			// set booking items
+			$('.booking-result-container .form-group.item').each(function() {
+				$result_item_name = $(this).find('.result-item-name label');
+				converted_count = parseInt($result_item_name.attr('data-item-count'));
+				converted_name = $result_item_name.attr('data-item-name');
+
+				converted_price = (parseFloat($result_item_name.attr('data-item-price')) * selected_currency_rate).toFixed(2);
+
+				$result_item_name.text(selected_currency_symbol + converted_price + ' x ' + converted_count + ' ' + converted_name)
+
+				$result_item_price = $(this).find('.result-item-price label');
+
+				$result_item_price.text(selected_currency_symbol + (converted_price * converted_count).toFixed(2))
+			})
+
+			$('.booking-result-container .form-group.total').each(function() {
+				$result_item_price = $(this).find('.result-item-price label');
+				converted_price = (parseFloat($result_item_price.attr('data-total-price')) * selected_currency_rate).toFixed(2);
+				$result_item_price.text(selected_currency_symbol + converted_price);
+			})
+		}
 	})
 </script>

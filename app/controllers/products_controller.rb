@@ -1,3 +1,4 @@
+require 'money/bank/google_currency'
 class ProductsController < ApplicationController
   before_action :set_product, only: [:show, :edit, :update, :destroy]
 
@@ -20,6 +21,17 @@ class ProductsController < ApplicationController
     set_product_attributs(@other_products)
     gon.product_cover_image_url = @product.product_attachments.order('id')[0].attachment.url if @product.product_attachments.count > 0
     @is_variants = true if @product.variants.count > 0
+
+    # get the currency rate
+    rates = {}
+    bank = Money::Bank::GoogleCurrency.new
+    get_all_currencies.each do |currency|
+      rate = bank.get_rate(@product.currency.upcase, currency)
+      rates[currency] = rate
+    end
+    
+    gon.currency_rates = rates
+    gon.currency_symbols = get_all_currency_symbols
   end
 
   def new

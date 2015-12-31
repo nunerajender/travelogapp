@@ -1,3 +1,6 @@
+require 'money'
+require 'money/bank/google_currency'
+
 module ApplicationHelper
 	def site_name
 		"Travelog.com"
@@ -20,11 +23,38 @@ module ApplicationHelper
 			ret = '$'
 		when 'THB'
 			ret = '฿'
-		when 'PHO'
+		when 'PHP'
 			ret = '$'
 		when 'TWD'
 			ret = 'NT$'
 		end
 		ret
+	end
+
+	def get_product_category_name(category_id)
+    category = ProductCategory.find(category_id)
+    category.name if category.present?
+  end
+
+  def get_country_list
+  	ret = [{:country => 'Malaysia'}]
+  end
+
+  def get_currency_list
+  	ret = [{:currency => 'USD'}, {:currency => 'MYR'}, {:currency => 'SGD'}, {:currency => 'THB'}, 
+  				{:currency => 'PHP'}, {:currency => 'TWD'}]
+  end
+
+  def get_all_currencies
+  	[ "USD", "MYR", "SGD", "THB", "PHP", "TWD" ]
+  end
+
+  def get_all_currency_symbols
+  	{ "USD" => "$", "MYR" => "RM", "SGD" => "SGD", "THB" => "฿", "PHP" => "₱", "TWD" => "NT$" }
+  end
+
+	def get_currency_rate(from_currency, to_currency)
+		bank = Money::Bank::GoogleCurrency.new
+		rate = bank.get_rate(from_currency, to_currency)
 	end
 end
