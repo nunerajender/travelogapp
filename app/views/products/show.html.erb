@@ -27,7 +27,7 @@
 							<p class="totalprice">Total : <%= get_currency_symbol(@product.currency) %><%= @product.price_cents / 100 %></p>
 							<hr>
 							<p><strong>When would you like to visit</strong></p>
-							<input type="text" class="form-control date-book" placeholder="Date">
+							<input type="text" id="datetimepicker" class="form-control date-book" placeholder="Date">
 								<button type="button" class="  blue btn-block btn btn-primary btn-pay">Book Now</button>
 						</div>
 					</div>
@@ -49,25 +49,31 @@
 					<div id="owl-gallery" data-toggle="modal" data-target="#myModal" class="gallery-block owl-carousel">
 						<!-- <div>
 							<img class='lazyOwl' data-src="img/thumb1.jpg" width='250' alt="" />
+
+						<div>
+							<img class='lazyOwl' data-src="<%= asset_url('thumb1.jpg') %>" width='250' alt="" />
 						</div>
 						<div>
-							<img class='lazyOwl' data-src="img/thumb2.jpg" width='250' alt="" />
+							<img class='lazyOwl' data-src="<%= asset_url('thumb2.jpg') %>" width='250' alt="" />
 						</div>
 						<div>
-							<img class='lazyOwl' data-src="img/thumb1.jpg" width='250' alt="" />
+							<img class='lazyOwl' data-src="<%= asset_url('thumb1.jpg') %>" width='250' alt="" />
 						</div>
 						<div>
-							<img class='lazyOwl' data-src="img/thumb2.jpg" width='250' alt="" />
+							<img class='lazyOwl' data-src="<%= asset_url('thumb2.jpg') %>" width='250' alt="" />
 						</div>
 						<div>
-							<img class='lazyOwl' data-src="img/thumb1.jpg" width='250' alt="" />
+							<img class='lazyOwl' data-src="<%= asset_url('thumb1.jpg') %>" width='250' alt="" />
 						</div>
 						<div>
-							<img src="img/thumb2.jpg" alt="" />
+							<img src="<%= asset_url('thumb2.jpg') %>" alt="" />
 						</div>
 						<div>
 							<img src="img/thumb1.jpg" alt="" />
 						</div> -->
+
+							<img src="<%= asset_url('thumb1.jpg') %>" alt="" />
+						</div>
 					</div>
 				</div>
 			</div>
@@ -136,6 +142,38 @@
 </div>
 
 <script>
+	function initResponsiveHeader() {
+		var sideslider = $('[data-toggle=collapse-side]');
+		var sel = sideslider.attr('data-target');
+		var sel2 = sideslider.attr('data-target-2');
+		sideslider.click(function(event) {
+			$(sel).toggleClass('in');
+			$(sel2).toggleClass('out');
+		});
+
+	}
+
+
+	function initGallery() {
+		$("#owl-gallery").owlCarousel({
+			navigation: false,
+			pagination: false,
+			lazyLoad: true,
+			autoPlay: 5000, //Set AutoPlay to 3 seconds
+		});
+	}
+
+	function initCalendarDate() {
+		$('#datetimepicker').datepicker();
+	}
+	$(window).load(function() {
+		initResponsiveHeader();
+		initCalendarDate();
+		$(document).ready(function() {
+			initGallery();
+		});
+	});
+
 	$(document).ready(function () {
 		$('.header-11-sub .background.mountain-empty').css({'background-image': 'url(' + gon.product_cover_image_url + ')'})
 	})

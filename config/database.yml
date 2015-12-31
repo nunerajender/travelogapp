@@ -25,7 +25,7 @@ production:
   host: travelogpsql.c4ti23uotlqc.us-west-2.rds.amazonaws.com
   adapter: postgresql
   database: travelog_production
-  encoding: utf8
   username: root
   password: travelogdb
+  encoding: utf8
   pool: 20
