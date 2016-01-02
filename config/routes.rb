@@ -25,6 +25,9 @@ Rails.application.routes.draw do
   get 'profile' => 'users#profile'
   post 'profile' => 'users#profile'
   patch 'profile' => 'users#profile'
+
+  get 'profile/photos' => 'users#photos'
+  post 'profile/photos' => 'users#photos'
   post 'complete_merchant' => 'users#complete_merchant'
 
   get 'users/verify_store_username' => 'users#verify_store_username'

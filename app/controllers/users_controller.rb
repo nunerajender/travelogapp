@@ -51,6 +51,19 @@ class UsersController < ApplicationController
 		
 	end
 
+	def photos
+		if request.get?
+			@profile = current_user.profile
+			if params[:user_avatar].present? && params[:user_avatar][:id].present?
+				user_avatar = UserAvatar.find(params[:user_avatar][:id])
+				if @profile.save
+					user_avatar.profile = @profile
+					user_avatar.save
+				end
+			end
+		end
+	end
+
 	# complete become merchant
 	def complete_merchant
 		if user_signed_in?

@@ -1,5 +1,5 @@
 <% content_for :page_title do %>
-	<%= 'Edit Profile' %>
+	<%= 'Profile - Travelog' %>
 <% end %>
 
 <style>
@@ -34,17 +34,13 @@
 	<section class="header-11-sub profile-page">
             <div class="container">
                <div class="row ">
-                  <div class="col-md-4">
-                     <ul class="sidebar">
-                        <li><a href="">Edit Profile</a></li>
-                        <li><a href="">Photo Symbol Video</a></li>
-                        <li><a href="">Trust and Verification</a></li>
-                        <li><a href="">Reviews</a></li>
-                        <li><a href="">References</a></li>
-                     </ul>
-                     <a href="" class="btn btn-block btn-viewprofile">View Profile</a>
-                  </div>
+                  <%= render 'shared/profile_nav' %>
                   <div class="col-md-8">
+                  	<div class="panel-header">
+                  		Required
+                  	</div>
+                  	</div>
+                  	<div class="col-md-8">
                      <div class="profile-details">
                         <%= form_for @profile, url: {action: "profile"}, :html => {:class => "form-horizontal profile-form" } do |f| %>
                            <div class="form-group">
