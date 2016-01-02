@@ -14,6 +14,7 @@
 			<form method="POST" action="/set_currency" id="set-currency">
 				<%= tag(:input, :name => 'authenticity_token', :type => "hidden", :value => form_authenticity_token) %>
 				<%= select_tag 'footer-currency', options_for_select(get_all_currencies, "USD"), class: "form-control", style: "width: 100px;" %>
+				<input type="hidden" name="current-url">
 			</form>
 		</div>
 
@@ -55,6 +56,7 @@
 <script>
 	$(document).ready(function() {
 		$('#footer-currency').val(gon.current_currency);
+		$('[name="current-url"]').val(window.location.href);
 	})
 
 	$('#footer-currency').on('change', function() {

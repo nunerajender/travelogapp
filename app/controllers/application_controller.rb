@@ -12,7 +12,7 @@ class ApplicationController < ActionController::Base
 
   def set_currency
     session[:currency] = params["footer-currency"]
-    redirect_to root_path
+    redirect_to params["current-url"]
     # render json: true.to_json
   end
 
