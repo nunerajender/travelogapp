@@ -11,7 +11,10 @@
 					<li><a href="#">USD</a></li>
 				</ul>
 			</div> -->
-			<%= select_tag 'footer-currency', options_for_select(get_all_currencies, "USD"), class: "form-control", style: "width: 100px;" %>
+			<form method="POST" action="/set_currency" id="set-currency">
+				<%= tag(:input, :name => 'authenticity_token', :type => "hidden", :value => form_authenticity_token) %>
+				<%= select_tag 'footer-currency', options_for_select(get_all_currencies, "USD"), class: "form-control", style: "width: 100px;" %>
+			</form>
 		</div>
 
 		<div class="col-md-7">
@@ -48,3 +51,31 @@
 		</div>
 	</div>
 </footer>
+
+<script>
+	$(document).ready(function() {
+		$('#footer-currency').val(gon.current_currency);
+	})
+
+	$('#footer-currency').on('change', function() {
+		// $('#set-currency').submit
+		// var formData = new FormData();
+		// formData.append('footer-currency', $('#footer-currency').val());
+		// $.ajax({
+		// 	  url: '/set_currency',
+		// 	  dataType: "json",
+		// 	  data: formData,
+		// 	  cache: false,
+		// 	  contentType: false,
+		// 	  processData: false,
+		// 	  type: 'POST',
+		// 	  success: function(data) {
+		// 	  	console.log('success')	;
+		// 	  }
+			  
+		// 	});
+
+		$(this).closest('form').submit();
+	})
+
+</script>

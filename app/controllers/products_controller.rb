@@ -24,15 +24,44 @@ class ProductsController < ApplicationController
     @is_variants = true if @product.variants.count > 0
 
     # get the currency rate
-    rates = {}
-    bank = Money::Bank::GoogleCurrency.new
-    get_all_currencies.each do |currency|
-      rate = bank.get_rate(@product.currency.upcase, currency)
-      rates[currency] = rate
-    end
+
+    # rates = {}
+    # bank = Money::Bank::GoogleCurrency.new
+    # get_all_currencies.each do |currency|
+    #   puts("Product Currency: #{@product.currency.upcase}")
+    #   puts("Product Currency: #{currency}")
+    #   if @product.currency.upcase != currency
+    #     rate = bank.get_rate(@product.currency.upcase, currency)
+    #   else
+    #     rate = 1.0
+    #   end
+    #   rates[currency] = rate
+    # end
     
-    gon.currency_rates = rates
-    gon.currency_symbols = get_all_currency_symbols
+    # gon.currency_rates = rates
+
+    if @product.currency != session[:currency]
+      rate = session["currency-convert-#{session[:currency]}"].to_f / session["currency-convert-#{@product.currency}"].to_f
+    else
+      rate = 1.0
+    end
+
+    @product.price_with_currency = (@product.price_cents * rate / 100).round(2)
+    @product.current_currency = session[:currency]
+    @product.variants.each do |variant|
+      variant.price_with_currency = (variant.price_cents * rate / 100).round(2)
+    end
+
+    @other_products.each do |product|
+      if product.currency != session[:currency]
+        rate = session["currency-convert-#{session[:currency]}"].to_f / session["currency-convert-#{product.currency}"].to_f
+      else
+        rate = 1.0
+      end
+      product.price_with_currency = (product.price_cents * rate / 100).round(2)
+      product.current_currency = session[:currency]
+    end
+
   end
 
   def new

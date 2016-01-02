@@ -26,7 +26,7 @@
 						<div class="productdetail">
 							<form method="POST" id="booking-form">
 								<%= tag(:input, :name => 'authenticity_token', :type => "hidden", :value => form_authenticity_token) %>
-								<p class="totalprice">Total : <%= get_all_currency_symbols[@product.currency] %><%= @product.price_cents / 100 %></p>
+								<p class="totalprice">Total : <%= get_all_currency_symbols[@product.current_currency] %><%= @product.price_with_currency %></p>
 								<hr>
 								<p><strong>When would you like to visit</strong></p>
 								<input type="text" id="datetimepicker" class="form-control date-book" placeholder="Date">
@@ -35,6 +35,7 @@
 									<% @product.variants.each do |variant| %>
 										<div class="form-group row">
 											<input type="hidden" name="variant-price" value="<%= variant.price_cents / 100 %>">
+											<input type="hidden" name="variant-price-with-currency" value="<%= variant.price_with_currency %>">
 											<div class="col-xs-6">
 												<label ><%= variant.name %>:</label><br>
 											</div>
@@ -144,7 +145,7 @@
 				</div>
 				<% @other_products.each do |product| %>
 					<div class="col-xs-12 col-sm-6 col-md-3 portfolio-item">
-						<p class="price"><%= product.currency %> <%= product.price_cents / 100 %></p>
+						<p class="price"><%= get_all_currency_symbols[@product.current_currency] %> <%= product.price_with_currency %></p>
 						<p class="heart-wrapper ">
 							<input id="heart8" type="checkbox" class="heart-checkbox" />
 							<label for="heart8"> </label>
@@ -212,15 +213,14 @@
 		$('.header-11-sub .background.mountain-empty').css({'background-image': 'url(' + gon.product_cover_image_url + ')'})
 		var product_currency = "<%= @product.currency %>";
 		var product_price_cents = parseInt("<%= @product.price_cents %>");
-		var selected_currency_symbol = gon.currency_symbols[product_currency];
+		var selected_currency_symbol = gon.current_currency;
 		var selected_currency_rate = parseFloat(gon.currency_rates[product_currency]);
 
-		// console.log(gon.currency_rates);
-
+		
 		// set footer currency
-		$('#footer-currency').val(product_currency);
+		// $('#footer-currency').val(product_currency);
 
-		var product_currency_symbol = gon.currency_symbols[product_currency];
+		var product_currency_symbol = gon.currency_symbols[gon.current_currency];
 		
 		var showResultBooking = function() {
 
@@ -232,14 +232,16 @@
 			$('.booking-variants-container > .form-group').each(function() {
 				variant_name = $(this).find('label').text();
 				variant_count = parseInt($(this).find('[name="variant[][count]"]').val());
-				variant_price = $(this).find('[name="variant-price"]').val();
+				variant_price = $(this).find('[name="variant-price-with-currency"]').val();
 				if (variant_count > 0) {
 					is_booking = true;
 					$clone = $template.clone().removeClass('hide').removeAttr('id').addClass('item');
 					$clone.find('.result-item-name label').text(product_currency_symbol + variant_price + ' x ' + variant_count + ' ' + variant_name)
 						.attr({'data-item-price': variant_price, 'data-item-count': variant_count, 'data-item-name': variant_name})
-					$clone.find('.result-item-price label').text(product_currency_symbol + variant_price * variant_count)
-						.attr('data-price', variant_count * variant_price)
+
+					item_price = (variant_price * variant_count).toFixed(2);
+					$clone.find('.result-item-price label').text(product_currency_symbol + item_price)
+						.attr('data-price', item_price)
 					total_price += variant_price * variant_count;
 					$('.booking-result-container').append($clone);
 				};
@@ -247,11 +249,11 @@
 			if (is_booking) {
 				$clone = $template.clone().removeClass('hide').removeAttr('id').addClass('total');
 				$clone.find('.result-item-name label').text('Total');
-				$clone.find('.result-item-price label').text(product_currency_symbol + total_price).attr('data-total-price', total_price);
+				$clone.find('.result-item-price label').text(product_currency_symbol + total_price.toFixed(2)).attr('data-total-price', total_price);
 				$('.booking-result-container').append($clone);
 			};
 
-			showResultBookingWithMultiCurrency();
+			// showResultBookingWithMultiCurrency();
 		}
 
 		$('.booking-variants-container').on('click', 'button.addButton', function() {

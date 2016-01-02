@@ -4,6 +4,17 @@ class HomeController < ApplicationController
 	def index
 
 		@products = Product.all.limit(8)
+
+		@products.each do |product|
+			if product.currency != session[:currency]
+	      rate = session["currency-convert-#{session[:currency]}"].to_f / session["currency-convert-#{product.currency}"].to_f
+	    else
+	      rate = 1.0
+	    end
+
+			product.price_with_currency = (product.price_cents * rate / 100).round(2)
+			product.current_currency = session[:currency]
+		end
 		@product_attachments = ProductAttachment.all 
 		#logger.info "status=Fetching Home Product image=#{@products.product_attachments.try(:first).attachment}" 
 
