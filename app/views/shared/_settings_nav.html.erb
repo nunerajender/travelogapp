@@ -15,8 +15,10 @@
 				<li><a href="#">Inbox</a></li>
 				<li><a href="#">Listing</a></li>
 				<li><a href="#">Trips</a></li>
-				<li class="<%= 'active' if obj == 'profile' %>"><a href="#">Profile</a></li>
-				<li class="<%= 'active' if obj == 'accounts' %>"><a href="#">Accounts</a></li>
+				<li class="<%= 'active' if obj == 'profile' %>"><%= link_to 'Profile', profile_path %></li>
+				<% if current_user.status == 'merchant' %>
+					<li class="<%= 'active' if obj == 'accounts' %>"><%= link_to 'Accounts', accounts_path %></li>
+				<% end %>
 			</ul>
 		</div>
 		<!--/.nav-collapse -->

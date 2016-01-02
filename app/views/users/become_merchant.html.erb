@@ -127,7 +127,7 @@
 			$(this).parent().fadeOut('slow', function() {
 				$(this).remove();
 			});
-			var attachment_id = $(this).parent().find('input[name="store_image[id][]"]').val();
+			var attachment_id = $(this).parent().find('input[name="store_image[id]"]').val();
 			$.ajax({
 			  type: "POST",
 	      url: "/store_images/" + attachment_id,

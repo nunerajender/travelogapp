@@ -38,7 +38,9 @@
 							<ul class="dropdown-menu profile-nav-dropdown">
 								<li><%= link_to 'Edit Profile', profile_path  %></li>
 								<li><a href="#">Invite Friends</a></li>
-								<li><a href="#">Account Settings</a></li>
+								<% if current_user.status == 'merchant' %>
+									<li><%= link_to 'Account Settings', accounts_path %></li>
+								<% end %>
 								<li><a rel="nofollow" data-method="delete" href="/users/sign_out">Log Out</a></li>
 							</ul>
 						</li>

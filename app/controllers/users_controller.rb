@@ -1,6 +1,7 @@
 class UsersController < ApplicationController
 	skip_before_action :authenticate_user!, only:[:become_merchant]
 	before_action :set_user_profile, only: [:profile, :profile_avatar, :profile_accounts]
+	before_action :set_accounts, only: [:accounts, :accounts_photo]
 
 	def layout_by_resource
     "product"
@@ -56,19 +57,33 @@ class UsersController < ApplicationController
 		end
 	end
 
-	def profile_accounts
+	def accounts
+		if current_user.status != 'merchant'
+			redirect_to root_path
+		end
+		if request.get?
+			@store_setting = StoreSetting.new({:user_id => current_user.id}) if @store_setting.blank?
+		else
+			if @store_setting.update(store_setting_params)
+				redirect_to root_path
+			end
+		end
 	end
 
-	def photos
+	def accounts_photo
+		if current_user.status != 'merchant'
+			redirect_to root_path
+		end
 		if request.get?
-			@profile = current_user.profile
-			if params[:user_avatar].present? && params[:user_avatar][:id].present?
-				user_avatar = UserAvatar.find(params[:user_avatar][:id])
-				if @profile.save
-					user_avatar.profile = @profile
-					user_avatar.save
+		else
+			if params[:store_image].present? && params[:store_image][:id].present?
+				store_image = StoreImage.find(params[:store_image][:id])
+				if store_image.present?
+					store_image.store_setting = @store_setting
+					store_image.save
+					redirect_to root_path
 				end
-			end
+			end	
 		end
 	end
 
@@ -118,11 +133,16 @@ class UsersController < ApplicationController
 		def store_setting_params
 			params.require(:store_setting).permit(:phone_hp, :store_username, :store_name)
 		end
+
 		def profile_params
 			params.require(:profile).permit(:first_name, :last_name, :gender)
 		end
 
 		def set_user_profile
 			@profile = current_user.profile
+		end
+
+		def set_accounts
+			@store_setting = current_user.store_setting
 		end
 end
