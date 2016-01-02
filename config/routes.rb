@@ -26,6 +26,12 @@ Rails.application.routes.draw do
   get 'profile' => 'users#profile'
   post 'profile' => 'users#profile'
   patch 'profile' => 'users#profile'
+  get 'profile/avatar' => 'users#profile_avatar'
+  post 'profile/avatar' => 'users#profile_avatar'
+  patch 'profile/avatar' => 'users#profile_avatar'
+  get 'profile/accounts' => 'users#profile_accounts'
+  post 'profile/accounts' => 'users#profile_accounts'
+  patch 'profile/accounts' => 'users#profile_accounts'
 
   get 'profile/photos' => 'users#photos'
   post 'profile/photos' => 'users#photos'

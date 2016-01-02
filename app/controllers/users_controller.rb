@@ -1,5 +1,6 @@
 class UsersController < ApplicationController
 	skip_before_action :authenticate_user!, only:[:become_merchant]
+	before_action :set_user_profile, only: [:profile, :profile_avatar, :profile_accounts]
 
 	def layout_by_resource
     "product"
@@ -21,24 +22,14 @@ class UsersController < ApplicationController
 
 	def profile
 		if request.get?
-			@profile = current_user.profile
 			@profile = Profile.new({:user_id => current_user.id}) if @profile.blank?
 		else
-			@profile = current_user.profile
 			if @profile.blank?
 				@profile = Profile.new(profile_params)
 				@profile.user_id = current_user.id
 				@profile.save
 			else
 				@profile.update(profile_params)
-			end
-			
-			if params[:user_avatar].present? && params[:user_avatar][:id].present?
-				user_avatar = UserAvatar.find(params[:user_avatar][:id])
-				if @profile.save
-					user_avatar.profile = @profile
-					user_avatar.save
-				end
 			end
 			
 			if params[:user][:new_password].present?
@@ -48,7 +39,24 @@ class UsersController < ApplicationController
 
 			redirect_to root_path
 		end
-		
+	end
+
+	def profile_avatar
+		if request.get?
+			@profile = Profile.new({:user_id => current_user.id}) if @profile.blank?
+		else
+			if params[:user_avatar].present? && params[:user_avatar][:id].present?
+				user_avatar = UserAvatar.find(params[:user_avatar][:id])
+				if @profile.save
+					user_avatar.profile = @profile
+					user_avatar.save
+					redirect_to root_path
+				end
+			end
+		end
+	end
+
+	def profile_accounts
 	end
 
 	def photos
@@ -112,5 +120,9 @@ class UsersController < ApplicationController
 		end
 		def profile_params
 			params.require(:profile).permit(:first_name, :last_name, :gender)
+		end
+
+		def set_user_profile
+			@profile = current_user.profile
 		end
 end

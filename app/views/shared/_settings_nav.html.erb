@@ -1,25 +1,24 @@
 <style type="text/css">
-         .nav-second-profile {    background: #DBDDDE; padding-top:0; z-index:2;}
-         .nav-second-profile li.active {font-weight: bold; color:#000;}
-         .nav-second-profile .navbar-nav>li>a {
-         padding-top: 15px;
-         color: #777;
-      }
-      
+	.nav-second-profile {    background: #DBDDDE; padding-top:0; z-index:2;}
+	.nav-second-profile li.active {font-weight: bold; color:#000;}
+	.nav-second-profile .navbar-nav>li>a {
+		padding-top: 15px;
+		color: #777;
+	}
 </style>
 
 <nav class="navbar navbar-static-top nav-second-profile">
-         <div class="container">
-            <div id="" class="">
-               <ul class="nav navbar-nav">
-                  <li><a href="#">Dashboard</a></li>
-                  <li><a href="#">Inbox</a></li>
-                  <li><a href="#">Listing</a></li>
-                  <li><a href="#">Trips</a></li>
-                  <li class="active"><a href="#">Profile</a></li>
-                  <li><a href="#">Accounts</a></li>
-               </ul>
-            </div>
-            <!--/.nav-collapse -->
-         </div>
-      </nav>
+	<div class="container">
+		<div id="" class="">
+			<ul class="nav navbar-nav">
+				<li><a href="#">Dashboard</a></li>
+				<li><a href="#">Inbox</a></li>
+				<li><a href="#">Listing</a></li>
+				<li><a href="#">Trips</a></li>
+				<li class="<%= 'active' if obj == 'profile' %>"><a href="#">Profile</a></li>
+				<li class="<%= 'active' if obj == 'accounts' %>"><a href="#">Accounts</a></li>
+			</ul>
+		</div>
+		<!--/.nav-collapse -->
+	</div>
+</nav>
