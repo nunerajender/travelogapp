@@ -56,7 +56,12 @@
 <script>
 	$(document).ready(function() {
 		$('#footer-currency').val(gon.current_currency);
-		$('[name="current-url"]').val(window.location.href);
+		if (window.location.href.indexOf("/products/result") > -1) {
+			$('[name="current-url"]').val(gon.current_location);
+		} else {
+			$('[name="current-url"]').val(window.location.href);
+		}
+		
 	})
 
 	$('#footer-currency').on('change', function() {

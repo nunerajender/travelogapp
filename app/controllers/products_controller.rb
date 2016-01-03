@@ -220,6 +220,11 @@ class ProductsController < ApplicationController
     
     @total_count = @products.count
     @products = @products.page(params[:page]).per(8)
+    params_clone = params.clone
+    params_clone.delete("controller")
+    params_clone.delete("action")
+    gon.current_location = "/products/result?#{params.to_query}"
+
     set_product_attributs(@products)
   end
 
