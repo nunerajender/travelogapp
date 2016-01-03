@@ -52,15 +52,17 @@ class ProductsController < ApplicationController
       variant.price_with_currency = (variant.price_cents * rate / 100).round(2)
     end
 
-    @other_products.each do |product|
-      if product.currency != session[:currency]
-        rate = session["currency-convert-#{session[:currency]}"].to_f / session["currency-convert-#{product.currency}"].to_f
-      else
-        rate = 1.0
-      end
-      product.price_with_currency = (product.price_cents * rate / 100).round(2)
-      product.current_currency = session[:currency]
-    end
+    set_product_currency_attributes(@other_products)
+    @current_currency = get_all_currency_symbols[session[:currency]]
+    # @other_products.each do |product|
+    #   if product.currency != session[:currency]
+    #     rate = session["currency-convert-#{session[:currency]}"].to_f / session["currency-convert-#{product.currency}"].to_f
+    #   else
+    #     rate = 1.0
+    #   end
+    #   product.price_with_currency = (product.price_cents * rate / 100).round(2)
+    #   product.current_currency = session[:currency]
+    # end
 
   end
 
@@ -200,12 +202,6 @@ class ProductsController < ApplicationController
       @products = Product.all
     end
     
-    # @products = Product.all if @products.blank?
-    # @products = [] if @products.blank?
-    # binding.pry
-    # @products = Product.where(str_query)
-    
-
     @categories = {}
     str_query = 'product_category_id = -1'
     temp_index = 0
@@ -226,15 +222,8 @@ class ProductsController < ApplicationController
     gon.current_location = "/products/result?#{params.to_query}"
 
     set_product_attributs(@products)
-  end
-
-  def set_product_attributs(products)
-    products.each do |product|
-      if product.product_attachments.present? && product.product_attachments.count > 0
-        product.product_overview_url = product.product_attachments[0].attachment.medium.url
-      end
-      product.user_avatar_url = product.user.get_avatar_url
-    end
+    set_product_currency_attributes(@products)
+    @current_currency = get_all_currency_symbols[session[:currency]]
   end
 
   def result_filter
@@ -271,6 +260,27 @@ class ProductsController < ApplicationController
         :highlight, :refundable, :refund_day, :refund_percent, :variants_attributes => [:id, :name, :price_cents])
       op[:price_cents] = op[:price_cents].to_i * 100
       op
+    end
+
+    def set_product_attributs(products)
+      products.each do |product|
+        if product.product_attachments.present? && product.product_attachments.count > 0
+          product.product_overview_url = product.product_attachments[0].attachment.medium.url
+        end
+        product.user_avatar_url = product.user.get_avatar_url
+      end
+    end
+
+    def set_product_currency_attributes(products)
+      products.each do |product|
+        if product.currency != session[:currency]
+          rate = session["currency-convert-#{session[:currency]}"].to_f / session["currency-convert-#{product.currency}"].to_f
+        else
+          rate = 1.0
+        end
+        product.price_with_currency = (product.price_cents * rate / 100).round(2)
+        product.current_currency = session[:currency]
+      end
     end
 
 end

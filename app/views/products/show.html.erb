@@ -26,7 +26,7 @@
 						<div class="productdetail">
 							<form method="POST" id="booking-form">
 								<%= tag(:input, :name => 'authenticity_token', :type => "hidden", :value => form_authenticity_token) %>
-								<p class="totalprice">Total : <%= get_all_currency_symbols[@product.current_currency] %><%= @product.price_with_currency %></p>
+								<p class="totalprice">Total : <%= @current_currency %><%= @product.price_with_currency %></p>
 								<hr>
 								<p><strong>When would you like to visit</strong></p>
 								<input type="text" id="datetimepicker" class="form-control date-book" placeholder="Date">
@@ -145,7 +145,7 @@
 				</div>
 				<% @other_products.each do |product| %>
 					<div class="col-xs-12 col-sm-6 col-md-3 portfolio-item">
-						<p class="price"><%= get_all_currency_symbols[@product.current_currency] %> <%= product.price_with_currency %></p>
+						<p class="price"><%= @current_currency %> <%= product.price_with_currency %></p>
 						<p class="heart-wrapper ">
 							<input id="heart8" type="checkbox" class="heart-checkbox" />
 							<label for="heart8"> </label>
