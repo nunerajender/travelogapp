@@ -21,6 +21,10 @@ Rails.application.routes.draw do
   resources :store_images
   resources :user_avatars
 
+  post 'invoices/new' => 'invoices#new'
+  resources :invoices, :only => [:new, :create] do
+  end
+
   get 'become_merchant' => 'users#become_merchant'
   post 'become_merchant' => 'users#become_merchant'
   get 'profile' => 'users#profile'

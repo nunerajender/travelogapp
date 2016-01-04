@@ -11,10 +11,30 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151224070811) do
+ActiveRecord::Schema.define(version: 20160104075101) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "invoices", force: :cascade do |t|
+    t.integer  "product_id"
+    t.date     "booking_date"
+    t.string   "billing_country"
+    t.integer  "amount_cents"
+    t.text     "variants"
+    t.integer  "payment_type"
+    t.integer  "card_type"
+    t.integer  "valid_month"
+    t.integer  "valid_year"
+    t.string   "security_code"
+    t.string   "billing_first_name"
+    t.string   "billing_last_name"
+    t.string   "billing_postal_code"
+    t.datetime "created_at",          null: false
+    t.datetime "updated_at",          null: false
+  end
+
+  add_index "invoices", ["product_id"], name: "index_invoices_on_product_id", using: :btree
 
   create_table "locations", force: :cascade do |t|
     t.string   "country",    default: "Malaysia"

@@ -1,7 +1,6 @@
 require 'money/bank/google_currency'
 class ProductsController < ApplicationController
   before_action :set_product, only: [:show, :edit, :update, :destroy]
-  skip_before_action :authenticate_user!, only: [:result]
 
 	def layout_by_resource
     "product"
@@ -53,17 +52,15 @@ class ProductsController < ApplicationController
       variant.price_with_currency = (variant.price_cents * rate / 100).round(2)
     end
 
-    set_product_currency_attributes(@other_products)
-    @current_currency = get_all_currency_symbols[session[:currency]]
-    # @other_products.each do |product|
-    #   if product.currency != session[:currency]
-    #     rate = session["currency-convert-#{session[:currency]}"].to_f / session["currency-convert-#{product.currency}"].to_f
-    #   else
-    #     rate = 1.0
-    #   end
-    #   product.price_with_currency = (product.price_cents * rate / 100).round(2)
-    #   product.current_currency = session[:currency]
-    # end
+    @other_products.each do |product|
+      if product.currency != session[:currency]
+        rate = session["currency-convert-#{session[:currency]}"].to_f / session["currency-convert-#{product.currency}"].to_f
+      else
+        rate = 1.0
+      end
+      product.price_with_currency = (product.price_cents * rate / 100).round(2)
+      product.current_currency = session[:currency]
+    end
 
   end
 
@@ -193,37 +190,27 @@ class ProductsController < ApplicationController
       # str_query += " or (lower(city) LIKE '%#{params[:city].downcase}%' or lower(country) like '%#{params[:city].downcase}%')"
       @products = Product.where("lower(city) LIKE ? or lower(country) like ?", "%#{params[:city].downcase}%", "%#{params[:city].downcase}%")
       @city = params[:city]
-    else
-      @products = Product.all
-    end
 
-    @product_categories = ProductCategory.all
-    category_names = @product_categories.select(:name).pluck(:name).map(&:downcase)
-    if params[:search_free_text].present?
-      # str_query += " and (lower(name) LIKE %#{params[:search_free_text].downcase}%)"
-      
-
-      if category_names.include? params[:search_free_text].downcase
-        product_category = ProductCategory.where("lower(name) = ?", "#{params[:search_free_text].downcase}").first
-        @products = @products.where(:product_category_id => product_category.id)
-        @product_categories.each do |category|
-          params["category_#{category.id}"] = "0"
-        end
-        params["category_#{product_category.id}"] = "1"
-      else
+      if params[:search_free_text].present?
+        # str_query += " and (lower(name) LIKE %#{params[:search_free_text].downcase}%)"
         @products = @products.where("lower(name) LIKE ?", "%#{params[:search_free_text].downcase}%")
         @search_free_text = params[:search_free_text]
       end
+    else
+      @products = Product.all
     end
-
+    
+    # @products = Product.all if @products.blank?
+    # @products = [] if @products.blank?
     # binding.pry
+    # @products = Product.where(str_query)
+    
+
     @categories = {}
     str_query = 'product_category_id = -1'
     temp_index = 0
     ProductCategory.order('id').each do |category|
-      if params["category_#{category.id}"] == "on"
-        @categories["category_#{category.id}"] = "1"
-      end
+      @categories["category_#{category.id}"] = params["category_#{category.id}"]
       if @categories["category_#{category.id}"].present? && @categories["category_#{category.id}"].to_i
         temp_index += 1
         str_query += " or product_category_id = #{category.id}"
@@ -236,11 +223,17 @@ class ProductsController < ApplicationController
     params_clone = params.clone
     params_clone.delete("controller")
     params_clone.delete("action")
-    gon.current_location = "/products/result?#{params.to_query}"
-
+    gon.current_location = root_path + "?#{params.to_query}"
     set_product_attributs(@products)
-    set_product_currency_attributes(@products)
-    @current_currency = get_all_currency_symbols[session[:currency]]
+  end
+
+  def set_product_attributs(products)
+    products.each do |product|
+      if product.product_attachments.present? && product.product_attachments.count > 0
+        product.product_overview_url = product.product_attachments[0].attachment.medium.url
+      end
+      product.user_avatar_url = product.user.get_avatar_url
+    end
   end
 
   def result_filter
@@ -277,27 +270,6 @@ class ProductsController < ApplicationController
         :highlight, :refundable, :refund_day, :refund_percent, :variants_attributes => [:id, :name, :price_cents])
       op[:price_cents] = op[:price_cents].to_i * 100
       op
-    end
-
-    def set_product_attributs(products)
-      products.each do |product|
-        if product.product_attachments.present? && product.product_attachments.count > 0
-          product.product_overview_url = product.product_attachments[0].attachment.medium.url
-        end
-        product.user_avatar_url = product.user.get_avatar_url
-      end
-    end
-
-    def set_product_currency_attributes(products)
-      products.each do |product|
-        if product.currency != session[:currency]
-          rate = session["currency-convert-#{session[:currency]}"].to_f / session["currency-convert-#{product.currency}"].to_f
-        else
-          rate = 1.0
-        end
-        product.price_with_currency = (product.price_cents * rate / 100).round(2)
-        product.current_currency = session[:currency]
-      end
     end
 
 end

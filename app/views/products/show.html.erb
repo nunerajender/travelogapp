@@ -24,13 +24,17 @@
 				<div class="col-md-4">
 					<div class="book-now-block book-widget-detail-page" style="width: 400px; right: 0; ">
 						<div class="productdetail">
-							<form method="POST" id="booking-form">
+							<form method="POST" id="booking-form" action="/invoices/new">
 								<%= tag(:input, :name => 'authenticity_token', :type => "hidden", :value => form_authenticity_token) %>
+								<input type="hidden" name="product-id" value="<%= @product.id %>">
 								<p class="totalprice">Total : <%= @current_currency %><%= @product.price_with_currency %></p>
 								<hr>
-								<p><strong>When would you like to visit</strong></p>
-								<input type="text" id="datetimepicker" class="form-control date-book" placeholder="Date">
-								
+								<div class="form-group row">
+									<label class="col-xs-12"><strong>When would you like to visit</strong></label>
+									<div class="col-xs-12">
+										<input type="text" id="datetimepicker" class="form-control date-book" placeholder="Date" name="datepicker">
+									</div>
+								</div>
 								<div class="booking-variants-container">
 									<% @product.variants.each do |variant| %>
 										<div class="form-group row">
@@ -42,6 +46,7 @@
 											<div class="col-xs-6" style="text-align: right;">
 												<button type="button" class="btn btn-default removeButton"><i class="fa fa-minus"></i></button>
 												<input type="hidden" name="variant[][id]" value="<%= variant.id %>">
+												<input type="hidden" name="variant[][name]" value="<%= variant.name %>">
 												<input type="text" name="variant[][count]" style="width: 40px; height: 33px; text-align: center;" value="0">
 												<button type="button" class="btn btn-default addButton"><i class="fa fa-plus"></i></button>
 											</div>
@@ -62,7 +67,7 @@
 								<div class="booking-result-container">
 									
 								</div>
-								<button type="button" class="  blue btn-block btn btn-primary btn-pay">Book Now</button>
+								<button type="submit" class="  blue btn-block btn btn-primary btn-pay">Book Now</button>
 							</form>
 						</div>
 					</div>
@@ -176,6 +181,7 @@
 	</section>
 </div>
 
+
 <script>
 	function initResponsiveHeader() {
 		var sideslider = $('[data-toggle=collapse-side]');
@@ -202,10 +208,14 @@
 		var nowTemp = new Date();
 		var now =  new Date(nowTemp.getFullYear(), nowTemp.getMonth(), nowTemp.getDate(), 0, 0, 0, 0);
 		$('#datetimepicker').datepicker({
+			format: 'dd/mm/yyyy',
 			onRender: function(date) {
 				return date.valueOf() < now.valueOf() ? 'disabled': '';
 			}
-		});
+		})
+		.on('changeDate', function(e) {
+      $('#booking-form').formValidation('revalidateField', 'datepicker');
+    });
 	}
 	$(window).load(function() {
 		initResponsiveHeader();
@@ -319,5 +329,25 @@
 				$result_item_price.text(selected_currency_symbol + converted_price);
 			})
 		}
+
+
+		$('#booking-form').formValidation({
+			framework: 'bootstrap',
+			icon: {
+				valid: 'glyphicon glyphicon-ok',
+				invalid: 'glyphicon glyphicon-remove',
+				validating: 'glyphicon glyphicon-refresh'
+			},
+			fields: {
+				'datepicker': {
+					row: '.col-xs-12',
+					validators: {
+						notEmpty: {
+							message: 'The date field is required'
+						}
+					}
+				},
+			}
+		})
 	})
 </script>

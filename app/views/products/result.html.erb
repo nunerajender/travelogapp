@@ -13,7 +13,7 @@
 								<div class="checkbox checkbox-default">
 									<span class="text-label">
 									<%= category[:name] %></span>
-									<input id="checkbox_<%= category.id %>" name="category_<%= category.id %>" type="checkbox" <%= "checked" if @categories["category_#{category.id}"].present? && @categories["category_#{category.id}"].to_i %>>
+									<input id="checkbox_<%= category.id %>" name="category_<%= category.id %>" type="checkbox" <%= "checked" if @categories["category_#{category.id}"] == "1" %>>
 									<label for="checkbox_<%= category.id %>">
 									</label>
 								</div>
@@ -70,7 +70,7 @@
 				<p class="price"><%= @current_currency %> <%= product.price_with_currency %></p>
 				<a href="<%= product_path product %>"><img src="<%= product.user.store_setting.store_image.store_img.small%>" class="img-circle user-thumb" width="52"/></a>
 				<a href="<%= product_path product %>">
-				<img class="" src="<%= product.product_attachments.first.attachment.small.url%>" width="262" alt="">
+				<img class="" src="<%= product.product_attachments.first.attachment.small.url if product.product_attachments.first.present? %>" width="262" alt="">
 				</a>
 				<h4>
 					<a href="<%= product_path product %>"><%= product.name %></a>

@@ -1,6 +1,5 @@
 class Product < ActiveRecord::Base
 	
-	
 	belongs_to :user
 	belongs_to :product_category
 	belongs_to :location

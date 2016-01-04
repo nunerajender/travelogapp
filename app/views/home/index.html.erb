@@ -129,20 +129,26 @@
 		function displayResult(item) {
 		  $('.alert').show().html('You selected <strong>' + item.value + '</strong>: <strong>' + item.text + '</strong>');
 		}
+		// $('#demo6').typeahead({
+		//   source: [
+		// 		'Genting',
+		// 		'Zoo Negara',
+		// 		'Tioman',
+		// 		'Petronas Towers',
+		// 		'Batu Caves',
+		// 		'Gunung Mulu',
+		// 		'Mount Kinabalu',
+		// 		'Bako Park',
+		// 		'Sunway Lagoon',
+		// 		'Pangkor island'],
+		//   onSelect: displayResult
+		// });
+
 		$('#demo6').typeahead({
-		  source: [
-				'Genting',
-				'Zoo Negara',
-				'Tioman',
-				'Petronas Towers',
-				'Batu Caves',
-				'Gunung Mulu',
-				'Mount Kinabalu',
-				'Bako Park',
-				'Sunway Lagoon',
-				'Pangkor island'],
+		  source: gon.product_categories,
 		  onSelect: displayResult
 		});
+
 		$('#search-location').typeahead({
 			source: gon.search_location_list,
 			onSelect: displayResult

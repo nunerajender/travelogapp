@@ -22,6 +22,7 @@ class HomeController < ApplicationController
 		cities = Product.select(:city).distinct.where("city is not null and city <> ''").pluck(:city)
 		# countries += cities
 		gon.search_location_list = countries + cities
+		gon.product_categories = ProductCategory.select(:name).pluck(:name)
 	end
 
 	# def search

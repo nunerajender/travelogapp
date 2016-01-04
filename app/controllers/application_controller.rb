@@ -53,5 +53,6 @@ class ApplicationController < ActionController::Base
     end
     
     gon.currency_rates = rates
+    
   end
 end
