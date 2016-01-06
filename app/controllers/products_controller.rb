@@ -1,7 +1,7 @@
 require 'money/bank/google_currency'
 class ProductsController < ApplicationController
   before_action :set_product, only: [:show, :edit, :update, :destroy]
-  skip_before_action :authenticate_user!, only: [:result]
+  skip_before_action :authenticate_user!, only: [:result, :show]
 
 	def layout_by_resource
     "product"
@@ -216,13 +216,14 @@ class ProductsController < ApplicationController
       end
     end
 
-    # binding.pry
     @categories = {}
     str_query = 'product_category_id = -1'
     temp_index = 0
     ProductCategory.order('id').each do |category|
       if params["category_#{category.id}"] == "on"
         @categories["category_#{category.id}"] = "1"
+      else
+        @categories["category_#{category.id}"] = params["category_#{category.id}"]
       end
       if @categories["category_#{category.id}"].present? && @categories["category_#{category.id}"].to_i
         temp_index += 1
