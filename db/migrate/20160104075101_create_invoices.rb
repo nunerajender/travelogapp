@@ -14,7 +14,10 @@ class CreateInvoices < ActiveRecord::Migration
     	t.string :billing_first_name
     	t.string :billing_last_name
     	t.string :billing_postal_code
-
+      t.string :currency
+      t.integer :status, :limit => 1, :default => 0
+      t.string :token
+      t.string :payer_id
       t.timestamps null: false
     end
   end

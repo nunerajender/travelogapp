@@ -2,10 +2,25 @@
 	<section class="header-11-sub section-details payment-page">
 		<div class="container">
 			<div class="row ">
+				
 				<div class="col-md-6 billing ">
-					<div class="form-block">
-						<h3>Payment </h3>
-						<%= form_for(@invoice) do |f| %>
+					<%= form_for(@invoice) do |f| %>
+						<div class="form-block">
+							<h3>Payment </h3>
+							
+							<!-- hiden value -->
+							<input type="hidden" name="invoice[booking_date]" value="<%= @invoice.booking_date %>">
+							<input type="hidden" name="invoice[product_id]" value="<%= @invoice.product_id %>">
+							<input type="hidden" name="invoice[currency]" value="<%= @invoice.currency %>">
+							<input type="hidden" name="invoice[amount_cents]" value="<%= @invoice.amount_cents %>">
+							<% @invoice.variants.each do |variant| %>
+								<div>
+									<input type="hidden" name="variant[][id]" value="<%= variant["id"] %>">
+									<input type="hidden" name="variant[][name]" value="<%= variant["name"] %>">
+									<input type="hidden" name="variant[][count]" value="<%= variant["count"] %>">
+									<input type="hidden" name="variant[][price_cents]" value="<%= variant["price_cents"] %>">
+								</div>
+							<% end %>
 							<div class="form-group col-md-12 paddingzero">
 								<label for="usr">Billing Country:</label>
 								<%= country_select("invoice", "billing_country", {}, { class: 'form-control'} ) %>
@@ -13,7 +28,7 @@
 							<div class="form-group col-md-12 paddingzero">
 								<label for="pwd">Payment Type:</label>
 								<select class="form-control" title="Payment Type" name="invoice[payment_type]">
-									<option value='1'>Credit Card</option>
+									<!-- <option value='1'>Credit Card</option> -->
 									<option value='2'>Paypal</option>
 								</select>
 							</div>
@@ -25,68 +40,68 @@
 								<img src="<%= asset_url('card4.jpg') %>" width="50"/>
 								</label>
 							</div>
-							<div class="form-group  col-md-4 paddingzero">
-								<label for="pwd">Valid Thru:</label>
-								<select class=" form-control" title="mm">
-									<option value="1">1</option>
-									<option value="2">2</option>
-									<option value="3">3</option>
-									<option value="4">4</option>
-									<option value="5">5</option>
-									<option value="6">6</option>
-									<option value="7">7</option>
-									<option value="8">8</option>
-									<option value="9">9</option>
-									<option value="10">10</option>
-									<option value="11">11</option>
-									<option value="12">12</option>
-								</select>
+							<div style="display: none;">
+								<div class="form-group  col-md-4 paddingzero">
+									<label for="pwd">Valid Thru:</label>
+									<select class=" form-control" title="mm" name="invoice[valid_month]">
+										<option value="1">1</option>
+										<option value="2">2</option>
+										<option value="3">3</option>
+										<option value="4">4</option>
+										<option value="5">5</option>
+										<option value="6">6</option>
+										<option value="7">7</option>
+										<option value="8">8</option>
+										<option value="9">9</option>
+										<option value="10">10</option>
+										<option value="11">11</option>
+										<option value="12">12</option>
+									</select>
+								</div>
+								<div class="form-group col-md-4">
+									<label for="pwd">&nbsp;</label>
+									<select class=" form-control" title="yyyy" name="invoice[valid_year]">
+										<option value="2015">2015</option>
+										<option value="2016">2016</option>
+										<option value="2017">2017</option>
+										<option value="2018">2018</option>
+										<option value="2019">2019</option>
+										<option value="2020">2020</option>
+										<option value="2021">2021</option>
+										<option value="2022">2022</option>
+										<option value="2023">2023</option>
+										<option value="2024">2024</option>
+										<option value="2025">2025</option>
+										<option value="2026">2026</option>
+										<option value="2027">2027</option>
+										<option value="2028">2028</option>
+										<option value="2029">2029</option>
+										<option value="2030">2030</option>
+										<option value="2031">2031</option>
+										<option value="2032">2032</option>
+										<option value="2033">2033</option>
+										<option value="2034">2034</option>
+									</select>
+								</div>
+								<div class="form-group col-md-4  ">
+									<label for="sec">Security Code:</label>
+									<input type="text" placeholder='' class="form-control input-pay" id="sec" name="invoice[security_code]">
+								</div>
 							</div>
-							<div class="form-group col-md-4">
-								<label for="pwd">&nbsp;</label>
-								<select class=" form-control" title="yyyy">
-									<option value="2015">2015</option>
-									<option value="2016">2016</option>
-									<option value="2017">2017</option>
-									<option value="2018">2018</option>
-									<option value="2019">2019</option>
-									<option value="2020">2020</option>
-									<option value="2021">2021</option>
-									<option value="2022">2022</option>
-									<option value="2023">2023</option>
-									<option value="2024">2024</option>
-									<option value="2025">2025</option>
-									<option value="2026">2026</option>
-									<option value="2027">2027</option>
-									<option value="2028">2028</option>
-									<option value="2029">2029</option>
-									<option value="2030">2030</option>
-									<option value="2031">2031</option>
-									<option value="2032">2032</option>
-									<option value="2033">2033</option>
-									<option value="2034">2034</option>
-								</select>
-							</div>
-							<div class="form-group col-md-4  ">
-								<label for="sec">Security Code:</label>
-								<input type="text" placeholder='' class="form-control input-pay" id="sec">
-							</div>
-						<% end %>
-					</div>
-					<div class="form-block">
-						<h3>Billing Information   </h3>
-						<form role="form">
+						</div>
+						<div class="form-block">
+							<h3>Billing Information</h3>
 							<div class="form-group col-md-6   paddingzero ">
 								<label for="sec">First Name:</label>
-								<input type="text" placeholder='First Name' class="form-control input-pay" id="sec">
+								<input type="text" placeholder='First Name' class="form-control input-pay" id="sec" name="invoice[billing_first_name]">
 							</div>
 							<div class="form-group col-md-6  ">
 								<label for="sec">Last Name:</label>
-								<input type="text" placeholder='Last Name' class="form-control input-pay" id="sec">
+								<input type="text" placeholder='Last Name' class="form-control input-pay" id="sec" name="invoice[:billing_last_name]">
 							</div>
 							<div class="form-group col-md-6  paddingzero">
 								<label for="sec">Postal Code:</label>
-								<input type="text" placeholder='Postal Code' class="form-control input-pay" id="sec">
+								<input type="text" placeholder='Postal Code' class="form-control input-pay" id="sec" name="invoice[billing_postal_code]">
 							</div>
 							<div class="form-group col-md-6 "> </div>
 							<div class="form-group col-md-12 paddingzero">
@@ -95,16 +110,17 @@
 							</div>
 							<div class="form-group col-md-6 "> </div>
 							<div class="form-group col-md-6 ">
-								<button type="button" class="  blue btn-block btn btn-primary btn-pay">Make Payment </button>
+								<button type="submit" class="blue btn-block btn btn-primary btn-pay">Make Payment</button>
 							</div>
-						</form>
-						<div class="  col-md-12 ">
-							<br/><br/><br/>
-							<div> By clicking on “Pay”, you agree to pay the total amount shown in the summary on the right, which includes Service Fees, and to follow the Terms of Service, Cancellation Policy, and Guest Refund Policy.
+							<div class="  col-md-12 ">
+								<br/><br/><br/>
+								<div> By clicking on “Pay”, you agree to pay the total amount shown in the summary on the right, which includes Service Fees, and to follow the Terms of Service, Cancellation Policy, and Guest Refund Policy.
+								</div>
 							</div>
 						</div>
-					</div>
+					<% end %>
 				</div>
+				
 				<div class="col-md-2  ">
 				</div>
 				<div class="col-md-4  ">
@@ -122,12 +138,12 @@
 							<hr>
 							<% if @invoice.variants.present? %>
 								<% @invoice.variants.each do |variant| %>
-									<p>2 x <%= variant[:name] %></p>
+									<p><%= variant[:count] %> x <%= variant[:name] %></p>
 								<% end %>
 							<% end %>
 							<!-- <p>2 x Adults</p> -->
 							<hr>
-							<p class="totalprice">Total : RM888</p>
+							<p class="totalprice">Total : <%= get_all_currency_symbols[@invoice.currency] %><%= @invoice.amount_cents / 100 %></p>
 						</div>
 					</div>
 				</div>

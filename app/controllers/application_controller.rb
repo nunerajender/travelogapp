@@ -53,6 +53,6 @@ class ApplicationController < ActionController::Base
     end
     
     gon.currency_rates = rates
-    
+    gon.is_display_currency_exchange = true
   end
 end

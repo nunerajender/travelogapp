@@ -22,6 +22,8 @@ Rails.application.routes.draw do
   resources :user_avatars
 
   post 'invoices/new' => 'invoices#new'
+  get 'invoices/success_checkout' => "invoices/success_checkout"
+  get 'invoices/cancel_checkout' => "invoices/cancel_checkout"
   resources :invoices, :only => [:new, :create] do
   end
 

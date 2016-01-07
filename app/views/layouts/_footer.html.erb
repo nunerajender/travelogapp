@@ -61,28 +61,24 @@
 		} else {
 			$('[name="current-url"]').val(window.location.href);
 		}
-		
+
+
+		$('#footer-currency').on('change', function() {
+			$(this).closest('form').submit();
+		})	
+
+		var displayCurrencyExchangeForm = function() {
+			if (gon.is_display_currency_exchange)
+				$('#set-currency').css('display', 'block');
+			else
+				$('#set-currency').css('display', 'none');
+		}
+
+		displayCurrencyExchangeForm();
 	})
 
-	$('#footer-currency').on('change', function() {
-		// $('#set-currency').submit
-		// var formData = new FormData();
-		// formData.append('footer-currency', $('#footer-currency').val());
-		// $.ajax({
-		// 	  url: '/set_currency',
-		// 	  dataType: "json",
-		// 	  data: formData,
-		// 	  cache: false,
-		// 	  contentType: false,
-		// 	  processData: false,
-		// 	  type: 'POST',
-		// 	  success: function(data) {
-		// 	  	console.log('success')	;
-		// 	  }
-			  
-		// 	});
+	
 
-		$(this).closest('form').submit();
-	})
+
 
 </script>

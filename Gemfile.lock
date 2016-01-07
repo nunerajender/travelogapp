@@ -48,6 +48,7 @@ GEM
       thread_safe (~> 0.3, >= 0.3.4)
       tzinfo (~> 1.1)
     arel (6.0.3)
+    attr_required (1.0.0)
     autoprefixer-rails (6.1.1)
       execjs
       json
@@ -279,6 +280,14 @@ GEM
       oauth2 (~> 1.0)
       omniauth (~> 1.2)
     orm_adapter (0.5.0)
+    paypal-express (0.8.1)
+      activesupport (>= 2.3)
+      attr_required (>= 0.0.5)
+      rest-client
+    paypal-sdk-rest (1.4.1)
+      multi_json (~> 1.0)
+      uuidtools (~> 2.1)
+      xml-simple
     pg (0.18.4)
     pry (0.10.3)
       coderay (~> 1.1.0)
@@ -377,6 +386,7 @@ GEM
       unf_ext
     unf_ext (0.0.7.1)
     unicode_utils (1.4.0)
+    uuidtools (2.1.5)
     warden (1.2.4)
       rack (>= 1.0)
     web-console (2.2.1)
@@ -414,6 +424,8 @@ DEPENDENCIES
   money-rails (~> 1.4.1)
   mysql2 (~> 0.3.18)
   omniauth-facebook
+  paypal-express (~> 0.8.1)
+  paypal-sdk-rest
   pg
   pry
   rails (= 4.2.3)

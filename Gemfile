@@ -55,6 +55,9 @@ gem 'kaminari'
 gem 'gon'
 gem 'country_select', '~> 2.5', '>= 2.5.1'
 
+gem 'paypal-sdk-rest'
+gem 'paypal-express', '~> 0.8.1'
+
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console

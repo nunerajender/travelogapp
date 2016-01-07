@@ -30,8 +30,12 @@ ActiveRecord::Schema.define(version: 20160104075101) do
     t.string   "billing_first_name"
     t.string   "billing_last_name"
     t.string   "billing_postal_code"
-    t.datetime "created_at",          null: false
-    t.datetime "updated_at",          null: false
+    t.string   "currency"
+    t.integer  "status",              limit: 2, default: 0
+    t.string   "token"
+    t.string   "payer_id"
+    t.datetime "created_at",                                null: false
+    t.datetime "updated_at",                                null: false
   end
 
   add_index "invoices", ["product_id"], name: "index_invoices_on_product_id", using: :btree

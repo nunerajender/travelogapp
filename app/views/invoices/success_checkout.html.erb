@@ -1,0 +1,83 @@
+<section class="header-11-sub section-details content">
+	<div class="container">
+		<div class="row ">
+			<div class="col-xs-12">
+				<h1>Booking Receipt</h1>
+				<p>Confirmation Code</p>
+				<h4><%= @invoice.token %></h4>
+			</div>
+		</div>
+		<hr>
+		<div class="row">
+			<div class="col-md-3">
+				<p>Name</p><br>
+				<p>Joe Doe</p><br><br>
+				<p>Location Address</p>
+				<p></p>
+			</div>
+			<div class="col-md-3">
+				<p>Travel Destination</p><br>
+				<p><%= @invoice.product.country %>, <%= @invoice.product.state %></p><br><br>
+				<p>Merchant</p>
+				<p>Awesome Trips Inc</p>
+				<p>+33 6 21761311</p>
+			</div>
+			<div class="col-md-6">
+				<p>Order</p><br>
+				<p>3DN2 Penang Historical Trips</p><br><br>
+				<p>Travel Date</p>
+				<p><%= @invoice.booking_date %></p>
+			</div>
+		</div>
+		<hr>
+		<div class="row">
+			<div class="col-md-12">
+				<h1>Reservation Charges</h1>
+				<table>
+					<!-- <tr>
+						<td>RM20 x 2 Adult</td>
+						<td>RM40</td>
+					</tr>
+					<tr>
+						<td>RM10 x 3 Child</td>
+						<td>RM30</td>
+					</tr>
+					<tr>
+						<td>Total</td>
+						<td>RM70</td>
+					</tr> -->
+
+					<% if @invoice.variants.present? && @invoice.variants.count > 0 %>
+						<% @invoice.variants.each do |variant| %>
+							<tr>
+								<td><%= @currency_symbol %><%= variant["price_cents"].to_i / 100 %> x <%= variant["count"] %> <%= variant["name"] %></td>
+								<td><%= @currency_symbol %><%= variant["price_cents"].to_i / 100 * variant["count"].to_i %></td>
+							</tr>
+						<% end %>
+					<% else %>
+						<tr>
+							<td><%= @currency_symbol %><%= @invoice.amount_cents / 100 %> x 1 <%= @invoice.product.name %></td>
+							<td><%= @currency_symbol %><%= @invoice.amount_cents / 100 %></td>
+						</tr>
+					<% end %>
+					
+					<tr>
+						<td>Total</td>
+						<td><%= @currency_symbol %><%= @invoice.amount_cents / 100 %></td>
+					</tr>
+				</table>
+			</div>
+		</div>
+	</div>
+</section>
+
+<style>
+	table {
+		width: 80%;
+	}
+	table td {
+		border: 1px solid #ccc;
+		padding: 10px;
+	}
+</style>
+
