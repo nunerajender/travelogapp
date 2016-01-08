@@ -85,7 +85,7 @@ class InvoicesController < ApplicationController
           :description => variant["name"],
           :quantity      => item_count,
           :amount => item_price,
-          :category => :Digital
+          # :category => :Digital
         }
         items << item
       end
@@ -96,7 +96,7 @@ class InvoicesController < ApplicationController
         :description => product.name,
         :quantity      => 1,
         :amount => product.price_cents / 100,
-        :category => :Digital
+        # :category => :Digital
       }
       items << item
     end
@@ -108,23 +108,27 @@ class InvoicesController < ApplicationController
       :items => items,
       :amount        => @invoice.amount_cents / 100   # item value
     )
-    # binding.pry
     
-    response = request.setup(
-      payment_request,
-      invoices_success_checkout_url,
-      invoices_cancel_checkout_url,
-      paypal_options  # Optional
-    )
 
-    if response.ack == 'Success'
-      
-      @invoice.token = response.token
-      @invoice.save!
-      redirect_to response.redirect_uri
-    else
-      flash[:alert] = "There is an error while processing the payment"
-      redirect_to product_url
+    begin
+      response = request.setup(
+        payment_request,
+        invoices_success_checkout_url,
+        invoices_cancel_checkout_url,
+        paypal_options  # Optional
+      )
+
+      if response.ack == 'Success'
+        
+        @invoice.token = response.token
+        @invoice.save!
+        redirect_to response.redirect_uri
+      else
+        flash[:alert] = "There is an error while processing the payment"
+        redirect_to product_url
+      end  
+    rescue Paypal::Exception::APIError => e
+      # puts e.response for debugging.
     end
 
   end
