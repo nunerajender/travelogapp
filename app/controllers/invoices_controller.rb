@@ -10,8 +10,8 @@ class InvoicesController < ApplicationController
   		@invoice.booking_date = params[:datepicker]
   		@invoice.product_id = params["product-id"]
   		param_variants = params[:variant]
-      param_variants.delete_if{|sa| sa.stringify_keys['count'].to_i == 0 }
       param_variants = [] if param_variants.blank?
+      param_variants.delete_if{|sa| sa.stringify_keys['count'].to_i == 0 }
 
       if param_variants.count > 0
         @invoice.variants = param_variants 
@@ -41,13 +41,12 @@ class InvoicesController < ApplicationController
 
     @invoice = Invoice.new(invoice_params)
     param_variants = params[:variant]
-    param_variants.delete_if{|sa| sa.stringify_keys['count'].to_i == 0 }
     param_variants = [] if param_variants.blank?
-
+    param_variants.delete_if{|sa| sa.stringify_keys['count'].to_i == 0 }
+    
     if param_variants.count > 0
       @invoice.variants = param_variants 
     end
-
     paypal_options = {
       no_shipping: true, # if you want to disable shipping information
       allow_note: false, # if you want to disable notes
@@ -91,7 +90,7 @@ class InvoicesController < ApplicationController
         items << item
       end
     else
-      product = Product.find(params[:product_id])
+      product = Product.find(params[:invoice][:product_id])
       item = {
         :name => product.name,
         :description => product.name,

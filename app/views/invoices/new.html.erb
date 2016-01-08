@@ -136,10 +136,12 @@
 								<%= @invoice.booking_date.strftime('%b %d, %Y') %>
 							</p>
 							<hr>
-							<% if @invoice.variants.present? %>
+							<% if @invoice.variants.present? && @invoice.variants.count > 0 %>
 								<% @invoice.variants.each do |variant| %>
 									<p><%= variant[:count] %> x <%= variant[:name] %></p>
 								<% end %>
+							<% else %>
+								<p>1 x <%= @invoice.product.name %></p>
 							<% end %>
 							<!-- <p>2 x Adults</p> -->
 							<hr>
