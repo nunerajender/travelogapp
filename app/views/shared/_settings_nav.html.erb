@@ -13,7 +13,7 @@
 			<ul class="nav navbar-nav">
 				<li><a href="#">Dashboard</a></li>
 				<li><a href="#">Inbox</a></li>
-				<li class="<%= 'active' if obj == 'listing' %>"><a href="#">Listing</a></li>
+				<li class="<%= 'active' if obj == 'listing' %>"><a href="/products">Listing</a></li>
 				<li><a href="#">Trips</a></li>
 				<li class="<%= 'active' if obj == 'profile' %>"><%= link_to 'Profile', profile_path %></li>
 				<% if current_user.status == 'merchant' %>

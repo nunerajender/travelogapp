@@ -19,22 +19,22 @@ $(window).load(function() {
 		var updateCurrencySymbol = function() {
 			switch($('#product_currency').val()) {
 				case 'USD':
-					$('.amount-inner .currency-value').text('$');
+					$('.input-group-addon').text('$');
 					break;
 				case 'MYR':
-					$('.amount-inner .currency-value').text('RM');
+					$('.input-group-addon').text('RM');
 					break;
 				case 'SGD':
-					$('.amount-inner .currency-value').text('$');
+					$('.input-group-addon').text('$');
 					break;
 				case 'THB':
-					$('.amount-inner .currency-value').text('฿');
+					$('.input-group-addon').text('฿');
 					break;
 				case 'PHP':
-					$('.amount-inner .currency-value').text('$');
+					$('.input-group-addon').text('$');
 					break;
 				case 'TWD':
-					$('.amount-inner .currency-value').text('NT$');
+					$('.input-group-addon').text('NT$');
 					break;
 			}
 		}
