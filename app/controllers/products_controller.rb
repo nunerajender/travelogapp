@@ -1,6 +1,7 @@
 require 'money/bank/google_currency'
 class ProductsController < ApplicationController
   before_action :set_product, only: [:show, :edit, :update, :destroy]
+  before_action :set_product_widget, only: [:edit_basic, :edit_description, :edit_location, :edit_photo, :edit_price]
   skip_before_action :authenticate_user!, only: [:result, :show]
 
 	def layout_by_resource
@@ -55,6 +56,8 @@ class ProductsController < ApplicationController
 
     set_product_currency_attributes(@other_products)
     @current_currency = get_all_currency_symbols[session[:currency]]
+
+
     # @other_products.each do |product|
     #   if product.currency != session[:currency]
     #     rate = session["currency-convert-#{session[:currency]}"].to_f / session["currency-convert-#{product.currency}"].to_f
@@ -73,6 +76,8 @@ class ProductsController < ApplicationController
       @categories = ProductCategory.all
       @product_attachment = @product.product_attachments.build
       @product_attachments = ProductAttachment.all
+      @show_section = 'basic'
+      render :layout => 'product_new'
     else
       redirect_to root_path
     end
@@ -82,98 +87,161 @@ class ProductsController < ApplicationController
   	@product = Product.new(product_params)
     @product.user = current_user
   	respond_to do |format|
-      if @product.save
 
-        param_variants = params[:variant]
-        if param_variants.present?
-          param_variants.delete_if{|sa| !sa.stringify_keys['name'].present? }
-        else
-          param_variants = []
+      if params[:product].present?
+        unless @product.save
+          # format.html { render :new }
+          format.html { redirect_to new_product_path }
+          format.json { render json: @product_attachment.errors, status: :unprocessable_entity }
         end
-        
-        if param_variants.count > 0
-          param_variants.each do |param_variant|
-            if param_variant[:name].present?
-              variant = Variant.new
-              variant.name = param_variant[:name]
-              variant.price_cents = param_variant[:price_cents].to_i * 100
-              variant.product = @product
-              variant.save  
-            end
-          end
-        end
-
-        if params[:product_attachment].present?
-          params[:product_attachment]['id'].each do |a|
-            product_attachment = ProductAttachment.find(a)
-            if product_attachment.present?
-              product_attachment.product = @product
-              product_attachment.save
-            end
-          end
-        end
-        
-
-        # format.html { redirect_to @product, notice: 'product was successfully created.' }
-        format.html { redirect_to products_path, notice: 'Product was successfully created.' }
-        format.json { render :show, status: :created, location: @product }
-      else
-        format.html { render :new }
-        # format.html { redirect_to products_path }
-        format.json { render json: @product.errors, status: :unprocessable_entity }
       end
+      
+      param_variants = params[:variant]
+      if param_variants.present?
+        param_variants.delete_if{|sa| !sa.stringify_keys['name'].present? }
+      else
+        param_variants = []
+      end
+      
+      if param_variants.count > 0
+        param_variants.each do |param_variant|
+          if param_variant[:name].present?
+            variant = Variant.new
+            variant.name = param_variant[:name]
+            variant.price_cents = param_variant[:price_cents].to_i * 100
+            variant.product = @product
+            variant.save  
+          end
+        end
+      end
+
+      if params[:product_attachment].present?
+        params[:product_attachment]['id'].each do |a|
+          product_attachment = ProductAttachment.find(a)
+          if product_attachment.present?
+            product_attachment.product = @product
+            product_attachment.save
+          end
+        end
+      end
+      
+
+      step_param = params["step-param"]
+      case step_param
+      when "basic"
+        format.html { redirect_to edit_description_product_path @product }
+        format.json { render :show, status: :ok, location: @product_attachment }
+      when "description"
+        format.html { redirect_to edit_location_product_path @product }
+        format.json { render :show, status: :ok, location: @product_attachment }
+      when "location"
+        format.html { redirect_to edit_photo_product_path @product }
+        format.json { render :show, status: :ok, location: @product_attachment }
+      when "photo"
+        format.html { redirect_to edit_price_product_path @product }
+        format.json { render :show, status: :ok, location: @product_attachment }
+      else
+        format.html { redirect_to products_path }
+        format.json { render :show, status: :ok, location: @product_attachment }
+      end
+      
     end
   end
 
   def edit
-    @categories = ProductCategory.all
+    # @categories = ProductCategory.all
+    # render :layout => 'product_new'
+    redirect_to edit_basic_product_path @product
+  end
+
+  def edit_basic
+    @show_section = 'basic'
+    render :layout => 'product_new', :template => 'products/edit'
+  end
+
+  def edit_description
+    @show_section = 'description'
+    render :layout => 'product_new', :template => 'products/edit'
+  end
+
+  def edit_location
+    @show_section = 'location'
+    render :layout => 'product_new', :template => 'products/edit'
+  end
+
+  def edit_photo
+    @show_section = 'photo'
+    render :layout => 'product_new', :template => 'products/edit'
+  end
+
+  def edit_price
+    @show_section = 'price'
+    render :layout => 'product_new', :template => 'products/edit'
   end
 
   # PATCH/PUT /products/1
   # PATCH/PUT /products/1.json
   def update
     respond_to do |format|
-      if @product.update(product_params)
+      if params[:product].present?
+        unless @product.update(product_params)
+          format.html { render :edit }
+          format.json { render json: @product_attachment.errors, status: :unprocessable_entity }
+        end
+      end
+      
+      param_variants = params[:variant]
+      if param_variants.present?
+        param_variants.delete_if{|sa| !sa.stringify_keys['name'].present? }
         @product.variants.delete_all
+      else
+        param_variants = []
+      end
+      
+      if param_variants.count > 0
+        base_price_cents = param_variants[0][:price_cents].to_i * 100
+        param_variants.each do |param_variant|
+          if param_variant[:name].present?
+            variant = Variant.new
+            variant.name = param_variant[:name]
+            variant.price_cents = param_variant[:price_cents].to_i * 100
+            if variant.price_cents < base_price_cents
+              base_price_cents = variant.price_cents
+            end
+            variant.product = @product
+            variant.save
+          end
+        end
+        @product.price_cents = base_price_cents
+        @product.save
+      end
+      if params[:product_attachment].present?
+        params[:product_attachment]['id'].each do |a|
+          product_attachment = ProductAttachment.find(a)
+          if product_attachment.present?
+            product_attachment.product = @product
+            product_attachment.save
+          end
+        end
+      end
 
-        param_variants = params[:variant]
-        if param_variants.present?
-          param_variants.delete_if{|sa| !sa.stringify_keys['name'].present? }
-        else
-          param_variants = []
-        end
-        
-        if param_variants.count > 0
-          base_price_cents = param_variants[0][:price_cents].to_i * 100
-          param_variants.each do |param_variant|
-            if param_variant[:name].present?
-              variant = Variant.new
-              variant.name = param_variant[:name]
-              variant.price_cents = param_variant[:price_cents].to_i * 100
-              if variant.price_cents < base_price_cents
-                base_price_cents = variant.price_cents
-              end
-              variant.product = @product
-              variant.save
-            end
-          end
-          @product.price_cents = base_price_cents
-          @product.save
-        end
-        if params[:product_attachment].present?
-          params[:product_attachment]['id'].each do |a|
-            product_attachment = ProductAttachment.find(a)
-            if product_attachment.present?
-              product_attachment.product = @product
-              product_attachment.save
-            end
-          end
-        end
-        format.html { redirect_to products_path, notice: 'Product was successfully updated.' }
+      step_param = params["step-param"]
+      case step_param
+      when "basic"
+        format.html { redirect_to edit_description_product_path @product }
+        format.json { render :show, status: :ok, location: @product_attachment }
+      when "description"
+        format.html { redirect_to edit_location_product_path @product }
+        format.json { render :show, status: :ok, location: @product_attachment }
+      when "location"
+        format.html { redirect_to edit_photo_product_path @product }
+        format.json { render :show, status: :ok, location: @product_attachment }
+      when "photo"
+        format.html { redirect_to edit_price_product_path @product }
         format.json { render :show, status: :ok, location: @product_attachment }
       else
-        format.html { render :edit }
-        format.json { render json: @product_attachment.errors, status: :unprocessable_entity }
+        format.html { redirect_to products_path }
+        format.json { render :show, status: :ok, location: @product_attachment }
       end
     end
   end
@@ -270,6 +338,11 @@ class ProductsController < ApplicationController
   private
   	def set_product
       @product = Product.find(params[:id])
+    end
+
+    def set_product_widget
+      set_product
+      @categories = ProductCategory.all
     end
 
   	def product_params

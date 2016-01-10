@@ -15,7 +15,15 @@ Rails.application.routes.draw do
   post 'set_currency' => 'application#set_currency'
 
 
-  resources :products
+  resources :products do
+    member do
+      match "edit_basic",  via: [:get]
+      match "edit_description",  via: [:get]
+      match "edit_location",  via: [:get]
+      match "edit_photo",  via: [:get]
+      match "edit_price",  via: [:get]
+    end
+  end
   resources :store
   resources :product_attachments
   resources :store_images

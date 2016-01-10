@@ -1,0 +1,46 @@
+<ul class="nav nav-sidebar">
+	<li class="sidebar-title"><a href="#">Listing</a></li>
+	<li class="<%= 'active' if @show_section == 'basic' %>">
+		<% if @product.new_record? %>
+		<% else %>
+			<!-- <a href="#">Basics</a> -->
+			<a href="/products/<%= @product.id %>/edit_basic" >Basics</a>
+		<% end %>
+		
+	</li>
+	<li class="<%= 'active' if @show_section == 'description' %>">
+		<% if @product.new_record? %>
+		<% else %>
+			<a href="/products/<%= @product.id %>/edit_description" >Descriptions</a>
+		<% end %>
+		<!-- <a href="#">Descriptions</a> -->
+	</li>
+	<li class="<%= 'active' if @show_section == 'location' %>">
+		<% if @product.new_record? %>
+		<% else %>
+			<a href="/products/<%= @product.id %>/edit_location" >Location</a>
+		<% end %>
+		<!-- <a href="#">Location</a> -->
+	</li>
+	<li class="<%= 'active' if @show_section == 'photo' %>">
+		<% if @product.new_record? %>
+		<% else %>
+			<a href="/products/<%= @product.id %>/edit_photo" >Photos</a>
+		<% end %>
+		<!-- <a href="#">Photos</a> -->
+	</li>
+</ul>
+<ul class="nav nav-sidebar">
+	<li class="sidebar-title">
+		<a href="#">Booking</a>
+	</li>
+	<li class="<%= 'active' if @show_section == 'price' %>">
+		<% if @product.new_record? %>
+
+		<% else %>
+			<a href="/products/<%= @product.id %>/edit_price" >Pricing</a>
+		<% end %>
+		<!-- <a href="#">Pricing</a> -->
+	</li>
+	<li class="<%= 'active' if @show_section == 'availibility' %>"><a href="#">Availibility</a></li>
+</ul>

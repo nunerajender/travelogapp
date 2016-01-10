@@ -1,13 +1,21 @@
-<section class="header-11-sub section-details content">
-	<div class="container">
-		<div class="row ">
-			<div class="col-md-12">
-				<div class="form-block">
-					<h3>Edit a Product</h3>
-					<%= render 'form' %>
+<div class="container">
+	<div class="row">
+		<div class="col-sm-3 col-md-2 sidebar">
+			<%= render 'left_nav' %>
+			<!-- Second navbar -->
+			<nav class="navbar navbar-fixed-top nav-second-profile">
+				<div class="container">
+					<div id="" class="">
+						<ul class="nav navbar-nav">
+							<li><a href="#">Places, for traveller in Kuala Lumpur</a></li>
+						</ul>
+					</div>
+					<!--/.nav-collapse -->
 				</div>
-			</div>
+			</nav>
+		</div>
+		<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+			<%= render 'form' %>
 		</div>
 	</div>
-</section>
-
+</div>
