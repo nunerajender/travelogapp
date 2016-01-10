@@ -15,6 +15,15 @@ class Product < ActiveRecord::Base
 		paypal: 3
 	}
 
+	enum step: {
+		basic: 0,
+		description: 1,
+		location: 2,
+		photo: 3,
+		price: 4,
+		complete: 5
+	}
+
 	attr_accessor :product_overview_url
 	attr_accessor :user_avatar_url
 

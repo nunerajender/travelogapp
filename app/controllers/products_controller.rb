@@ -10,8 +10,18 @@ class ProductsController < ApplicationController
 
   def index
     if current_user.status == 'merchant'
-      @products = Product.all
-      @product_attachments = ProductAttachment.all  
+      @products = current_user.products
+      # params[:listed] = 'unlisted'
+      if params[:listed] == 'unlisted'
+        @products = @products.where.not(:step => 5)
+        @listed = 'unlisted'
+      else
+        @products = @products.where(:step => 5)
+        @listed = 'listed'
+      end
+      # @product_attachments = ProductAttachment.all
+      set_product_attributs(@products)
+      
     else
       redirect_to root_path
     end
@@ -129,6 +139,10 @@ class ProductsController < ApplicationController
       step_param = params["step-param"]
       case step_param
       when "basic"
+        if @product.step == 'basic'
+          @product.step = 'description'
+          @product.save
+        end
         format.html { redirect_to edit_description_product_path @product }
         format.json { render :show, status: :ok, location: @product_attachment }
       when "description"
@@ -151,7 +165,21 @@ class ProductsController < ApplicationController
   def edit
     # @categories = ProductCategory.all
     # render :layout => 'product_new'
-    redirect_to edit_basic_product_path @product
+    case @product.step
+    when 'basic'
+      redirect_to edit_basic_product_path @product
+    when 'description'
+      redirect_to edit_description_product_path @product
+    when 'location'
+      redirect_to edit_location_product_path @product
+    when 'photo'
+      redirect_to edit_photo_product_path @product
+    when 'price'
+      redirect_to edit_price_product_path @product
+    else
+      redirect_to edit_basic_product_path @product
+    end
+    
   end
 
   def edit_basic
@@ -228,16 +256,39 @@ class ProductsController < ApplicationController
       step_param = params["step-param"]
       case step_param
       when "basic"
+        if @product.step == 'basic'
+          @product.step = 'description'
+          @product.save
+        end
         format.html { redirect_to edit_description_product_path @product }
         format.json { render :show, status: :ok, location: @product_attachment }
       when "description"
+        if @product.step == 'description'
+          @product.step = 'location'
+          @product.save
+        end
         format.html { redirect_to edit_location_product_path @product }
         format.json { render :show, status: :ok, location: @product_attachment }
       when "location"
+        if @product.step == 'location'
+          @product.step = 'photo'
+          @product.save
+        end
         format.html { redirect_to edit_photo_product_path @product }
         format.json { render :show, status: :ok, location: @product_attachment }
       when "photo"
+        if @product.step == 'photo'
+          @product.step = 'price'
+          @product.save
+        end
         format.html { redirect_to edit_price_product_path @product }
+        format.json { render :show, status: :ok, location: @product_attachment }
+      when "price"
+        if @product.step == 'price'
+          @product.step = 'complete'
+          @product.save
+        end
+        format.html { redirect_to products_path }
         format.json { render :show, status: :ok, location: @product_attachment }
       else
         format.html { redirect_to products_path }

@@ -1,52 +1,157 @@
-<section class="header-11-sub section-details content">
-	<div class="container">
-		<div class="row">
-			<div class="col-md-12 form-group">
-				<%= link_to "Add a new product", new_product_path %>
-			</div>
-			<div class="col-md-12">
-				<table class="table table-bordered">
-				  <thead>
-				  	<tr>
-				  		<th>#</th>
-				  		<th>name</th>
-				  		<th>Product Category</th>
-				  		<th>Payment Type</th>
-				  		<th>Upload Image Path</th>
-				  		<th>Action</th>
-				  	</tr>
-				  </thead>
-				  <tbody>
-				  <% index = 0 %>
-				  	<% @products.each do |product| %>
-				  		<% index += 1 %>
-				  		<tr>
-				  			<th scope="row"><%= index.to_s %></th>
-				  			<td><%= product.name %></td>
-				  			<td><%= product.product_category.name %></td>
-				  			<td><%= product.payment_type %></td>
-				  			<td>
-				  				<% product.product_attachments.each do |attachment| %>
-				  					<div style="border-bottom: 1px solid red;">
-				  						<%= attachment.attachment.url %>
-				  					</div>
-				  					
-				  				<% end %>
-				  			</td>
-				  			<td>
-				  				
-				  					
-				  				
-				  			</td>
-				  			<td>
-				  				<%= link_to "Edit", edit_product_path(product) %>
-				  				<%= link_to 'Destroy', product, method: :delete, data: { confirm: 'Are you sure?' } %>
-				  			</td>
-				  		</tr>
-				  	<% end %>
-				  </tbody>
-				</table>
+<%= render "shared/settings_nav", :obj => 'listing' %>
+<div class="side-collapse-container">
+	<section class="header-11-sub profile-page">
+		<div class="container">
+			<div class="row ">
+				<div class="col-md-3">
+					<ul class="sidebar">
+						<li><a href="/products">Your Listings</a></li>
+						<li><a href="">Your Reservations</a></li>
+						<li><a href="">Reservation Requirements</a></li>
+						<li><a href="/products/new">Add New Listings</a></li>
+					</ul>
+					<a href="/products/new" class="btn btn-block btn-viewprofile">Add New Listings</a>
+				</div>
+				<div class="col-md-9">
+					<div class="panel panel-default">
+						<div class="panel-heading"> 
+							<h5 class="panel-title">
+								<% if @listed == 'listed' %>
+									Listed
+								<% else %>
+									Unlisted
+								<% end %>
+							</h5> 
+						</div> 
+						<div class="panel-body">
+							<div class="row">
+								<% @products.each_with_index do |product, index|%>
+									<div class="col-md-12">
+										<div class="col-md-3">
+											<a href="/products/<%= product.id %>/edit" class="thumbnail">
+												<% if product.product_overview_url.present? %>
+													<img src="<%= product.product_overview_url %>" alt="...">
+												<% else %>
+													<img src="<%= asset_url('placehold_200_200.png') %>" alt="...">
+												<% end %>
+											</a>
+										</div>
+
+										<div class="col-md-7">
+											<h5><%= product.name %>, for traveller in <%= product.city %></h5>
+											<p>Manage Listing and Calendar</p>
+										</div>
+
+										<div class="col-md-2">
+											<% if index == 0 %>
+												<select class=" form-control" title="Dropdown" id="listed-change">
+													<option value="listed">Listed</option>
+													<option value="unlisted" <%= 'selected' if @listed == 'unlisted' %>>Unlisted</option> 
+												</select>
+											<% end %>
+
+										</div>
+									</div>
+									<% unless index == @products.count - 1 %>
+										<!-- <hr> -->
+									<% end %>
+								<% end %>
+								<% if @products.count == 0 %>
+									<div class="col-md-12">
+										<div class="col-md-3">
+											<a href="#" class="thumbnail">
+												<img src="<%= asset_url('placehold_200_200.png') %>" alt="...">
+											</a>
+										</div>
+
+										<div class="col-md-7">
+											<h5>There is no <%= @listed %> product.</h5>
+											<!-- <p>Manage Listing and Calendar</p> -->
+										</div>
+
+										<div class="col-md-2">
+											<select class=" form-control" title="Dropdown" id="listed-change">
+												<option value="listed">Listed</option>
+												<option value="unlisted" <%= 'selected' if @listed == 'unlisted' %>>Unlisted</option> 
+											</select>
+										</div>
+									</div>
+								<% end %>
+							</div>
+						</div>
+					</div>
+				</div>
 			</div>
 		</div>
-	</div>
-</section>
+	</section>
+	<!-- full-box-border -->
+</div>
+<!-- /side-collapse-container  -->
+
+<style>
+	ul.sidebar {padding:0;}
+	ul.sidebar li{ list-style:none;margin: 10px 0; }
+	ul.sidebar li a{ color:#adadad;}
+	.listing-details {
+		background-color: #FFF;
+		border:1px solid #e6e6e6; padding:40px 20px;
+	}
+	.profile-form input {background-color: #FFF;
+		border:1px solid #adadad;
+	}
+	.profile-form select {background-color: #FFF;
+		border:1px solid #adadad; width:100px;
+	}
+	.btn-viewprofile { width:200px;color: #333;
+		background-color: #FFF;
+		border-color: #adadad; margin-top:20px;
+	}
+	.birthdate .dropdown-menu {
+		top: 33px;
+	}
+	.profile-details .dropdown-toggle {
+		width: 130px;
+	}
+	.profile-page {
+		padding-top: 40px;
+		background: #fafafa;
+	}
+	.nav-second-profile {  z-index:2;  background: #DBDDDE; padding-top:0;}
+	.nav-second-profile li.active {font-weight: bold; color:#000;}
+	.nav-second-profile .navbar-nav>li>a {
+		padding-top: 15px;
+		color: #777;
+	}
+
+	/*Listings*/
+
+	h5.panel-title {
+		font-weight: normal;
+		font-family: Arial, Helvetica, sans-serif;
+		font-size: 20px;
+		color: #000;
+		line-height: 26px;margin-left: 15px;
+	}
+
+	.header-11-sub p {
+		color: #000;font-family: Arial, Helvetica, sans-serif;
+		font-size: 14px;
+	}
+
+	.btn-list {    background: #2d5be3; color:#FFF; border-color:#2d5be3}
+
+	.form-control {
+		border: 1px solid #ccc;
+	}
+
+</style>
+
+<script>
+	$(document).ready(function() {
+		$('#listed-change').on('change', function() {
+			var root_domain = window.location.origin;
+			var new_url = root_domain + '/products?listed=' + $(this).val();
+			window.location.href = new_url;
+		})
+	})
+</script>

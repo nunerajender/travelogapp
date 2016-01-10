@@ -2,6 +2,7 @@
 	<li class="sidebar-title"><a href="#">Listing</a></li>
 	<li class="<%= 'active' if @show_section == 'basic' %>">
 		<% if @product.new_record? %>
+			<a href="#" >Basics</a>
 		<% else %>
 			<!-- <a href="#">Basics</a> -->
 			<a href="/products/<%= @product.id %>/edit_basic" >Basics</a>
