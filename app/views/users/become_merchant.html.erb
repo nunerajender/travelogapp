@@ -1,59 +1,115 @@
-<div class="container">
-	<div class="become_merchant">
-		<div class="stepsForm">
-			<%= render 'shared/store_setting_errors', :obj => @store_setting %>
-			<%= form_for @store_setting, url: {action: "complete_merchant"} do |f| %>
-				<div class="sf-steps">
-					<div class="sf-steps-content">
-		        <div>
-		          Contact Information
-		        </div>
-		        <div>
-		          Create a Store
-		        </div>
-		        <div>
-		          Photo Upload
-		        </div>
-		        
-		      </div>
+<div class="container merchant-content">
+	<!-- Projects Row -->
+	<div class="row">
+		<%= form_for @store_setting, url: {action: "complete_merchant"} do |f| %>
+			<div class="col-md-12">
+
+				<div class="col-md-10 text-center merchant-signup-title">
+					<h3>Create your Merchant Account</h3>
 				</div>
 
-				<div class="sf-steps-form sf-radius">
-					<ul class="sf-content"> <!-- form step one --> 
-						<div class="form-group">
-							<%= f.label :phone_hp, 'Phone number:' %>
-							<%= f.text_field :phone_hp, :class => 'form-control', :placeholder => 'Enter Phone number', 'data-required' => 'true' %>
-						</div>
-					</ul>
+				<!-- Signup Menu -->
+				<div class="col-md-10">
+					<div class="btn-group btn-group-justified merchant-signup-wizard" role="group" aria-label="Justified button group">
+						<div class="btn-group" role="group"> <button type="button" class="btn btn-default active-btn" id="merchant-link">Merchant Details</button> </div>
+						<div class="btn-group" role="group"> <button type="button" class="btn btn-default" id="store-link">Store Details</button> </div>
+						<div class="btn-group" role="group"> <button type="button" class="btn btn-default" id="photo-link">Photo Upload</button> </div>
+					</div>
+				</div>
 
-					<ul class="sf-content"> <!-- form step two --> 
-						<div class="form-group">
-							<%= f.label :store_username, 'Store Username:' %>
-							<%= f.text_field :store_username, :class => 'form-control', :placeholder => 'Store Username', 'data-required' => 'true' %>
-						</div>
-						<div class="form-group">
-							<%= f.label :store_name, 'Store Name:' %>
-							<%= f.text_field :store_name, :class => 'form-control', :placeholder => 'Store Name', 'data-required' => 'true' %>
-						</div>
-					</ul>
+				<!--Merchant Details-->
 
-					<ul class="sf-content"> <!-- form step tree -->
-						<div class="attachments-container">
-							<div class="form-group">
-								<button type="button" id="add-photo-button" class="btn btn-default btn-lg active">Add Photo</button>
-								<input name="file_attachment" type="file" id="file_upload">
+				<div class="col-md-10 merchant-section">
+					<div class="panel panel-default">
+						<div class="panel-body">
+							
+							<div class="form-group col-md-6">
+								<%= f.text_field :phone_hp, :class => 'form-control', :placeholder => 'Phone number' %>
+							</div>
+							<div class="form-group  col-md-6">
+								
+							</div>
+
+							<div class="checkbox col-md-6">
+								
+							</div>
+							<div class="col-md-6">
+								<button type="submit" id="merchant-next" class="btn btn-success btn-next pull-right">Next</button>
+							</div>
+							
+						</div>
+					</div>
+				</div>
+
+				<!--Store Details-->
+
+				<div class="col-md-10 store-section">
+					<div class="panel panel-default">
+						<div class="panel-body">
+							
+							<div class="form-group col-md-6">
+								<%= f.text_field :store_username, :class => 'form-control', :placeholder => 'Store Username' %>
+							</div>
+							<div class="form-group  col-md-6">
+								<%= f.text_field :store_name, :class => 'form-control', :placeholder => 'Store Name' %>
+							</div>
+
+							<div class="col-md-6">
+								<button type="button" class="btn btn-success btn-next pull-left" id="store-prev">Previous</button>
+							</div>
+
+							<div class="col-md-6">
+								<button type="submit" class="btn btn-success btn-next pull-right" id="store-next">Next</button>
+							</div>
+							
+						</div>
+					</div>
+				</div>
+
+				<!--Photo Upload -->
+
+
+				<div class="col-md-10 photo-section">
+					<div class="panel panel-default">
+						<div class="panel-body">
+							<div class="row">
+								<div class="col-xs-12 col-sm-12 col-lg-12">
+									<h4>Photo</h4>
+									<!-- <p> Add photos of areas guests have access to. You can always come back later and add more.</p> -->
+									<hr>
+									<div class="form-group">
+										<div class="fileUpload btn btn-large btn-upload">
+											<span>Upload</span>
+											<input name="file_attachment" type="file" id="file_upload" class="upload">
+										</div>
+									</div>
+									<hr>
+									
+								</div>
+							</div>
+							
+							<div class="row attachments-container">
+								<div class="col-xs-6 col-md-4">
+									<div class="thumbnail panel photo-item empty-photo-frame" name="empty-photo-frame">
+										<img src="<%= asset_url('placehold.png') %>">
+									</div>
+								</div>
+								
+							</div>
+							<div class="row">
+								<div class="col-md-6">
+									<button type="button" class="btn btn-success btn-next pull-left" id="photo-prev">Previous</button>
+								</div>
+								<div class="col-md-6">
+									<button type="submit" class="btn btn-success btn-next pull-right">Next</button>
+								</div>
 							</div>
 						</div>
-					</ul>
+					</div>
 				</div>
-
-				<div class="sf-steps-navigation sf-align-right">
-					<span id="sf-msg" class="sf-msg-error"></span>
-		      <button id="sf-prev" type="button" class="sf-button">Back</button>
-		      <button id="sf-next" type="button" class="sf-button sf-next">Next</button>
-				</div>
-			<% end %>
-		</div>
+				
+			</div>
+		<% end %>
 	</div>
 </div>
 
@@ -66,13 +122,13 @@
 	}
 	.attachments-container .btn.delete-attachment {
 		position: absolute;
-    top: 0;
-    right: 15px;
-    height: inherit;
-    padding: 2px 10px;
-    border-radius: 0;
-    opacity: 0.8;
-    background-color: #ccc;
+		top: 0;
+		right: 15px;
+		height: inherit;
+		padding: 2px 10px;
+		border-radius: 0;
+		opacity: 0.8;
+		background-color: #ccc;
 	}
 	.attachments-container .form-group.col-md-4 {
 		position: relative;
@@ -81,21 +137,209 @@
 	.attachments-container img {
 		width: 100%
 	}
+
+	.merchant-content { padding:40px 0 80px 0;}
+	.merchant-signup-title { padding:40px 0;}
+	.merchant-signup-form .form-group {
+		margin-bottom: 40px;
+	}
+	.merchant-signup-form .form-control, .panel-body .form-control {
+		border: 1px solid #ccc;
+	}
+	.btn-next { padding: 10px 30px;}
+	.merchant-content .panel-body {
+		padding: 40px 15px;
+	}
+	.merchant-signup-wizard .btn-group>.btn{ padding:15px; }
+	.merchant-info .checkbox {
+		margin-bottom: 30px;
+	}
+	.minfo-btn {    width: 400px; text-align:left; }
+	.basic-detail .dropdown-toggle {
+	  width: 427px;
+		text-align: left;
+	}
+	span.caret .pull-right { margin-top: 9px;}
 	
+	.btn-upload {
+		border-color: #c4c4c4;
+		background: white;
+		color: #565a5c;padding: 9px 27px;
+		font-size: 16px;
+	}
+	.fileUpload {
+		position: relative;
+		overflow: hidden;
+		margin: 10px;
+	}
+
+	.fileUpload input.upload {
+		width: 200px;
+		height: 250px;
+		display: block;
+		position: absolute;
+		top: 0;
+		right: 0;
+		margin: 0;
+		padding: 0;
+		font-size: 20px;
+		cursor: pointer;
+		opacity: 0;
+		filter: alpha(opacity=0);
+	}
+	.btn.active-btn {
+		color: #333;
+    background-color: #e6e6e6;
+    border-color: #adadad;
+	}
 </style>
 
 <script>
 	$(document).ready(function() {
-		$(document).on('click', '#add-photo-button', function() {
-			attachment_count = $('.attachments-container .col-md-4').length
-			if (attachment_count < 1) {
-				$('#file_upload').trigger('click');
-			} else {
-				alert("Can't upload more than 1.");
+		
+
+		$('.attachments-container').on('click', '.delete-attachment', function(event) {
+			$(this).parent().parent().fadeOut('slow', function() {
+				$(this).remove();
+				$('#new_store_setting').formValidation('revalidateField', 'empty-photo-frame');
+			});
+			var attachment_id = $(this).parent().find('input[name="store_image[id]"]').val();
+			$.ajax({
+				type: "POST",
+				url: "/store_images/" + attachment_id,
+				dataType: "json",
+				data: { "_method": "delete" },
+				complete: function(){
+					console.log('deleted attachment');
+				}
+			});
+			event.preventDefault();
+
+		})
+
+		// validate for store_username
+		$(document).on('click', '#sf-next', function() {
+			
+		})
+
+		
+		$('.merchant-section').show();
+		$('.store-section').hide();
+		$('.photo-section').hide();
+
+		// Validation
+		$('#new_store_setting').formValidation({
+			framework: 'bootstrap',
+			icon: {
+				valid: 'glyphicon glyphicon-ok',
+				invalid: 'glyphicon glyphicon-remove',
+				validating: 'glyphicon glyphicon-refresh'
+			},
+			fields: {
+				'store_setting[phone_hp]': {
+					row: '.col-xs-12',
+					validators: {
+						notEmpty: {
+							message: 'The phone number is required'
+						}
+					}
+				},
+				'store_setting[store_username]': {
+					row: '.col-xs-12',
+					validators: {
+						notEmpty: {
+							message: 'The store username is required'
+						},
+						callback: {
+							message: 'The store username is not valid',
+							callback: function(value, validator, $field) {
+								store_username = $('#store_setting_store_username').val().trim();
+								return (gon.store_usernames.indexOf(store_username) == -1);
+							}
+						}
+					}
+				},
+				'store_setting[store_name]': {
+					row: '.col-xs-12',
+					validators: {
+						notEmpty: {
+							message: 'The store name is required'
+						}
+					}
+				},
+				'empty-photo-frame': {
+					row: '.col-xs-12',
+					validators: {
+						callback: {
+							message: 'The photo is required',
+							callback: function(value, validator, $field) {
+								var photo_count = $('.attachments-container .upload-photo-frame').length;
+								return (photo_count > 0)
+							}
+						}
+					}
+				}
+			}
+		});
+
+		var resetWizardButton = function() {
+			$('.merchant-signup-wizard button').removeClass('active-btn');
+		}
+
+		$('#merchant-next').on('click', function(event) {
+			event.preventDefault();
+			$('#new_store_setting').formValidation('revalidateField', 'store_setting[phone_hp]');
+			
+			if (!$(this).prop('disabled')) {
+				$('.merchant-section').hide();
+				$('.store-section').show();
+				$('.photo-section').hide();
+				resetWizardButton();
+				$('#store-link').addClass('active-btn');
 			}
 		})
 
-		$('.attachments-container').on('change', '#file_upload', function() {
+		$('#store-next').on('click', function(event) {
+			event.preventDefault();
+			$('#new_store_setting').formValidation('revalidateField', 'store_setting[store_username]');
+			$('#new_store_setting').formValidation('revalidateField', 'store_setting[store_name]');
+			
+			if (!$(this).prop('disabled')) {
+				$('.merchant-section').hide();
+				$('.store-section').hide();
+				$('.photo-section').show();
+				resetWizardButton();
+				$('#photo-link').addClass('active-btn');
+			}
+		})
+
+		$('#store-prev').on('click', function(event) {
+			event.preventDefault();
+			$('.merchant-section').show();
+			$('.store-section').hide();
+			$('.photo-section').hide();
+			resetWizardButton();
+			$('#merchant-link').addClass('active-btn');
+			$('#merchant-next').prop('disabled', false).removeClass('disabled');
+		})
+
+		$('#photo-prev').on('click', function(event) {
+			event.preventDefault();
+			$('.merchant-section').hide();
+			$('.store-section').show();
+			$('.photo-section').hide();
+			resetWizardButton();
+			$('#store-link').addClass('active-btn');
+			$('#store-next').prop('disabled', false).removeClass('disabled');
+		})
+
+		$('#file_upload').on('change', function() {
+			var photo_count = $('.photo-item.upload-photo-frame').length
+			if (photo_count >= 1) {
+				alert("Can't upload more than 1.");
+				return false;
+			};
+			$('body').loading({});
 
 			var formData = new FormData();
 			formData.append('store_image[store_img]', this.files[0]);
@@ -109,66 +353,35 @@
 			  type: 'POST',
 			  success: function(data) {
 			  	console.log('success');
-			  	append_html = '<div class="form-group col-md-4">';
-			  	append_html += '<img src="' + data.store_img.small.url + '" data-id="' + data.id + '">';
-			  	append_html += '<input type="hidden" name="store_image[id]" value="' + data.id + '">';
-			  	append_html += '<button type="button" class="btn btn-default delete-attachment">Delete</button>';
-			  	append_html += '</div>';
-			  	$('.attachments-container').append(append_html);
-			  	$('#file_upload').val('');
+			  	$empty_photo = $($('.empty-photo-frame.photo-item')[0]);
+			  	$clone = $empty_photo.parent().clone();
+			  	$empty_photo.removeClass('empty-photo-frame').addClass('upload-photo-frame').append('<input type="hidden" name="store_image[id]" value="' + data.id + '">');
+			  	$empty_photo.append('<button type="button" class="btn btn-default delete-attachment">Delete</button>');
+			  	$empty_photo.find('img').attr({'src': data.store_img.small.url, 'data-id': data.id });
+
+			  	$empty_photo.find('i').remove();
+			  	$empty_photo.find('small').remove();
+			  	$clone.find('i').remove();
+			  	$clone.find('small').remove();
+
+					$('.attachments-container').append($clone);
+					$('#file_upload').val('');
+
+					$('#new_store_setting').formValidation('revalidateField', 'empty-photo-frame');
+			  	$('body').loading('stop');
 			  },
 			  error: function(error) {
 	      	console.log(error);
-	      }
+	      	$('body').loading('stop');
+	      },
+	      timeout: 100000
 			});
-		})
-
-		$('.attachments-container').on('click', '.delete-attachment', function(event) {
-			$(this).parent().fadeOut('slow', function() {
-				$(this).remove();
-			});
-			var attachment_id = $(this).parent().find('input[name="store_image[id]"]').val();
-			$.ajax({
-			  type: "POST",
-	      url: "/store_images/" + attachment_id,
-	      dataType: "json",
-	      data: { "_method": "delete" },
-	      complete: function(){
-	        console.log('deleted attachment');
-	      }
-			});
-			event.preventDefault();
 
 		})
-	})
-
-	// validate for store_username
-	$(document).on('click', '#sf-next', function() {
 		
 	})
 
-	$(document).on('change', 'input[name="store_setting[store_username]"]', function() {
-		store_username = $(this).val();
-		if (store_username != '') {
-			$store_username = $(this);
-			$store_username.parent().find('label.error').remove();
-			$.ajax({
-				type: "GET",
-				url: "/users/verify_store_username",
-				dataType: "json",
-				data: {
-					"store_username": $(this).val()
-				},
-				success: function(data) {
-					console.log(data.result);
-					if (!data.result) {
-						$store_username.parent().append('<label class="error">' + $store_username.prop('placeholder') + ' is not available</label>');
-					};
-				}
-			});
-		}
-		
-	})
+	
 
 	
 </script>

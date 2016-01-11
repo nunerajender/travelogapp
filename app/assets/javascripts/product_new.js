@@ -75,7 +75,7 @@ $(window).load(function() {
 		// 	liveSearch: false,
 		// 	maxOptions: 1
 		// });
-		adjustProductAttachments();
+		// adjustProductAttachments();
 		// showRefundableFields();
 		updateCurrencySymbol();
 

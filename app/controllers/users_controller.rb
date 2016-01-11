@@ -13,6 +13,7 @@ class UsersController < ApplicationController
 		if user_signed_in?
 			if current_user.status != 'merchant'
 				@store_setting = StoreSetting.new({:user_id => current_user.id})
+				gon.store_usernames = StoreSetting.select(:store_username).pluck(:store_username)
 			else
 				redirect_to root_path
 			end	
