@@ -304,7 +304,6 @@ class ProductsController < ApplicationController
     # @products = Product.where("name LIKE ? OR city LIKE ?", "%#{params[:name]}%", "%#{params[:city]}%")
     # str_query = 'product_category_id = -1'
     
-
     if params[:city].present?
       # str_query += " or (lower(city) LIKE '%#{params[:city].downcase}%' or lower(country) like '%#{params[:city].downcase}%')"
       @products = Product.where("lower(city) LIKE ? or lower(country) like ?", "%#{params[:city].downcase}%", "%#{params[:city].downcase}%")
@@ -317,8 +316,6 @@ class ProductsController < ApplicationController
     category_names = @product_categories.select(:name).pluck(:name).map(&:downcase)
     if params[:search_free_text].present?
       # str_query += " and (lower(name) LIKE %#{params[:search_free_text].downcase}%)"
-      
-
       if category_names.include? params[:search_free_text].downcase
         product_category = ProductCategory.where("lower(name) = ?", "#{params[:search_free_text].downcase}").first
         @products = @products.where(:product_category_id => product_category.id)
@@ -347,9 +344,34 @@ class ProductsController < ApplicationController
       end
     end
     @products = @products.where(str_query)
-    
+
+    # set price range
+    current_rate = session["currency-convert-#{session[:currency]}"].to_f
+    gon.min_price = 0
+    gon.max_price = current_rate * 1000
+
+    # filter by price
+    set_product_currency_attributes(@products)
+
+    # binding.pry
+
+    if params[:start_price].present?
+      start_price = params[:start_price].to_f
+      end_price = params[:end_price].to_f
+      gon.start_price = start_price
+      gon.end_price = end_price
+      @products = @products.select{ |sa| sa.price_with_currency >= start_price && sa.price_with_currency <= end_price }
+
+    end
+
     @total_count = @products.count
-    @products = @products.page(params[:page]).per(8)
+    # binding.pry
+    if @products.class == Array
+      @products = Kaminari.paginate_array(@products).page(params[:page]).per(8) 
+    else
+      @products = @products.page(params[:page]).per(8)
+    end
+    
     params_clone = params.clone
     params_clone.delete("controller")
     params_clone.delete("action")
@@ -357,7 +379,10 @@ class ProductsController < ApplicationController
 
     set_product_attributs(@products)
     set_product_currency_attributes(@products)
+    
     @current_currency = get_all_currency_symbols[session[:currency]]
+
+
   end
 
   def result_filter

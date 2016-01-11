@@ -6,7 +6,7 @@
 					<div class="col-md-2 col-sm-12 col-xs-12 text-left pull-left ">
 						<h5>Category </h5>
 					</div>
-					<form method="POST" action="/products/result">
+					<form method="POST" action="/products/result" id="result-form">
 						<%= tag(:input, :name => 'authenticity_token', :type => "hidden", :value => form_authenticity_token) %>
 						<div class="col-md-10 col-sm-12 col-xs-12">
 							<% ProductCategory.order('id').each do |category| %>
@@ -46,8 +46,8 @@
 					<div class="col-md-2 col-sm-12 col-xs-12"> </div>
 					<div class="label-description col-md-10 col-sm-12 col-xs-12">
 						<h5> </h5>
-						<label class="pull-left">RM500</label>
-						<label class="pull-right">RM5,000</label>
+						<label class="pull-left" id="start-price">$500</label>
+						<label class="pull-right" id="end-price">$5,000</label>
 					</div>
 				</div>
 			</div>
@@ -117,20 +117,54 @@
 
 	  initResponsiveHeader();
 
+	  var start_value;
+	  var end_value;
+
 	  var nonLinearSlider = document.getElementById('nonlinear');
+
+	  var start_price = gon.start_price;
+	  if (start_price == undefined) {
+	  	start_price = 0;
+	  };
+	  var end_price = gon.end_price;
+	  if (end_price == undefined) {
+	  	end_price = gon.max_price;
+	  };
+
 	  noUiSlider.create(nonLinearSlider, {
 			connect: true,
 			behaviour: 'tap',
-			start: [500, 4000],
+			start: [start_price, end_price],
 			range: {
 				 // Starting at 500, step the value by 500,
 				 // until 4000 is reached. From there, step by 1000.
-				 'min': [0],
-				 '10%': [500, 500],
-				 '50%': [4000, 1000],
-				 'max': [10000]
+				 'min': [gon.min_price],
+				 '10%': [gon.max_price / 20, gon.max_price / 20],
+				 '50%': [gon.max_price * 4 / 10, gon.max_price / 10],
+				 'max': [gon.max_price]
 			}
 	  });
+
+	  nonLinearSlider.noUiSlider.on('update', function( values, handle ) {
+			var value = values[handle];
+			if ( handle ) {
+				end_value = value;
+				// console.log('end-value:' + end_value);
+				$('#end-price').text(gon.currency_symbols[gon.current_currency] + end_value)
+			} else {
+				start_value = value;
+				// console.log('start-value:' + start_value);
+				$('#start-price').text(gon.currency_symbols[gon.current_currency] + start_value)
+			}
+		});
+
+		nonLinearSlider.noUiSlider.on('change', function(){
+			$form = $('#result-form');
+			$form.append('<input type="hidden" name="start_price" value="' + start_value + '">');
+			$form.append('<input type="hidden" name="end_price" value="' + end_value + '">');
+			console.log($form.serialize());
+			$form.submit();
+		});
 
 	  $(document).on('change', 'form input[type="checkbox"]', function() {
 	  	console.log('checkbox click');
