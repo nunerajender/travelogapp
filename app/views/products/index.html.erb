@@ -72,10 +72,7 @@
 										</div>
 
 										<div class="col-md-2">
-											<select class=" form-control" title="Dropdown" id="listed-change">
-												<option value="listed">Listed</option>
-												<option value="unlisted">Unlisted</option> 
-											</select>
+											
 										</div>
 									</div>
 								<% end %>
@@ -108,9 +105,10 @@
 											<p>Manage Listing and Calendar</p>
 										</div>
 
-										<div class="col-md-2">
-											
-
+										<div  class="col-md-2">
+											<a href="/products/<%= product.id %>/edit" class="btn btn-default btn-list" >
+										    <%= 5 - Product.steps[product.step] %> Steps to list
+										  </a>
 										</div>
 									</div>
 									<% unless index == @unlisted_products.count - 1 %>
@@ -131,10 +129,7 @@
 										</div>
 
 										<div class="col-md-2">
-											<select class=" form-control" title="Dropdown" id="listed-change">
-												<option value="listed">Listed</option>
-												<option value="unlisted">Unlisted</option> 
-											</select>
+											
 										</div>
 									</div>
 								<% end %>
