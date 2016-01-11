@@ -13,19 +13,27 @@
 					<a href="/products/new" class="btn btn-block btn-viewprofile">Add New Listings</a>
 				</div>
 				<div class="col-md-9">
-					<div class="panel panel-default">
+					<div class="row" style="margin-bottom: 15px;">
+						<div class="col-md-10"></div>
+						<div class="col-md-2">
+							<select class=" form-control" title="Dropdown" id="listed-change">
+								<option value="all">All</option>
+								<option value="listed">Listed</option>
+								<option value="unlisted">Unlisted</option> 
+							</select>
+							
+						</div>
+					</div>
+
+					<div class="panel panel-default listed">
 						<div class="panel-heading"> 
 							<h5 class="panel-title">
-								<% if @listed == 'listed' %>
-									Listed
-								<% else %>
-									Unlisted
-								<% end %>
+								Listed
 							</h5> 
 						</div> 
 						<div class="panel-body">
 							<div class="row">
-								<% @products.each_with_index do |product, index|%>
+								<% @listed_products.each_with_index do |product, index|%>
 									<div class="col-md-12">
 										<div class="col-md-3">
 											<a href="/products/<%= product.id %>/edit" class="thumbnail">
@@ -43,20 +51,14 @@
 										</div>
 
 										<div class="col-md-2">
-											<% if index == 0 %>
-												<select class=" form-control" title="Dropdown" id="listed-change">
-													<option value="listed">Listed</option>
-													<option value="unlisted" <%= 'selected' if @listed == 'unlisted' %>>Unlisted</option> 
-												</select>
-											<% end %>
-
+											
 										</div>
 									</div>
-									<% unless index == @products.count - 1 %>
+									<% unless index == @listed_products.count - 1 %>
 										<!-- <hr> -->
 									<% end %>
 								<% end %>
-								<% if @products.count == 0 %>
+								<% if @listed_products.count == 0 %>
 									<div class="col-md-12">
 										<div class="col-md-3">
 											<a href="#" class="thumbnail">
@@ -65,14 +67,73 @@
 										</div>
 
 										<div class="col-md-7">
-											<h5>There is no <%= @listed %> product.</h5>
+											<h5>There is no listed product.</h5>
 											<!-- <p>Manage Listing and Calendar</p> -->
 										</div>
 
 										<div class="col-md-2">
 											<select class=" form-control" title="Dropdown" id="listed-change">
 												<option value="listed">Listed</option>
-												<option value="unlisted" <%= 'selected' if @listed == 'unlisted' %>>Unlisted</option> 
+												<option value="unlisted">Unlisted</option> 
+											</select>
+										</div>
+									</div>
+								<% end %>
+							</div>
+						</div>
+					</div>
+
+					<div class="panel panel-default unlisted">
+						<div class="panel-heading"> 
+							<h5 class="panel-title">
+								Unlisted
+							</h5> 
+						</div> 
+						<div class="panel-body">
+							<div class="row">
+								<% @unlisted_products.each_with_index do |product, index|%>
+									<div class="col-md-12">
+										<div class="col-md-3">
+											<a href="/products/<%= product.id %>/edit" class="thumbnail">
+												<% if product.product_overview_url.present? %>
+													<img src="<%= product.product_overview_url %>" alt="...">
+												<% else %>
+													<img src="<%= asset_url('placehold_200_200.png') %>" alt="...">
+												<% end %>
+											</a>
+										</div>
+
+										<div class="col-md-7">
+											<h5><%= product.name %>, for traveller in <%= product.city %></h5>
+											<p>Manage Listing and Calendar</p>
+										</div>
+
+										<div class="col-md-2">
+											
+
+										</div>
+									</div>
+									<% unless index == @unlisted_products.count - 1 %>
+										<!-- <hr> -->
+									<% end %>
+								<% end %>
+								<% if @unlisted_products.count == 0 %>
+									<div class="col-md-12">
+										<div class="col-md-3">
+											<a href="#" class="thumbnail">
+												<img src="<%= asset_url('placehold_200_200.png') %>" alt="...">
+											</a>
+										</div>
+
+										<div class="col-md-7">
+											<h5>There is no unlisted product.</h5>
+											<!-- <p>Manage Listing and Calendar</p> -->
+										</div>
+
+										<div class="col-md-2">
+											<select class=" form-control" title="Dropdown" id="listed-change">
+												<option value="listed">Listed</option>
+												<option value="unlisted">Unlisted</option> 
 											</select>
 										</div>
 									</div>
@@ -149,9 +210,19 @@
 <script>
 	$(document).ready(function() {
 		$('#listed-change').on('change', function() {
-			var root_domain = window.location.origin;
-			var new_url = root_domain + '/products?listed=' + $(this).val();
-			window.location.href = new_url;
+			var listed_status = $(this).val();
+			if(listed_status == 'listed') {
+				$('.panel.listed').fadeIn('slow');
+				$('.panel.unlisted').fadeOut('slow');
+			} else if (listed_status == 'unlisted') {
+				$('.panel.listed').fadeOut('slow');
+				$('.panel.unlisted').fadeIn('slow');
+			} else {
+				$('.panel.listed').fadeIn('slow');
+				$('.panel.unlisted').fadeIn('slow');
+			}
 		})
 	})
+
+
 </script>

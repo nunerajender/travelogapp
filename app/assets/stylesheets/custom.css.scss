@@ -408,6 +408,9 @@ input.form-control.name-form {
     border-left: 1px solid #ccc;
     width: 250px
 }
+.full-height{
+    height:100%;
+}
 .search-btn {
     background: #2e71f0;
     color: #fff;
@@ -424,7 +427,8 @@ input.form-control.name-form {
 }
 .landing-content {
     padding: 40px 0;
-    border-top: solid 1px #e6e9e9
+    border-top: solid 1px #e6e9e9;
+	    background: #FFF;
 }
 .landing-content a {
     color: #333;
@@ -448,7 +452,7 @@ input.form-control.name-form {
     color: #fff;
     font-size: 18px;
     position: absolute;
-    top: 130px
+    top: 180px
 }
 .img-right-top {
     display: block
@@ -1220,10 +1224,10 @@ input[type=checkbox].heart-checkbox:checked+label:before {
     background-color: #2e71f0
 }
 .section-details .common-row {
-    margin-bottom: 110px;
+    margin-bottom: 110px
 }
 .section-details.summary {
-    min-height: 150px;
+    min-height: 150px
 }
 .section-details.review .row {
    /* margin-bottom: 40px;*/
@@ -1405,7 +1409,8 @@ input[type=checkbox].heart-checkbox:checked+label:before {
 .navbar-white {
     border-bottom: 1px solid #dce0e0;
     height: 61px;
-    padding: 0
+    padding: 0;
+	    background: #FFF;
 }
 .navbar-nav>li>a {
     padding-top: 19px;
@@ -1414,7 +1419,7 @@ input[type=checkbox].heart-checkbox:checked+label:before {
 .search-white-nav {
     position: absolute;
     top: 13px;
-    left: 91px;
+    left: 191px;
     width: 500px;
     height: 40px;
 
@@ -1479,7 +1484,7 @@ button:hover
 
 
 .profile-nav {    }
-.navbar-nav>li>a.usernavprofile {padding:12px 5px 5px 5px;}
+.navbar-nav>li>a.usernavprofile {padding:15px 5px 5px 5px;}
 
 .navbar-nav>li>a.usernavprofile:hover{ background:none;}
 .usernavprofile img { margin-left:10px;  }
@@ -1497,7 +1502,9 @@ button:hover
     background-color: none;
  }
  
- .dropdown-menu { margin:0;top: 59px;}
+ .dropdown-menu.profile-nav-dropdown { margin:0;top: 59px;top: auto; margin-top:5px;}
+
+
  .profile-nav-dropdown>li>a {
     display: block;
     padding: 20px;
@@ -1529,7 +1536,7 @@ button:hover
     
     .merchant-details {    padding-left: 50px;}
     
-    .book-widget-detail-page { position:absolute; top: -80px;}
+	.book-widget-detail-page { position:absolute; top: -100px;}
     
     
     .book-now-block {
@@ -1576,26 +1583,14 @@ p.totalprice{ font-size: 24px;font-weight: normal;line-height: 1.43;
     border-bottom-color: rgba(0,0,0,.2);
     content: '';
 }
-.nav>li>a:focus,
-.nav>li>a:hover {
-    background-color: none;
-}
 
-.panel-header, .panel-body, ul.panel-body>li, ol.panel-body>li, .panel-footer {
-    position: relative;
-    margin: 0;
-    padding: 20px;
-    border-top: 1px solid #dce0e0;
-}
 
-.panel-header {
-    color: #565a5c;
-    font-size: 16px;
-    padding-top: 12px;
-    padding-bottom: 12px;
-    border-bottom: 1px solid #dce0e0;
-}
 
-.panel-dark, .panel-header {
-    background-color: #edefed;
+.navbar-brand {
+    float: left;
+    height: 50px;
+    padding: 0;
+    font-size: 18px;
+    margin-top: -20px;
+    line-height: 20px;
 }

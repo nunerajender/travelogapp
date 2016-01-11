@@ -11,16 +11,13 @@ class ProductsController < ApplicationController
   def index
     if current_user.status == 'merchant'
       @products = current_user.products
-      # params[:listed] = 'unlisted'
-      if params[:listed] == 'unlisted'
-        @products = @products.where.not(:step => 5)
-        @listed = 'unlisted'
-      else
-        @products = @products.where(:step => 5)
-        @listed = 'listed'
-      end
-      # @product_attachments = ProductAttachment.all
-      set_product_attributs(@products)
+
+      @unlisted_products = @products.where.not(:step => 5)
+      @listed_products = @products.where(:step => 5)
+
+      # set_product_attributs(@products)
+      set_product_attributs(@unlisted_products)
+      set_product_attributs(@listed_products)
       
     else
       redirect_to root_path
