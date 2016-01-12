@@ -304,12 +304,12 @@ class ProductsController < ApplicationController
     # @products = Product.where("name LIKE ? OR city LIKE ?", "%#{params[:name]}%", "%#{params[:city]}%")
     # str_query = 'product_category_id = -1'
     
+    @products = Product.where(:step => 5)
+
     if params[:city].present?
       # str_query += " or (lower(city) LIKE '%#{params[:city].downcase}%' or lower(country) like '%#{params[:city].downcase}%')"
-      @products = Product.where("lower(city) LIKE ? or lower(country) like ?", "%#{params[:city].downcase}%", "%#{params[:city].downcase}%")
+      @products = @products.where("lower(city) LIKE ? or lower(country) like ?", "%#{params[:city].downcase}%", "%#{params[:city].downcase}%")
       @city = params[:city]
-    else
-      @products = Product.all
     end
 
     @product_categories = ProductCategory.all

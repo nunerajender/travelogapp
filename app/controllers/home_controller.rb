@@ -3,7 +3,7 @@ class HomeController < ApplicationController
 
 	def index
 
-		@products = Product.all.limit(8)
+		@products = Product.where(:step => 5).limit(8)
 
 		@products.each do |product|
 			if product.currency != session[:currency]
