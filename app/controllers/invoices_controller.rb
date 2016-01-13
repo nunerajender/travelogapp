@@ -7,11 +7,15 @@ class InvoicesController < ApplicationController
   def new
   	@invoice = Invoice.new
   	if request.post?
-  		@invoice.booking_date = params[:datepicker]
+      
+      @invoice.booking_date = params[:datepicker]
   		@invoice.product_id = params["product-id"]
   		param_variants = params[:variant]
       param_variants = [] if param_variants.blank?
       param_variants.delete_if{|sa| sa.stringify_keys['count'].to_i == 0 }
+
+      # for cancel checkout
+      @variant_params = param_variants.clone
 
       if param_variants.count > 0
         @invoice.variants = param_variants 
@@ -34,6 +38,41 @@ class InvoicesController < ApplicationController
         @invoice.amount_cents = @product.price_cents
       end
       gon.is_display_currency_exchange = false
+      @invoice_params = {}
+    else
+      
+      @invoice.booking_date = params[:invoice][:booking_date]
+      @invoice.product_id = params[:invoice][:product_id]
+      param_variants = params[:variant]
+      param_variants = [] if param_variants.blank?
+      param_variants.delete_if{|sa| sa.stringify_keys['count'].to_i == 0 }
+
+      # for cancel checkout
+      @variant_params = param_variants.clone
+
+      if param_variants.count > 0
+        @invoice.variants = param_variants 
+      end
+      
+      # binding.pry
+      @product = Product.find(params[:invoice][:product_id])
+      @prodcut_image_url = @product.product_attachments[0].attachment.medium.url if @product.product_attachments.present? && @product.product_attachments.count > 0
+      @invoice.currency = @product.currency
+
+      # calculating the invoice amount cents from booking variant count.
+      # binding.pry
+      if param_variants.count > 0
+        total_price_cents = 0
+        param_variants.each do |variant|
+          total_price_cents += variant["count"].to_i * variant["price_cents"].to_i
+        end
+        @invoice.amount_cents = total_price_cents
+      else
+        @invoice.amount_cents = @product.price_cents
+      end
+      @invoice_params = params[:invoice]
+      gon.is_display_currency_exchange = false
+
   	end
   end
 
@@ -70,16 +109,6 @@ class InvoicesController < ApplicationController
         
         item_price = variant["price_cents"].to_i / 100
         item_count = variant["count"].to_i
-        # payment_request = Paypal::Payment::Request.new(
-        #   :currency_code => @invoice.currency,   # if nil, PayPal use USD as default
-        #   :description   => variant["name"],    # item description
-        #   :quantity      => item_count,      # item quantity
-        #   :amount        => item_price * item_count,   # item value
-        #   :seller_id => seller_id,
-        #   :request_id => request_id
-        # )
-
-        # payment_requests << payment_request
         item = {
           :name => variant["name"],
           :description => variant["name"],
@@ -114,7 +143,8 @@ class InvoicesController < ApplicationController
       response = request.setup(
         payment_request,
         invoices_success_checkout_url,
-        invoices_cancel_checkout_url,
+        # invoices_cancel_checkout_url,
+        new_invoice_url(params),
         paypal_options  # Optional
       )
 
@@ -190,7 +220,7 @@ class InvoicesController < ApplicationController
 
     def invoice_params
       params.require(:invoice).permit(:billing_country, :payment_type, :valid_month, :valid_day, :security_code, 
-        :billing_first_name, :billing_last_name, :billing_postal_code, :booking_date, :product_id, 
+        :billing_first_name, :billing_last_name, :booking_date, :product_id, 
         :currency, :amount_cents)
     end
 end

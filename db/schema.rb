@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160110144933) do
+ActiveRecord::Schema.define(version: 20160113161615) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -29,13 +29,14 @@ ActiveRecord::Schema.define(version: 20160110144933) do
     t.string   "security_code"
     t.string   "billing_first_name"
     t.string   "billing_last_name"
-    t.string   "billing_postal_code"
     t.string   "currency"
-    t.integer  "status",              limit: 2, default: 0
+    t.integer  "status",             limit: 2, default: 0
     t.string   "token"
     t.string   "payer_id"
-    t.datetime "created_at",                                null: false
-    t.datetime "updated_at",                                null: false
+    t.datetime "created_at",                               null: false
+    t.datetime "updated_at",                               null: false
+    t.string   "billing_email"
+    t.string   "billing_phone"
   end
 
   add_index "invoices", ["product_id"], name: "index_invoices_on_product_id", using: :btree
