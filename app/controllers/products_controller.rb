@@ -26,7 +26,7 @@ class ProductsController < ApplicationController
 
   def show
     @user = @product.user
-    @other_products = Product.order('random()').limit(4)
+    @other_products = Product.where(:step => 5).order('random()').limit(4)
     set_product_attributs(@other_products)
 
     gon.product_cover_image_url = @product.product_attachments.order('id')[0].attachment.url if @product.product_attachments.count > 0
