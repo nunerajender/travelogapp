@@ -21,13 +21,10 @@ class InvoicesController < ApplicationController
         @invoice.variants = param_variants 
       end
       
-      # binding.pry
       @product = Product.find(params["product-id"])
       @prodcut_image_url = @product.product_attachments[0].attachment.medium.url if @product.product_attachments.present? && @product.product_attachments.count > 0
       @invoice.currency = @product.currency
 
-      # calculating the invoice amount cents from booking variant count.
-      # binding.pry
       if param_variants.count > 0
         total_price_cents = 0
         param_variants.each do |variant|
@@ -39,8 +36,8 @@ class InvoicesController < ApplicationController
       end
       gon.is_display_currency_exchange = false
       @invoice_params = {}
+      @contact_detail_params = {}
     else
-      
       @invoice.booking_date = params[:invoice][:booking_date]
       @invoice.product_id = params[:invoice][:product_id]
       param_variants = params[:variant]
@@ -73,6 +70,9 @@ class InvoicesController < ApplicationController
       @invoice_params = params[:invoice]
       gon.is_display_currency_exchange = false
 
+      @contact_detail_params = params[:contact_detail]
+
+      
   	end
   end
 
@@ -137,7 +137,6 @@ class InvoicesController < ApplicationController
       :items => items,
       :amount        => @invoice.amount_cents / 100   # item value
     )
-    
 
     begin
       response = request.setup(
@@ -152,6 +151,11 @@ class InvoicesController < ApplicationController
         
         @invoice.token = response.token
         @invoice.save!
+
+        contact_detail = ContactDetail.new(contact_detail_params)
+        contact_detail.invoice = @invoice
+        contact_detail.save!
+
         redirect_to response.redirect_uri
       else
         flash[:alert] = "There is an error while processing the payment"
@@ -220,7 +224,11 @@ class InvoicesController < ApplicationController
 
     def invoice_params
       params.require(:invoice).permit(:billing_country, :payment_type, :valid_month, :valid_day, :security_code, 
-        :billing_first_name, :billing_last_name, :booking_date, :product_id, 
+        :booking_date, :product_id, 
         :currency, :amount_cents)
+    end
+
+    def contact_detail_params
+      params.require(:contact_detail).permit(:first_name, :last_name, :email, :phone_number, :message)
     end
 end

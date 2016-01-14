@@ -11,10 +11,23 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160113161615) do
+ActiveRecord::Schema.define(version: 20160114125702) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "contact_details", force: :cascade do |t|
+    t.integer  "invoice_id"
+    t.string   "first_name"
+    t.string   "last_name"
+    t.string   "email"
+    t.string   "phone_number"
+    t.text     "message"
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
+  end
+
+  add_index "contact_details", ["invoice_id"], name: "index_contact_details_on_invoice_id", using: :btree
 
   create_table "invoices", force: :cascade do |t|
     t.integer  "product_id"
@@ -27,16 +40,12 @@ ActiveRecord::Schema.define(version: 20160113161615) do
     t.integer  "valid_month"
     t.integer  "valid_year"
     t.string   "security_code"
-    t.string   "billing_first_name"
-    t.string   "billing_last_name"
     t.string   "currency"
-    t.integer  "status",             limit: 2, default: 0
+    t.integer  "status",          limit: 2, default: 0
     t.string   "token"
     t.string   "payer_id"
-    t.datetime "created_at",                               null: false
-    t.datetime "updated_at",                               null: false
-    t.string   "billing_email"
-    t.string   "billing_phone"
+    t.datetime "created_at",                            null: false
+    t.datetime "updated_at",                            null: false
   end
 
   add_index "invoices", ["product_id"], name: "index_invoices_on_product_id", using: :btree

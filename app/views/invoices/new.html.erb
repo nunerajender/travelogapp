@@ -93,21 +93,26 @@
 							<h3>Contact Details</h3>
 							<div class="form-group col-md-6 paddingzero ">
 								<label for="sec">First Name:</label>
-								<input type="text" placeholder='First Name' class="form-control input-pay" id="sec" name="invoice[billing_first_name]" value="<%= @invoice_params[:billing_first_name] if @invoice_params.present? %>">
+								<input type="text" placeholder='First Name' class="form-control input-pay" id="sec" name="contact_detail[first_name]" value="<%= @contact_detail_params[:first_name] if @contact_detail_params.present? %>">
 							</div>
 							<div class="form-group col-md-6 paddingrightzero">
 								<label for="sec">Last Name:</label>
-								<input type="text" placeholder='Last Name' class="form-control input-pay" id="sec" name="invoice[billing_last_name]" value="<%= @invoice_params[:billing_last_name] if @invoice_params.present? %>">
+								<input type="text" placeholder='Last Name' class="form-control input-pay" id="sec" name="contact_detail[last_name]" value="<%= @contact_detail_params[:last_name] if @contact_detail_params.present? %>">
 							</div>
 							<div class="form-group col-md-6 paddingzero">
 								<label for="sec">Email:</label>
-								<input type="text" placeholder='Email' class="form-control input-pay" id="sec" name="invoice[billing_email]" value="<%= @invoice_params[:billing_email] if @invoice_params.present? %>">
+								<input type="text" placeholder='Email' class="form-control input-pay" id="sec" name="contact_detail[email]" value="<%= @contact_detail_params[:email] if @contact_detail_params.present? %>">
 							</div>
 							<div class="form-group col-md-6 paddingrightzero">
 								<label for="sec">Phone Number:</label>
-								<input type="text" placeholder='Phone number' class="form-control input-pay" id="sec" name="invoice[billing_phone]" value="<%= @invoice_params[:billing_phone] if @invoice_params.present? %>">
+								<input type="text" placeholder='Phone number' class="form-control input-pay" id="sec" name="contact_detail[phone_number]" value="<%= @contact_detail_params[:phone_number] if @contact_detail_params.present? %>">
+							</div>
+							<div class="form-group col-md-12 paddingzero">
+								<label for="sec">Message to Merchant:</label>
+								<textarea class="form-control" rows="3" style="height: inherit;" name="contact_detail[message]"><%= @contact_detail_params[:message] %></textarea>
 							</div>
 							<div class="form-group col-md-6 "> </div>
+
 							<div class="form-group col-md-12 paddingzero">
 								<br/>
 								<br/> 
@@ -200,7 +205,7 @@
 					validating: 'glyphicon glyphicon-refresh'
 				},
 				fields: {
-					'invoice[billing_first_name]': {
+					'contact_detail[first_name]': {
 						row: '.col-md-6',
 						validators: {
 							notEmpty: {
@@ -208,7 +213,7 @@
 							}
 						}
 					},
-					'invoice[billing_last_name]': {
+					'contact_detail[last_name]': {
 						row: '.col-md-6',
 						validators: {
 							notEmpty: {
@@ -216,7 +221,7 @@
 							}
 						}
 					},
-					'invoice[billing_email]': {
+					'contact_detail[email]': {
 						row: '.col-md-6',
 						validators: {
 							notEmpty: {
@@ -227,11 +232,19 @@
               }
 						}
 					},
-					'invoice[billing_phone]': {
+					'contact_detail[phone_number]': {
 						row: '.col-md-6',
 						validators: {
 							notEmpty: {
 								message: 'The phone is required'
+							}
+						}
+					},
+					'contact_detail[message]': {
+						row: '.col-md-6',
+						validators: {
+							notEmpty: {
+								message: 'The message is required'
 							}
 						}
 					}
