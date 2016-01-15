@@ -267,7 +267,7 @@
 							<div class="form-group">
 								<label>Nightly Price</label>
 								<div class="input-group">
-									<div class="input-group-addon">$</div>
+									<div class="input-group-addon currency-symbol">$</div>
 									<input name="product[price_cents]" class="form-control" type="text" value="<%= @product.price_cents / 100 if @product.price_cents.present? %>" <%= "disabled" if @product.variants.present? && @product.variants.count > 0 %>>
 								</div>
 							</div>
@@ -279,6 +279,20 @@
 						<div class="col-sm-6">
 							<%= f.label :currency, 'Currency' %>
 							<%= f.select(:currency, get_currency_list.collect {|p| [ p[:currency], p[:currency] ] }, {include_blank: false} , :class => 'form-control') %>
+						</div>
+					</div>
+				</div>
+				<!-- discount filed -->
+				<div class="row">
+					<div class="form-group form">
+						<div class="col-sm-6">
+							<div class="form-group">
+								<label>Discount</label>
+								<div class="input-group">
+									<div class="input-group-addon">%</div>
+									<input name="product[discount]" class="form-control" type="text" value="<%= @product.discount %>">
+								</div>
+							</div>
 						</div>
 					</div>
 				</div>
@@ -325,7 +339,7 @@
 						
 
 						<div class="input-group">
-							<div class="input-group-addon">$</div>
+							<div class="input-group-addon currency-symbol">$</div>
 							<input class="form-control" type="text" name="variant[][price_cents]" id="variant_price">
 						</div>
 					</div>
@@ -347,7 +361,7 @@
 							<div class="col-xs-12">
 								<label for="variant_price">Variant Price:</label><br>
 								<div class="input-group">
-									<div class="input-group-addon">$</div>
+									<div class="input-group-addon currency-symbol">$</div>
 									<input class="form-control" type="text" value="<%= variant.price_cents / 100 %>" name="variant[][price_cents]" id="variant_price">
 								</div>
 							</div>

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160114125702) do
+ActiveRecord::Schema.define(version: 20160115164417) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -95,6 +95,7 @@ ActiveRecord::Schema.define(version: 20160114125702) do
     t.integer  "refund_percent"
     t.integer  "refundable",          limit: 2, default: 0
     t.integer  "step",                limit: 2, default: 0
+    t.integer  "discount",                      default: 0
   end
 
   add_index "products", ["user_id"], name: "index_products_on_user_id", using: :btree

@@ -19,22 +19,22 @@ $(window).load(function() {
 		var updateCurrencySymbol = function() {
 			switch($('#product_currency').val()) {
 				case 'USD':
-					$('.input-group-addon').text('$');
+					$('.input-group-addon.currency-symbol').text('$');
 					break;
 				case 'MYR':
-					$('.input-group-addon').text('RM');
+					$('.input-group-addon.currency-symbol').text('RM');
 					break;
 				case 'SGD':
-					$('.input-group-addon').text('$');
+					$('.input-group-addon.currency-symbol').text('$');
 					break;
 				case 'THB':
-					$('.input-group-addon').text('฿');
+					$('.input-group-addon.currency-symbol').text('฿');
 					break;
 				case 'PHP':
-					$('.input-group-addon').text('$');
+					$('.input-group-addon.currency-symbol').text('$');
 					break;
 				case 'TWD':
-					$('.input-group-addon').text('NT$');
+					$('.input-group-addon.currency-symbol').text('NT$');
 					break;
 			}
 		}
@@ -236,7 +236,7 @@ $(window).load(function() {
 							message: 'The refund day is required',
 							callback: function(value, validator, $field) {
 								var code = $('[name="product[refund_day]"]').val();
-								return (!$('#product_refundable').prop('checked') || code !== '')
+								return (!$('#product_refundable').prop('checked') || code !== '');
 							}
 						}
 					}
@@ -248,7 +248,7 @@ $(window).load(function() {
 							message: 'The refund day is required',
 							callback: function(value, validator, $field) {
 								var code = $('[name="product[refund_percent]"]').val();
-								return (!$('#product_refundable').prop('checked') || code !== '')
+								return (!$('#product_refundable').prop('checked') || code !== '');
 							}
 						}
 					}
@@ -260,9 +260,17 @@ $(window).load(function() {
 							message: 'The base price is required',
 							callback: function(value, validator, $field) {
 								var code = $('[name="product[price_cents]"]').val();
-								var variant_count = $('.variants-container.form-group > .form-group').length
-								return (variant_count > 0 || code !== '')
+								var variant_count = $('.variants-container.form-group > .form-group').length;
+								return (variant_count > 1 || code !== '');
 							}
+						}
+					}
+				},
+				'product[discount]': {
+					row: '.col-xs-12',
+					validators: {
+						notEmpty: {
+							message: 'The discount is required'
 						}
 					}
 				},
@@ -307,6 +315,9 @@ $(window).load(function() {
       // Add new field
       $('form').formValidation('addField', $option_name);
       $('form').formValidation('addField', $option_price_cents);
+
+      // revalidate the price cents field
+      $('form').formValidation('revalidateField', 'product[price_cents]');
 
       $('form').find('[name="product[price_cents]"]').prop('disabled', true);
 			
