@@ -14,24 +14,29 @@ class User < ActiveRecord::Base
     merchant: 1
   }
 
+  has_many :product_reviews
+
   attr_accessor :avatar_url
   
   def self.from_omniauth(auth)
   	
-	  	where(provider: auth.provider, uid: auth.uid).first_or_create do |user|
-      
-      auth.info.image = auth.info.image+"?type=large"
-      logger.info "status=facebook image type Auth #{auth.info.image}"
-	    user.email = auth.info.email
-	    user.password = Devise.friendly_token[0,20]
+  	where(provider: auth.provider, uid: auth.uid).first_or_create do |user|
+    
+    auth.info.image = auth.info.image+"?type=large"
+    logger.info "status=facebook image type Auth #{auth.info.image}"
+    user.email = auth.info.email
+    user.password = Devise.friendly_token[0,20]
 
-      user.build_profile(first_name:auth.info.first_name,last_name:auth.info.last_name,avatar:auth.info.image)
-	    #user.name = auth.info.name   # assuming the user model has a name
-	    #user.image = auth.info.image # assuming the user model has an image
+    user.build_profile(first_name:auth.info.first_name,last_name:auth.info.last_name,avatar:auth.info.image)
+    #user.name = auth.info.name   # assuming the user model has a name
+    #user.image = auth.info.image # assuming the user model has an image
 	  end
 	end
 
-  
+  def full_name
+    full_name = self.profile.full_name if self.profile
+    full_name
+  end
 
 	def self.new_with_session(params, session)
     super.tap do |user|
@@ -73,9 +78,9 @@ class User < ActiveRecord::Base
     if ret.blank? && self.provider == 'facebook'
       ret = self.profile.avatar
     end
+    ret = '/assets/default-avatar.png' if ret.blank?
     ret
   end
- 
 
   def get_store_thumb_url
     ret = ''
@@ -85,19 +90,13 @@ class User < ActiveRecord::Base
     ret
   end
 
-
-
   def sign_up
     save
   end
   private
 
-  
-
-  def send_welcome_message
-    UserMailer.welcome_message(self).deliver
-    
-  end
-
+    def send_welcome_message
+      UserMailer.welcome_message(self).deliver
+    end
 
 end

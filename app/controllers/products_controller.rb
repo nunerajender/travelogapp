@@ -1,6 +1,6 @@
 require 'money/bank/google_currency'
 class ProductsController < ApplicationController
-  before_action :set_product, only: [:show, :edit, :update, :destroy]
+  before_action :set_product, only: [:show, :edit, :update, :destroy, :write_comment]
   before_action :set_product_widget, only: [:edit_basic, :edit_description, :edit_location, :edit_photo, :edit_price]
   skip_before_action :authenticate_user!, only: [:result, :show]
 
@@ -32,23 +32,6 @@ class ProductsController < ApplicationController
     gon.product_cover_image_url = @product.product_attachments.order('id')[0].attachment.url if @product.product_attachments.count > 0
     @is_variants = true if @product.variants.count > 0
 
-    # get the currency rate
-
-    # rates = {}
-    # bank = Money::Bank::GoogleCurrency.new
-    # get_all_currencies.each do |currency|
-    #   puts("Product Currency: #{@product.currency.upcase}")
-    #   puts("Product Currency: #{currency}")
-    #   if @product.currency.upcase != currency
-    #     rate = bank.get_rate(@product.currency.upcase, currency)
-    #   else
-    #     rate = 1.0
-    #   end
-    #   rates[currency] = rate
-    # end
-    
-    # gon.currency_rates = rates
-
     if @product.currency != session[:currency]
       rate = session["currency-convert-#{session[:currency]}"].to_f / session["currency-convert-#{@product.currency}"].to_f
     else
@@ -64,17 +47,32 @@ class ProductsController < ApplicationController
     set_product_currency_attributes(@other_products)
     @current_currency = get_all_currency_symbols[session[:currency]]
 
+    # set params for product reivews
+    @product_reviews = @product.product_reviews.where(:user_id => current_user.id)
+    @product_reviews += @product.product_reviews.where.not(:user_id => current_user.id).order('user_id')
+    @total_review_count = @product_reviews.count
+    # @product_reviews = @product_reviews.page(params[:page]).per(10)
+    @product_reviews = Kaminari.paginate_array(@product_reviews).page(params[:page]).per(10)
+    @product_reviews.each do |product_review|
+      product_review.set_avatar_url
+    end
+  end
 
-    # @other_products.each do |product|
-    #   if product.currency != session[:currency]
-    #     rate = session["currency-convert-#{session[:currency]}"].to_f / session["currency-convert-#{product.currency}"].to_f
-    #   else
-    #     rate = 1.0
-    #   end
-    #   product.price_with_currency = (product.price_cents * rate / 100).round(2)
-    #   product.current_currency = session[:currency]
-    # end
-
+  def write_comment
+    message = params[:message]
+    product_review = ProductReview.where(:user_id => current_user.id, :product_id => @product.id).first
+    product_review = ProductReview.new({:user_id => current_user.id, :product_id => @product.id}) if product_review.blank?
+    product_review.message = message
+    if product_review.save
+      product_name = @product.name
+      # binding.pry
+      UserMailer.write_review(current_user, @product, message).deliver_now
+      # binding.pry
+      redirect_to product_path @product
+    else
+      redirect_to root_path
+    end
+    
   end
 
   def new
@@ -367,7 +365,7 @@ class ProductsController < ApplicationController
     @total_count = @products.count
     # binding.pry
     if @products.class == Array
-      @products = Kaminari.paginate_array(@products).page(params[:page]).per(8) 
+      @products = Kaminari.paginate_array(@products).page(params[:page]).per(8)
     else
       @products = @products.page(params[:page]).per(8)
     end

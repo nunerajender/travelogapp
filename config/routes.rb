@@ -22,6 +22,7 @@ Rails.application.routes.draw do
       match "edit_location",  via: [:get]
       match "edit_photo",  via: [:get]
       match "edit_price",  via: [:get]
+      post "write_comment" => 'products#write_comment'
     end
   end
   resources :store

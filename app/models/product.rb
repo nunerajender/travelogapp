@@ -8,6 +8,8 @@ class Product < ActiveRecord::Base
 	has_many :variants, dependent: :destroy
 	accepts_nested_attributes_for :variants, reject_if: proc { |attributes| attributes['name'].blank? }
 
+	has_many :product_reviews
+
 	enum payment_type: {
 		visa: 0,
 		master: 1,

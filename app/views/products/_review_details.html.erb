@@ -1,0 +1,86 @@
+<section class="header-11-sub section-details review">
+	<div class="container">
+		<div class="row  title-row">
+			<div class="col-md-12">
+				<h3 class="title-detailspage"><%= @total_review_count %> Reviews </h3>
+			</div>
+		</div>
+
+		<div id="review-content">
+			<% @product_reviews.each do |product_review| %>
+				<div class="row">
+					<div class="col-md-1 picture-block">
+						<a href="#"><img src="<%= product_review.avatar_url %>" class="img-circle" width="67" height="67"></a>
+					</div>
+					<div class="col-md-6 text-block">
+						<h5 class="review-name"><%= product_review.user.profile.first_name if product_review.user.profile.present? %></h5>
+						<p><%= product_review.message %></p>
+						<hr>
+					</div>
+				</div>
+			<% end %>
+			
+			<% if current_user.present? && @product.user != current_user %>
+				<div class="row">
+					<form id="product-show" action="/products/<%= @product.id %>/write_comment" method="post">
+						<%= tag(:input, :name => 'authenticity_token', :type => "hidden", :value => form_authenticity_token) %>
+						<div class="col-md-6 col-xs-offset-1">
+							<h4>Post a recommendation</h4>
+							<br>
+							<textarea class="form-control testimonials" rows="3" name="message" id="message"></textarea>
+							<br>
+							<input type="submit" class="btn btn-default btn-testimonials pull-right" value="Send">
+						</div>
+					</form>
+				</div>
+			<% end %>
+			<div class="row">
+				<div class="col-md-6 col-md-offset-1 text-center">
+					<!-- <nav>
+						<ul class="pagination">
+							<li>
+								<a href="#" aria-label="Previous">
+								<span aria-hidden="true">&laquo;</span>
+								</a>
+							</li>
+							<li><a href="#">1</a></li>
+							<li><a href="#">2</a></li>
+							<li><a href="#">3</a></li>
+							<li><a href="#">4</a></li>
+							<li><a href="#">5</a></li>
+							<li>
+								<a href="#" aria-label="Next">
+								<span aria-hidden="true">&raquo;</span>
+								</a>
+							</li>
+						</ul>
+					</nav> -->
+					<%= paginate @product_reviews %>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+
+<script>
+	$(document).ready(function() {
+		$('#product-show').formValidation({
+			framework: 'bootstrap',
+			icon: {
+				valid: 'glyphicon glyphicon-ok',
+				invalid: 'glyphicon glyphicon-remove',
+				validating: 'glyphicon glyphicon-refresh'
+			},
+			fields: {
+				'message': {
+					row: '.col-md-6',
+					validators: {
+						notEmpty: {
+							message: 'The first name is required'
+						}
+					}
+				}
+			}
+		});
+	});
+</script>
