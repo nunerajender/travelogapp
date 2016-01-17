@@ -27,3 +27,14 @@
 .side-collapse-container .section-details.summary {
 	z-index: 10;
 }
+
+.star-rating {
+	.picture-block & {
+		width: 80px;
+	}
+	&.small {
+		.icon-star {
+			font-size: 12px;
+		}
+	}
+}

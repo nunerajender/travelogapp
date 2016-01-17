@@ -63,11 +63,10 @@ class ProductsController < ApplicationController
     product_review = ProductReview.where(:user_id => current_user.id, :product_id => @product.id).first
     product_review = ProductReview.new({:user_id => current_user.id, :product_id => @product.id}) if product_review.blank?
     product_review.message = message
+    product_review.rating_stars = params["rating-stars"].to_i
     if product_review.save
       product_name = @product.name
-      # binding.pry
-      UserMailer.write_review(current_user, @product, message).deliver_now
-      # binding.pry
+      # UserMailer.write_review(current_user, @product, message).deliver_now
       redirect_to product_path @product
     else
       redirect_to root_path

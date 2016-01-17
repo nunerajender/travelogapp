@@ -10,7 +10,14 @@
 			<% @product_reviews.each do |product_review| %>
 				<div class="row">
 					<div class="col-md-1 picture-block">
-						<a href="#"><img src="<%= product_review.avatar_url %>" class="img-circle" width="67" height="67"></a>
+						<a href="#" style="display: block;"><img src="<%= product_review.avatar_url %>" class="img-circle" width="67" height="67"></a>
+						<p class="star-rating small">
+							<span class="icon-star <%= 'selected' if product_review.rating_stars > 0 %>"></span>
+							<span class="icon-star <%= 'selected' if product_review.rating_stars > 1 %>"></span>
+							<span class="icon-star <%= 'selected' if product_review.rating_stars > 2 %>"></span>
+							<span class="icon-star <%= 'selected' if product_review.rating_stars > 3 %>"></span>
+							<span class="icon-star <%= 'selected' if product_review.rating_stars > 4 %>"></span>
+						</p>
 					</div>
 					<div class="col-md-6 text-block">
 						<h5 class="review-name"><%= product_review.user.profile.first_name if product_review.user.profile.present? %></h5>
@@ -26,8 +33,25 @@
 						<%= tag(:input, :name => 'authenticity_token', :type => "hidden", :value => form_authenticity_token) %>
 						<div class="col-md-6 col-xs-offset-1">
 							<h4>Post a recommendation</h4>
+							
+						</div>
+						<div class="col-md-6 col-xs-offset-1">
+							<p class="star-rating" name="star-rating">
+								<span class="icon-star"></span>
+								<span class="icon-star"></span>
+								<span class="icon-star"></span>
+								<span class="icon-star"></span>
+								<span class="icon-star"></span>
+							</p>
+							<input type="hidden" name="rating-stars" value="0" id="rating-stars">
+						</div>
+						
+						<div class="col-md-6 col-xs-offset-1">
 							<br>
 							<textarea class="form-control testimonials" rows="3" name="message" id="message"></textarea>
+						</div>
+						
+						<div class="col-md-6 col-xs-offset-1">
 							<br>
 							<input type="submit" class="btn btn-default btn-testimonials pull-right" value="Send">
 						</div>
@@ -36,25 +60,6 @@
 			<% end %>
 			<div class="row">
 				<div class="col-md-6 col-md-offset-1 text-center">
-					<!-- <nav>
-						<ul class="pagination">
-							<li>
-								<a href="#" aria-label="Previous">
-								<span aria-hidden="true">&laquo;</span>
-								</a>
-							</li>
-							<li><a href="#">1</a></li>
-							<li><a href="#">2</a></li>
-							<li><a href="#">3</a></li>
-							<li><a href="#">4</a></li>
-							<li><a href="#">5</a></li>
-							<li>
-								<a href="#" aria-label="Next">
-								<span aria-hidden="true">&raquo;</span>
-								</a>
-							</li>
-						</ul>
-					</nav> -->
 					<%= paginate @product_reviews %>
 				</div>
 			</div>
@@ -73,14 +78,75 @@
 			},
 			fields: {
 				'message': {
-					row: '.col-md-6',
+					row: '.col-md-6.col-xs-offset-1',
 					validators: {
 						notEmpty: {
-							message: 'The first name is required'
+							message: 'The comment message is required'
+						}
+					}
+				}, 
+				'star-rating': {
+					row: '.col-md-6',
+					validators: {
+						callback: {
+							message: 'The star rating is required',
+							callback: function(value, validator, $field) {
+								var star_count = $('#product-show .star-rating .selected').length;
+								console.log(star_count);
+								$('#rating-stars').val(star_count);
+								return (star_count > 0);
+							}
 						}
 					}
 				}
 			}
 		});
+
+		// $('#product-show').on('hover', '.icon-star', function() {
+		// 	$(this).addClass( "hover" );
+		// }, function() {
+		// 	$(this).removeClass( "hover" );
+		// });
+
+		$('#product-show .icon-star').hover(function() {
+			$(this).addClass( "hover" );
+			$(this).css('cursor', 'pointer');
+
+			var index = $(this).index();
+			if (index > 0) {
+				for(var i = 1; i <= index; i++) {
+					$item = $('#product-show .icon-star:nth-child' + '(' + i.toString() + ')');
+					$item.addClass('hover');
+				}
+				// $('#product-show .icon-star:nth-child' + '(' + i.toString() + ')').addClass('hover');
+			};
+		}, function() {
+			$(this).removeClass( "hover" );
+			var index = $(this).index();
+			if (index > 0) {
+				for(var i = 1; i <= index; i++) {
+					$item = $('#product-show .icon-star:nth-child' + '(' + i.toString() + ')');
+					$item.removeClass('hover');
+				}
+			};
+		});
+
+		$('#product-show .icon-star').on('click', function() {
+			$('#product-show .icon-star').removeClass('selected');
+			var index = $(this).index();
+			for(var i = 0; i <= index; i++) {
+				$item = $('#product-show .icon-star:nth-child' + '(' + (i + 1).toString() + ')');
+				$item.addClass('selected');
+			}
+			$('#product-show').formValidation('revalidateField', 'star-rating');
+			
+		})
+
 	});
 </script>
+
+<style>
+	.star-rating .icon-star.hover {
+		color: #ffcd00;
+	}
+</style>
