@@ -36,7 +36,7 @@
 								<% @upcomming_invoices.each_with_index do |invoice, index|%>
 									<div class="col-md-12">
 										<div class="col-md-3">
-											<a href="/products/<%= product.id %>/edit" class="thumbnail">
+											<!-- <a href="/products/<%= product.id %>/edit" class="thumbnail"> -->
 												<% if invoice.product.product_overview_url.present? %>
 													<img src="<%= product.product_overview_url %>" alt="...">
 												<% else %>
