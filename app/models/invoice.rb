@@ -10,6 +10,8 @@ class Invoice < ActiveRecord::Base
 		refunded: 3
 	}
 
+	belongs_to :user
+
 	attr_accessor :price_with_currency
 	attr_accessor :current_currency
 	attr_accessor :currency_rate
