@@ -34,19 +34,6 @@
 			<div class="col-md-12">
 				<h1>Reservation Charges</h1>
 				<table>
-					<!-- <tr>
-						<td>RM20 x 2 Adult</td>
-						<td>RM40</td>
-					</tr>
-					<tr>
-						<td>RM10 x 3 Child</td>
-						<td>RM30</td>
-					</tr>
-					<tr>
-						<td>Total</td>
-						<td>RM70</td>
-					</tr> -->
-
 					<% if @invoice.variants.present? && @invoice.variants.count > 0 %>
 						<% @invoice.variants.each do |variant| %>
 							<tr>
@@ -66,6 +53,12 @@
 						<td><%= @currency_symbol %><%= @invoice.amount_cents / 100 %></td>
 					</tr>
 				</table>
+			</div>
+		</div>
+		<hr>
+		<div class="row">
+			<div class="col-md-12">
+				<a href="/trips" class="btn btn-default">Go to Trips</a>
 			</div>
 		</div>
 	</div>

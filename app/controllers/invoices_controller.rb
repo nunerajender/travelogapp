@@ -86,6 +86,7 @@ class InvoicesController < ApplicationController
   def create
 
     @invoice = Invoice.new(invoice_params)
+    @invoice.user = current_user
     param_variants = params[:variant]
     param_variants = [] if param_variants.blank?
     param_variants.delete_if{|sa| sa.stringify_keys['count'].to_i == 0 }
