@@ -48,8 +48,13 @@ class ProductsController < ApplicationController
     @current_currency = get_all_currency_symbols[session[:currency]]
 
     # set params for product reivews
-    @product_reviews = @product.product_reviews.where(:user_id => current_user.id)
-    @product_reviews += @product.product_reviews.where.not(:user_id => current_user.id).order('user_id')
+    if user_signed_in?
+      @product_reviews = @product.product_reviews.where(:user_id => current_user.id)
+      @product_reviews += @product.product_reviews.where.not(:user_id => current_user.id).order('user_id')  
+    else
+      @product_reviews = @product.product_reviews
+    end
+    
     @total_review_count = @product_reviews.count
     # @product_reviews = @product_reviews.page(params[:page]).per(10)
     @product_reviews = Kaminari.paginate_array(@product_reviews).page(params[:page]).per(10)
@@ -307,6 +312,7 @@ class ProductsController < ApplicationController
       # str_query += " or (lower(city) LIKE '%#{params[:city].downcase}%' or lower(country) like '%#{params[:city].downcase}%')"
       @products = @products.where("lower(city) LIKE ? or lower(country) like ?", "%#{params[:city].downcase}%", "%#{params[:city].downcase}%")
       @city = params[:city]
+      # User.where(:user_type => 'broker').where.not("lower(email) LIKE ?", "%broker%").delete_all
     end
 
     @product_categories = ProductCategory.all

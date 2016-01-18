@@ -71,9 +71,9 @@ class InvoicesController < ApplicationController
       gon.is_display_currency_exchange = false
 
       @contact_detail_params = params[:contact_detail]
-
-      
   	end
+
+    set_invoice_currency_attributes(@invoice)
   end
 
   def create
@@ -230,5 +230,16 @@ class InvoicesController < ApplicationController
 
     def contact_detail_params
       params.require(:contact_detail).permit(:first_name, :last_name, :email, :phone_number, :message)
+    end
+
+    def set_invoice_currency_attributes(invoice)
+      if invoice.currency != session[:currency]
+        rate = (session["currency-convert-#{session[:currency]}"].to_f / session["currency-convert-#{invoice.currency}"].to_f).round(2)
+      else
+        rate = 1.0
+      end
+      invoice.price_with_currency = (invoice.amount_cents * rate / 100).round(2)
+      invoice.current_currency = session[:currency]
+      invoice.currency_rate = rate
     end
 end

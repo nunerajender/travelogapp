@@ -8,7 +8,7 @@ class ApplicationController < ActionController::Base
   before_action :init_action
   
   layout :layout_by_resource
-
+  skip_before_action :authenticate_user!, only: [:set_currency]
 
   def set_currency
     session[:currency] = params["footer-currency"]

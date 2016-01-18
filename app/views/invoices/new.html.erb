@@ -154,7 +154,26 @@
 							<% end %>
 							<!-- <p>2 x Adults</p> -->
 							<hr>
-							<p class="totalprice">Total : <%= get_all_currency_symbols[@invoice.currency] %><%= @invoice.amount_cents / 100 %></p>
+							<!-- <p class="totalprice">Total : <%= get_all_currency_symbols[@invoice.currency] %><%= @invoice.amount_cents / 100 %></p> -->
+							<p class="totalprice">
+								Total : <%= get_all_currency_symbols[@invoice.current_currency] %><%= @invoice.price_with_currency %>
+								<span> (<%= get_all_currency_symbols[@invoice.currency] %><%= @invoice.amount_cents / 100 %>)</span>
+							</p>
+							<% if @invoice.currency != 'MYR' %>
+								<div class="panel-total-charge" style="">
+									<hr>
+									<small><div>
+										<span id="currency-total-charge" class="">
+											You are paying in
+											<strong><span id="payment-currency"><%= get_all_currency_symbols[@invoice.currency] %><%= @invoice.currency %></span></strong>.
+											Your total charge is
+											<strong><span id="payment-total-charge"><%= get_all_currency_symbols[@invoice.currency] %><%= @invoice.amount_cents / 100 %></span></strong>.
+										</span>
+										<span id="fx-messaging">The for booking this listing is <%= get_all_currency_symbols[@invoice.currency] %>1 <%= @invoice.currency %> to <%= get_all_currency_symbols[@invoice.current_currency] %><%= @invoice.currency_rate %> <%= @invoice.current_currency %> (your host's listing currency).</span>
+									</div></small>
+								</div>
+							<% end %>
+
 						</div>
 					</div>
 				</div>

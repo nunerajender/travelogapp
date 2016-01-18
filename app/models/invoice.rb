@@ -9,4 +9,8 @@ class Invoice < ActiveRecord::Base
 		rejected: 2,
 		refunded: 3
 	}
+
+	attr_accessor :price_with_currency
+	attr_accessor :current_currency
+	attr_accessor :currency_rate
 end
