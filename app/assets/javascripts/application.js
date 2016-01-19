@@ -12,10 +12,6 @@
 //
 //= require jquery
 //= require jquery_ujs
-//= require angular
-//= require angular-animate
-//= require angular-route
-//= require angular-resource
 //= require bootstrap-sprockets
 //= require froala_editor.min
 
@@ -47,14 +43,16 @@
 
 //= require lib/formValidation.min
 //= require lib/formValidation_bootstrap.min
-//= require lib/nouislider.min
-//= require lib/owlcarousel
 //= require lib/loading
 //= require lib/bootstrap-datepicker
-//= require places-form
-//= require ngAutocomplete
-//= require jquery.mockjax
 //= require bootstrap-typeahead
+
+//= require lib/sample-04/custom.js
+
+//= require lib/common-files/modernizr.custom.js
+//= require lib/common-files/startup-kit.js
+
+//= require lib/sample-04/jquery.backgroundvideo.min.js
 //= require store_setting
 
 function stickDropdown(_elem){

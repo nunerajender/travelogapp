@@ -10,6 +10,7 @@ Rails.application.routes.draw do
   post 'products/result_filter' => 'products#result_filter'
   post 'home/search' => 'home#search'
   post 'set_currency' => 'application#set_currency'
+  # get 'set_currency' => 'application#set_currency'
 
 
   resources :products do

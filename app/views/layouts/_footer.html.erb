@@ -1,48 +1,65 @@
-<footer class="footer-2 footer">
+<footer class="footer-3">
 	<div class="container">
-		<div class="col-md-3">
-			<!-- <div class="btn-group" role="group">
-				<button type="button" class="btn btn-default dropdown-toggle currency" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-					MYR
-					<span class="caret"></span>
-				</button>
-				<ul class="dropdown-menu">
-					<li><a href="#">SGD</a></li>
-					<li><a href="#">USD</a></li>
-				</ul>
-			</div> -->
-			<form method="POST" action="/set_currency" id="set-currency">
-				<%= tag(:input, :name => 'authenticity_token', :type => "hidden", :value => form_authenticity_token) %>
-				<%= select_tag 'footer-currency', options_for_select(get_all_currencies, "USD"), class: "form-control", style: "width: 100px;" %>
-				<input type="hidden" name="current-url">
-			</form>
-		</div>
-
-		<div class="col-md-7">
-			<div class="col-md-2">
-				<a href="#">About</a>
-			</div>
-			<div class="col-md-2">
-				<a href="#">Contact</a>
-			</div>
+		<div class="row v-center">
+			<!--bottom-footer-->
 			<div class="col-md-3">
-				<a href="#">Become a Vendor</a>
+				<!-- <div class="btn-group">
+					<button type="button" class="btn btn-default dropdown-toggle btn-currency" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						MYR <span class="caret"></span>
+					</button>
+					<ul class="dropdown-menu currency-dropdown-menu">
+						<li><a href="#">USD</a></li>
+						<li><a href="#">SGD</a></li>
+						<li><a href="#">INR</a></li>
+					</ul>
+				</div> -->
+				<form method="POST" action="/set_currency" id="set-currency">
+					<%= tag(:input, :name => 'authenticity_token', :type => "hidden", :value => form_authenticity_token) %>
+					<div class="btn-group">
+						<button type="button" class="btn btn-default dropdown-toggle btn-currency" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+							<span id="currency-span">MYR </span>
+							<span class="caret"></span>
+						</button>
+						<ul class="dropdown-menu currency-dropdown-menu">
+							<% get_all_currencies.each do |currency| %>
+								<li>
+									<a href=""><%= currency %></a>
+								</li>
+							<% end %>
+						</ul>
+						
+					</div>
+					<input type="hidden" id="footer-currency" name="footer-currency">
+					<input type="hidden" name="current-url">
+				</form>
+
+
+			</div>
+			<div class="col-md-7">
+				<div class="col-md-2">
+					<a href="#">About</a>
+				</div>
+				<div class="col-md-2">
+					<a href="#">Contact</a>
+				</div>
+				<div class="col-md-3">
+					<a href="#">Become a Vendor</a>
+				</div>
+				<div class="col-md-2">
+					<a href="#">Blog</a>
+				</div>
+				<div class="col-md-2">
+					<a href="#">FAQs</a>
+				</div>
 			</div>
 			<div class="col-md-2">
-				<a href="#">Blog</a>
-			</div>
-			<div class="col-md-2">
-				<a href="#">FAQs</a>
-			</div>
-		</div>
-		<div class="col-md-2">
-			<a href=""><img src="<%= asset_url('Facebook.png') %>" width="42"></a>
+				<a href=""><img src="<%= asset_url('Facebook.png') %>" width="42"></a>
 			<a href=""><img src="<%= asset_url('Twitter.png') %>" width="42"></a>
 			<a href=""> <img src="<%= asset_url('Instagram.png') %>" width="42"></a>
+			</div>
 		</div>
-	</div>
-	<div class="container">
-		<div class="col-md-12 bottom-footer">
+		<div class="row v-center  bottom-below-footer">
+			<!--bottom-footer-->
 			<div class="col-md-6">
 				<p class="pull-left"><a href="#" class="terms-footer">Terms and conditions </a>	<a href="#">Privacy policy</a></p>
 			</div>
@@ -55,7 +72,7 @@
 
 <script>
 	$(document).ready(function() {
-		$('#footer-currency').val(gon.current_currency);
+		// $('#footer-currency').val(gon.current_currency);
 		if (window.location.href.indexOf("/products/result") > -1) {
 			$('[name="current-url"]').val(gon.current_location);
 		} else {
@@ -64,10 +81,12 @@
 
 
 		$('#footer-currency').on('change', function() {
-			$(this).closest('form').submit();
+			// $(this).closest('form').submit();
 		})	
 
 		var displayCurrencyExchangeForm = function() {
+			$('#currency-span').text(gon.current_currency + ' ');
+			$('#footer-currency').text(gon.current_currency);
 			if (gon.is_display_currency_exchange)
 				$('#set-currency').css('display', 'block');
 			else
@@ -75,6 +94,15 @@
 		}
 
 		displayCurrencyExchangeForm();
+
+
+		$('#set-currency ul li a').on('click', function(event) {
+			// $('#currency-span').text(gon.current_currency + ' ');
+			// $(this).closest('form').submit();
+			event.preventDefault();
+			$('#footer-currency').val($(this).text());
+			$(this).closest('form').submit();
+		})
 	})
 
 	
