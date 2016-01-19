@@ -23,6 +23,7 @@ class HomeController < ApplicationController
 		# countries += cities
 		gon.search_location_list = countries + cities
 		gon.product_categories = ProductCategory.select(:name).pluck(:name)
+		@search_location_list = countries + cities
 	end
 
 	# def search

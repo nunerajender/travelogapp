@@ -1,0 +1,66 @@
+<section class="content-23  v-center bg-midnight-blue">
+	<div id="bgVideo" class="background" style=""></div>
+	<div>
+		<div class="container">
+			<div class="hero-unit">
+				<h1>Discover and
+					book amazing things to do
+				</h1>
+				<!-- <form class="form-inline"> -->
+				<form class="form-inline landing-page-search" method="POST" action="/products/result">
+					<%= tag(:input, :name => 'authenticity_token', :type => "hidden", :value => form_authenticity_token) %>
+					<div class="col-xs-4 col-xs-offset-1 location-search">
+						<div class="input-group">
+							<input type="text" class="form-control " placeholder="Search for places" name="city" id="search-location">
+							<div class="input-group-btn">
+								<button type="button" class="btn btn-default dropdown-toggle drop-places" data-toggle="dropdown">
+									<span class="caret"></span>
+								</button>
+								<ul id="color-dropdown-menu" class="dropdown-menu dropdown-menu-right" role="menu">
+									<!-- <li class="input"><a href="#">Kuala Lumpur</a></li>
+									<li class="input"><a href="#">Perhentian</a></li>
+									<li class="input"><a href="#">Sarawak</a></li> -->
+
+									<% @search_location_list.each do |location| %>
+										<li class="input"><a href="#"><%= location %></a></li>
+									<% end %>
+								</ul>
+							</div>
+						</div>
+					</div>
+					<div class="form-group">
+						<input type="text" class="form-control global-search" id="demo6" name="search_free_text" placeholder="Search for interest">
+					</div>
+					<% ProductCategory.order('id').each do |category| %>
+						<input type="hidden" name="category_<%= category.id %>" value="1">
+					<% end %>
+					<button type="submit" class="btn btn-success btn-search">Search</button>
+				</form>
+			</div>
+		</div>
+	</div>
+</section>
+
+<script>
+	$(function() {
+		function displayResult(item) {
+		  $('.alert').show().html('You selected <strong>' + item.value + '</strong>: <strong>' + item.text + '</strong>');
+		}
+		
+		$('#demo6').typeahead({
+		  source: gon.product_categories,
+		  onSelect: displayResult
+		});
+
+		// $('#search-location').typeahead({
+		// 	source: gon.search_location_list,
+		// 	onSelect: displayResult
+		// });
+		
+		$('#color-dropdown-menu li a').on('click', function(event) {
+			event.preventDefault();
+			var location = $(this).text();
+			$('#search-location').val(location);
+		})
+	});
+</script>

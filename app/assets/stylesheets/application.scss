@@ -1,6 +1,8 @@
 @import "variables";
-@import "bootstrap-sprockets";
-@import "bootstrap";
+// @import "bootstrap-sprockets";
+// @import "bootstrap";
+@import "lib/flat-ui/bootstrap/css/bootstrap";
+
 // @import "lib/bootstrap-select";
 // @import "lib/formValidation.min";
 // @import "lib/beautycheckbox";
@@ -29,7 +31,11 @@
 // @import "custom";
 @import "lib/flat-ui/flat-ui";
 @import "lib/common-files/icon-font";
-@import "lib/style";
+
+@import "lib/sample-04/header";
+@import "lib/sample-04/style";
+
+// @import "lib/style";
 @import "products";
 @import "store_setting";
 @import "users";

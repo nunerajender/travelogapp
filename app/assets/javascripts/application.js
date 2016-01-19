@@ -43,8 +43,11 @@
 
 //= require lib/formValidation.min
 //= require lib/formValidation_bootstrap.min
+//= require lib/nouislider.min
+//= require lib/owlcarousel
 //= require lib/loading
 //= require lib/bootstrap-datepicker
+//= require jquery.mockjax
 //= require bootstrap-typeahead
 
 //= require lib/sample-04/custom.js
@@ -53,6 +56,8 @@
 //= require lib/common-files/startup-kit.js
 
 //= require lib/sample-04/jquery.backgroundvideo.min.js
+//= require lib/script.js
+
 //= require store_setting
 
 function stickDropdown(_elem){

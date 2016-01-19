@@ -41,12 +41,14 @@ module ApplicationHelper
   end
 
   def get_currency_list
-  	ret = [{:currency => 'USD'}, {:currency => 'MYR'}, {:currency => 'SGD'}, {:currency => 'THB'}, 
-  				{:currency => 'PHP'}, {:currency => 'TWD'}]
+  	# ret = [{:currency => 'USD'}, {:currency => 'MYR'}, {:currency => 'SGD'}, {:currency => 'THB'}, 
+  	# 			{:currency => 'PHP'}, {:currency => 'TWD'}]
+  	ret = [{:currency => 'USD'}, {:currency => 'MYR'}, {:currency => 'SGD'}]
   end
 
   def get_all_currencies
-  	[ "USD", "MYR", "SGD", "THB", "PHP", "TWD" ]
+  	# [ "USD", "MYR", "SGD", "THB", "PHP", "TWD" ]
+  	[ "USD", "MYR", "SGD" ]
   end
 
   def get_all_currency_symbols
