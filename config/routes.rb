@@ -12,6 +12,8 @@ Rails.application.routes.draw do
   post 'set_currency' => 'application#set_currency'
   # get 'set_currency' => 'application#set_currency'
 
+  post '/home_products' => 'home#home_products'
+
 
   resources :products do
     member do

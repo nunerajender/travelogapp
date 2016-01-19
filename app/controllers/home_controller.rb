@@ -3,7 +3,7 @@ class HomeController < ApplicationController
 
 	def index
 
-		@products = Product.where(:step => 5).limit(8)
+		@products = Product.where(:step => 5).limit(6)
 
 		@products.each do |product|
 			if product.currency != session[:currency]
@@ -24,6 +24,25 @@ class HomeController < ApplicationController
 		gon.search_location_list = countries + cities
 		gon.product_categories = ProductCategory.select(:name).pluck(:name)
 		@search_location_list = countries + cities
+		# gon.home_products = @products
+	end
+
+	def home_products
+		city = params[:city]
+		@products = Product.where(:step => 5).where("lower(city) LIKE ? or lower(country) like ?", "%#{params[:city].downcase}%", "%#{params[:city].downcase}%").limit(6)
+		@products.each do |product|
+			if product.currency != session[:currency]
+	      rate = session["currency-convert-#{session[:currency]}"].to_f / session["currency-convert-#{product.currency}"].to_f
+	    else
+	      rate = 1.0
+	    end
+
+			product.price_with_currency = (product.price_cents * rate / 100).round(2)
+			product.current_currency = session[:currency]
+		end
+		# gon.home_products = @products
+		# binding.pry
+		render :layout => false
 	end
 
 	# def search
