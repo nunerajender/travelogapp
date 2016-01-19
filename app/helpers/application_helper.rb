@@ -55,6 +55,10 @@ module ApplicationHelper
   	{ "USD" => "$", "MYR" => "RM", "SGD" => "SGD", "THB" => "฿", "PHP" => "₱", "TWD" => "NT$" }
   end
 
+  def get_all_cities
+  	["Kuala Lumpur", "Johor", "Kedah", "Kelantan", "Melaka", "Negeri Sembilan", "Pahang", "Perak", "Perlis", "Pulau Pinang", "Sabah", "Sarawak", "Selangor", "Terengganu", "Labuan"]
+  end
+
 	def get_currency_rate(from_currency, to_currency)
 		bank = Money::Bank::GoogleCurrency.new
 		rate = bank.get_rate(from_currency, to_currency)

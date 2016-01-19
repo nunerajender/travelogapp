@@ -25,11 +25,22 @@ class HomeController < ApplicationController
 		gon.product_categories = ProductCategory.select(:name).pluck(:name)
 		@search_location_list = countries + cities
 		# gon.home_products = @products
+
+		# count per city
+		@count_per_city = {}
+		get_all_cities.each do |city|
+			@count_per_city[city] = Product.where(:step => 5).where("lower(city) LIKE ? or lower(country) like ?", "%#{city.downcase}%", "%#{city.downcase}%").count
+		end
 	end
 
 	def home_products
 		city = params[:city]
-		@products = Product.where(:step => 5).where("lower(city) LIKE ? or lower(country) like ?", "%#{params[:city].downcase}%", "%#{params[:city].downcase}%").limit(6)
+		if city.downcase == 'all cities'
+			@products = Product.where(:step => 5).limit(6)
+		else
+			@products = Product.where(:step => 5).where("lower(city) LIKE ? or lower(country) like ?", "%#{params[:city].downcase}%", "%#{params[:city].downcase}%").limit(6)
+		end
+		
 		@products.each do |product|
 			if product.currency != session[:currency]
 	      rate = session["currency-convert-#{session[:currency]}"].to_f / session["currency-convert-#{product.currency}"].to_f

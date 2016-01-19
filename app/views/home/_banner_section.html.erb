@@ -11,7 +11,7 @@
 					<%= tag(:input, :name => 'authenticity_token', :type => "hidden", :value => form_authenticity_token) %>
 					<div class="col-xs-4 col-xs-offset-1 location-search">
 						<div class="input-group">
-							<input type="text" class="form-control " placeholder="Search for places" name="city" id="search-location">
+							<input type="text" class="form-control " placeholder="Search for places" name="city" id="search-location" autocomplete="off">
 							<div class="input-group-btn">
 								<button type="button" class="btn btn-default dropdown-toggle drop-places" data-toggle="dropdown">
 									<span class="caret"></span>
@@ -28,8 +28,8 @@
 							</div>
 						</div>
 					</div>
-					<div class="form-group">
-						<input type="text" class="form-control global-search" id="demo6" name="search_free_text" placeholder="Search for interest">
+					<div class="form-group" id="interest-group">
+						<input type="text" class="form-control global-search" id="demo6" name="search_free_text" placeholder="Search for interest" autocomplete="off">
 					</div>
 					<% ProductCategory.order('id').each do |category| %>
 						<input type="hidden" name="category_<%= category.id %>" value="1">
@@ -40,6 +40,29 @@
 		</div>
 	</div>
 </section>
+
+<style>
+	#interest-group .dropdown-menu.typeahead {
+		left: -118px !important;
+	}
+
+	.dropdown-menu li.active > a,
+	.dropdown-menu li.selected > a,
+	.dropdown-menu li.active > a.highlighted,
+	.dropdown-menu li.selected > a.highlighted {
+		background-color: #ddd;
+		color: #ffffff;
+	}
+
+	.dropdown-menu li.active > a:hover, .dropdown-menu li.selected > a:hover, .dropdown-menu li.active > a.highlighted:hover, .dropdown-menu li.selected > a.highlighted:hover, .dropdown-menu li.active > a:focus, .dropdown-menu li.selected > a:focus, .dropdown-menu li.active > a.highlighted:focus, .dropdown-menu li.selected > a.highlighted:focus {
+		background: #ccc;
+	}
+
+	.dropdown-menu.typeahead {
+		border-color: #ccc;
+		border-radius: 0;
+	}
+</style>
 
 <script>
 	$(function() {
@@ -52,10 +75,10 @@
 		  onSelect: displayResult
 		});
 
-		// $('#search-location').typeahead({
-		// 	source: gon.search_location_list,
-		// 	onSelect: displayResult
-		// });
+		$('#search-location').typeahead({
+			source: gon.search_location_list,
+			onSelect: displayResult
+		});
 		
 		$('#color-dropdown-menu li a').on('click', function(event) {
 			event.preventDefault();
