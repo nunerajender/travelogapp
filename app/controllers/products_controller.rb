@@ -232,9 +232,6 @@ class ProductsController < ApplicationController
 						variant = Variant.new
 						variant.name = param_variant[:name]
 						variant.price_cents = param_variant[:price_cents].to_i * 100
-						if variant.price_cents < base_price_cents
-							base_price_cents = variant.price_cents
-						end
 						variant.product = @product
 						variant.save
 					end

@@ -90,6 +90,9 @@
 					left: 178px;
 					color: red;}
 
+	#file_upload {
+		display: none;
+	}
 	.attachments-container img {
 		width: 100%;
 	}
@@ -123,20 +126,14 @@
 						<div class="panel-body">
 							<div class="col-md-3 profileholder">
 								<a class="remove-profile" href="#"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></a>
-								<% if @profile.user_avatar.present? %>
-									<img src="<%= @profile.user_avatar.avatar.small.url %>" class="img-circle">
-									<input type="hidden" name="user_avatar[id]" value="<%= @profile.user_avatar.id %>" >
-								<% else %>
-									<img src="<%= image_url('placehold_150_150.png') %>" class="img-circle">
-								<% end %>
-								
+								<img src="<%= image_url('placehold_150_150.png') %>" class="img-circle">
 							</div> 
 							
 							<div class="col-md-9">
 								<p>Clear frontal face photos are an important way for hosts and guests to learn about each other. It’s not much fun to host a landscape! Please upload a photo that clearly shows your face.</p>
 								
 								<span class="btn btn-default btn-profile" style="margin-bottom: 20px;">
-									Upload a file form your computer <input type="file" id="file_upload">
+									Upload a file form your computer <input type="file">
 								</span>
 								<%= f.submit 'Submit', :class => 'btn btn-default', :style => 'display: block; margin-bottom: 20px;' %>
 							</div> 
@@ -146,7 +143,34 @@
 					</div>
 				</div>
 
-				
+				<div class="col-md-9">
+					<div class="profile-details">
+						<%= form_for @profile, url: {action: "profile_avatar"}, :html => {:class => "form-horizontal profile-form" } do |f| %>
+
+						<div class="attachments-container row">
+							<div class="form-group col-md-12">
+								<button type="button" id="add-avatar-button" class="btn btn-default active">Add Avatar</button>
+								<input name="file_attachment" type="file" id="file_upload">
+							</div>
+
+							<% if @profile.user_avatar.present? %>
+								<div class="form-group col-md-4">
+									<img src="<%= @profile.user_avatar.avatar.small.url %>">
+									<input type="hidden" name="user_avatar[id]" value="<%= @profile.user_avatar.id %>">
+									<button type="button" class="btn btn-default delete-attachment">Delete</button>
+								</div>
+							<% end %>
+						</div>
+						
+						<div class="form-group">
+							<div class="form-group col-xs-12">
+								 <%= f.submit 'Submit', :class => 'btn btn-default' %>
+							</div>
+						</div>
+
+						<% end %>
+					</div>
+				</div>
 			</div>
 		</div>
 	</section>
@@ -154,13 +178,17 @@
 
 <script type="text/javascript">
 	$(document).ready(function() {
-
-		$(document).on('change', '#file_upload', function() {
-
-			if ($('[name="user_avatar[id]"]').length > 0) {
+		$(document).on('click', '#add-avatar-button', function() {
+			attachment_count = $('.attachments-container .col-md-4').length
+			if (attachment_count < 1) {
+				$('#file_upload').trigger('click');
+			} else {
 				alert("Can't upload more than 1.");
-				return;
-			};
+			}
+		})
+	})
+
+	$('.attachments-container').on('change', '#file_upload', function() {
 
 			var formData = new FormData();
 			formData.append('user_avatar[avatar]', this.files[0]);
@@ -175,10 +203,12 @@
 				type: 'POST',
 				success: function(data) {
 					console.log('success');
-					$('.profileholder img').attr('src', data.avatar.small.url);
-					$('[name="user_avatar[id]"]').remove();
-					$('.profileholder').append('<input type="hidden" name="user_avatar[id]" value="' + data.id + '">');
-
+					append_html = '<div class="form-group col-md-4">';
+					append_html += '<img src="' + data.avatar.small.url + '" data-id="' + data.id + '">';
+					append_html += '<input type="hidden" name="user_avatar[id]" value="' + data.id + '">';
+					append_html += '<button type="button" class="btn btn-default delete-attachment">Delete</button>';
+					append_html += '</div>';
+					$('.attachments-container').append(append_html);
 					$('#file_upload').val('');
 					$('body').loading('stop');
 				},
@@ -189,14 +219,9 @@
 			});
 		})
 
-		$(document).on('click', '.remove-profile', function(event) {
-			event.preventDefault();
-			if ($(this).parent().find('input[name="user_avatar[id]"]').length == 0) {
-				return;
-			}
+		$('.attachments-container').on('click', '.delete-attachment', function(event) {
 			var attachment_id = $(this).parent().find('input[name="user_avatar[id]"]').val();
-
-			$this = $(this);
+			$this = $(this)
 			$('body').loading({ message: 'Deleting...'});
 			$.ajax({
 				type: "POST",
@@ -204,8 +229,9 @@
 				dataType: "json",
 				data: { "_method": "delete" },
 				success: function(){
-					$('.profileholder img').attr('src', "<%= image_url('placehold_150_150.png') %>");
-					$('[name="user_avatar[id]"]').remove();
+					$this.parent().fadeOut('slow', function() {
+						$(this).remove();
+					});
 					$('body').loading('stop');
 					console.log('deleted attachment');
 				},
@@ -214,8 +240,7 @@
 					$('body').loading('stop');
 				}
 			});
-		})
-	})
+			event.preventDefault();
 
-		
+		})
 </script>

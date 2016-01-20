@@ -265,7 +265,7 @@
 					<div class="col-sm-6">
 						<label>Nightly Price</label>
 						<div class="input-group">
-							<div class="input-group-addon currency-symbol">$</div>
+							<div class="input-group-addon currency-symbol">RM</div>
 							<input name="product[price_cents]" class="form-control" type="text" value="<%= @product.price_cents / 100 if @product.price_cents.present? %>" <%= "disabled" if @product.variants.present? && @product.variants.count > 0 %>>
 						</div>
 					</div>
