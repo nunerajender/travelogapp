@@ -1668,3 +1668,18 @@ section * {
   background-color: #1B1F23;
   color: #7F8C8D;
 }
+
+/*Footer*/
+.bottom-below-footer { margin-top:100px;}
+
+.btn-currency { border-radius:1px; background:none; border:1px solid #999;}
+.btn-currency:hover, focus, active {background:none;}
+.btn-currency:hover,active {  background:none;}
+.open > ul.currency-dropdown-menu {
+  margin-top: 0;
+}
+.open .dropdown-toggle.btn-default.btn-currency {
+  background: #000;
+}
+
+            /*Footer*/
