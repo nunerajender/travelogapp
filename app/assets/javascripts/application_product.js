@@ -12,10 +12,6 @@
 //
 //= require jquery
 //= require jquery_ujs
-//= require angular
-//= require angular-animate
-//= require angular-route
-//= require angular-resource
 //= require bootstrap-sprockets
 //= require froala_editor.min
 
@@ -51,12 +47,18 @@
 //= require lib/owlcarousel
 //= require lib/loading
 //= require lib/bootstrap-datepicker
-//= require places-form
-//= require ngAutocomplete
 //= require jquery.mockjax
 //= require bootstrap-typeahead
+
+//= require lib/sample-04/custom.js
+
+//= require lib/common-files/modernizr.custom.js
+//= require lib/common-files/startup-kit.js
+
+//= require lib/sample-04/jquery.backgroundvideo.min.js
+//= require lib/script.js
+
 //= require store_setting
-//= require product_new
 
 function stickDropdown(_elem){
   $(_elem).parent().removeClass('open').addClass('open');

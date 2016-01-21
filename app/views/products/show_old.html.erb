@@ -1,0 +1,355 @@
+<div class="side-collapse-container">
+	<section class="header-11-sub bg-empty">
+		<div class="background mountain-empty">
+			&nbsp;
+		</div>
+	</section>
+	<section class="header-11-sub section-details summary" style="z-index: 10;">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-1 picture-block pull-left">
+					<a href="#">
+						<% if @user.get_store_thumb_url.present? %>
+							<img src="<%= @user.get_store_thumb_url %>" class="img-circle" width="90">
+						<% else %>
+							<img src="<%= asset_url('default-avatar.png') %>" class="img-circle" width="90">
+						<% end %>
+					</a>
+				</div>
+				<div class="col-md-7 text-block merchant-details">
+					<h3><%= @product.name %></h3>
+					<!-- <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ipsa rerum voluptatum laborum, perspiciatis necessitatibus officiis, inventore provident praesentium minus non minima, quae vel architecto laudantium veniam nemo et illo similique.</p> -->
+					<%= @product.highlight.html_safe if @product.highlight.present? %>
+				</div>
+				<div class="col-md-4">
+					<div class="book-now-block book-widget-detail-page" style="width: 400px; right: 0; ">
+						<div class="productdetail">
+							<form method="POST" id="booking-form" action="/invoices/new">
+								<%= tag(:input, :name => 'authenticity_token', :type => "hidden", :value => form_authenticity_token) %>
+								<input type="hidden" name="product-id" value="<%= @product.id %>">
+								<p class="totalprice">Total : <%= @current_currency %><%= @product.price_with_currency %></p>
+								<hr>
+								<div class="form-group row">
+									<label class="col-xs-12"><strong>When would you like to visit</strong></label>
+									<div class="col-xs-12">
+										<input type="text" id="datetimepicker" class="form-control date-book" placeholder="Date" name="datepicker">
+									</div>
+								</div>
+								<div class="booking-variants-container">
+									<% @product.variants.each do |variant| %>
+										<div class="form-group row">
+											<input type="hidden" name="variant-price" value="<%= variant.price_cents / 100 %>">
+											<input type="hidden" name="variant-price-with-currency" value="<%= variant.price_with_currency %>">
+											<div class="col-xs-6">
+												<label ><%= variant.name %>:</label><br>
+											</div>
+											<div class="col-xs-6" style="text-align: right;">
+												<button type="button" class="btn btn-default removeButton"><i class="fa fa-minus"></i></button>
+												<input type="hidden" name="variant[][id]" value="<%= variant.id %>">
+												<input type="hidden" name="variant[][name]" value="<%= variant.name %>">
+												<input type="hidden" name="variant[][price_cents]" value="<%= variant.price_cents %>">
+												<input type="text" name="variant[][count]" style="width: 40px; height: 33px; text-align: center;" value="0">
+												<button type="button" class="btn btn-default addButton"><i class="fa fa-plus"></i></button>
+											</div>
+										</div>
+									<% end %>
+								</div>
+								<% if @is_variants %>
+									<hr>
+								<% end %>
+								<div class="form-group row hide" id="booking-result-item-template">
+									<div class="col-xs-7 result-item-name">
+										<label></label>
+									</div>
+									<div class="col-xs-5 result-item-price">
+										<label></label>
+									</div>
+								</div>
+								<div class="booking-result-container">
+									
+								</div>
+								<button type="submit" class="  blue btn-block btn btn-primary btn-pay">Book Now</button>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+	<section class="header-11-sub section-details content">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-7">
+					<%= @product.description.html_safe if @product.description.present? %>
+				</div>
+				<div class="col-md-2">
+				</div>
+				<div class="col-md-4">
+				</div>
+				<div class="col-md-12  gallery-row">
+					<div id="owl-gallery" data-toggle="modal" data-target="#myModal" class="gallery-block owl-carousel">
+						<!-- <div>
+							<img class='lazyOwl' data-src="img/thumb1.jpg" width='250' alt="" />
+
+						<div>
+							<img class='lazyOwl' data-src="<%= asset_url('thumb1.jpg') %>" width='250' alt="" />
+						</div>
+						<div>
+							<img class='lazyOwl' data-src="<%= asset_url('thumb2.jpg') %>" width='250' alt="" />
+						</div>
+						<div>
+							<img class='lazyOwl' data-src="<%= asset_url('thumb1.jpg') %>" width='250' alt="" />
+						</div>
+						<div>
+							<img class='lazyOwl' data-src="<%= asset_url('thumb2.jpg') %>" width='250' alt="" />
+						</div>
+						<div>
+							<img class='lazyOwl' data-src="<%= asset_url('thumb1.jpg') %>" width='250' alt="" />
+						</div>
+						<div>
+							<img src="<%= asset_url('thumb2.jpg') %>" alt="" />
+						</div>
+						<div>
+							<img src="img/thumb1.jpg" alt="" />
+						</div> -->
+
+							<img src="<%= asset_url('thumb1.jpg') %>" alt="" />
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+	<%= render 'review_details' %>
+	<section class="header-11-sub section-details content">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-12">
+					<h3 class="title-detailspage">About the Merchant, <%= @user.profile.full_name if @user.profile.present? %></h3>
+				</div>
+				<div class="col-md-1 picture-block">
+					<a href="#">
+						<% if @user.get_store_thumb_url.present? %>
+							<img src="<%= @user.get_store_thumb_url %>" class="img-circle" width="90">
+						<% else %>
+							<img src="<%= asset_url('default-avatar.png') %>" class="img-circle" width="90">
+						<% end %>
+					</a>
+				</div>
+				<div class="col-md-8 merchant-info text-block">
+					<h5 class="review-name"><%= @user.profile.full_name if @user.profile.present? %></h5>
+					<!-- <p> Kuala Lumpur, Malaysia  </p> -->
+					<p> <%= @user.store_setting.city if @user.store_setting.present? %>, <%= @user.store_setting.state if @user.store_setting.present? %></p>
+					<p> Member Since November <%= @user.store_setting.created_at.strftime('%Y') if @user.store_setting.present? %> </p>
+					<br>
+					<a class="btn btn-default btn-small btn-contact " href="#">Contact Me </a>
+				</div>
+			</div>
+			<hr>
+			<div class="row">
+				<div class="col-md-12">
+					<h3 class="title-detailspage">You may also like</h3>
+				</div>
+				<% @other_products.each do |product| %>
+					<div class="col-xs-12 col-sm-6 col-md-3 portfolio-item">
+						<p class="price"><%= @current_currency %> <%= product.price_with_currency %></p>
+						<p class="heart-wrapper ">
+							<input id="heart8" type="checkbox" class="heart-checkbox" />
+							<label for="heart8"> </label>
+						</p>
+						<a href="<%= product_path product %>"><img src="<%= product.user_avatar_url %>" class="img-circle user-thumb" width="52" /></a>
+						<a href="<%= product_path product %>">
+							<img class="" src="<%= product.product_overview_url %>" width="262" alt="">
+						</a>
+						<h4>
+							<a href="<%= product_path product %>"><%= product.name %></a>
+						</h4>
+						<a href="<%= product_path product %>">
+							<p><%= product.city %>, <%= product.country %>
+							</p>
+							<p class="star-rating">
+								<span class="icon-star selected"></span>
+								<span class="icon-star"></span>
+								<span class="icon-star"></span>
+								<span class="icon-star"></span>
+								<span class="icon-star"></span>
+							</p>
+						</a>
+						<p></p>
+					</div>
+				<% end %>
+			</div>
+		</div>
+	</section>
+</div>
+
+
+<script>
+	function initResponsiveHeader() {
+		var sideslider = $('[data-toggle=collapse-side]');
+		var sel = sideslider.attr('data-target');
+		var sel2 = sideslider.attr('data-target-2');
+		sideslider.click(function(event) {
+			$(sel).toggleClass('in');
+			$(sel2).toggleClass('out');
+		});
+
+	}
+
+
+	function initGallery() {
+		$("#owl-gallery").owlCarousel({
+			navigation: false,
+			pagination: false,
+			lazyLoad: true,
+			autoPlay: 5000, //Set AutoPlay to 3 seconds
+		});
+	}
+
+	function initCalendarDate() {
+		var nowTemp = new Date();
+		var now =  new Date(nowTemp.getFullYear(), nowTemp.getMonth(), nowTemp.getDate(), 0, 0, 0, 0);
+		$('#datetimepicker').datepicker({
+			format: 'dd/mm/yyyy',
+			onRender: function(date) {
+				return date.valueOf() < now.valueOf() ? 'disabled': '';
+			}
+		})
+		.on('changeDate', function(e) {
+      $('#booking-form').formValidation('revalidateField', 'datepicker');
+    });
+	}
+	$(window).load(function() {
+		initResponsiveHeader();
+		initCalendarDate();
+		$(document).ready(function() {
+			initGallery();
+		});
+	});
+
+	$(document).ready(function () {
+		$('.header-11-sub .background.mountain-empty').css({'background-image': 'url(' + gon.product_cover_image_url + ')'})
+		var product_currency = "<%= @product.currency %>";
+		var product_price_cents = parseInt("<%= @product.price_cents %>");
+		var selected_currency_symbol = gon.current_currency;
+		var selected_currency_rate = parseFloat(gon.currency_rates[product_currency]);
+
+		
+		// set footer currency
+		// $('#footer-currency').val(product_currency);
+
+		var product_currency_symbol = gon.currency_symbols[gon.current_currency];
+		
+		var showResultBooking = function() {
+
+			$('.booking-result-container').empty();
+
+			var $template = $('#booking-result-item-template');
+			var is_booking = false;
+			var total_price = 0;
+			$('.booking-variants-container > .form-group').each(function() {
+				variant_name = $(this).find('label').text();
+				variant_count = parseInt($(this).find('[name="variant[][count]"]').val());
+				variant_price = $(this).find('[name="variant-price-with-currency"]').val();
+				if (variant_count > 0) {
+					is_booking = true;
+					$clone = $template.clone().removeClass('hide').removeAttr('id').addClass('item');
+					$clone.find('.result-item-name label').text(product_currency_symbol + variant_price + ' x ' + variant_count + ' ' + variant_name)
+						.attr({'data-item-price': variant_price, 'data-item-count': variant_count, 'data-item-name': variant_name})
+
+					item_price = (variant_price * variant_count).toFixed(2);
+					$clone.find('.result-item-price label').text(product_currency_symbol + item_price)
+						.attr('data-price', item_price)
+					total_price += variant_price * variant_count;
+					$('.booking-result-container').append($clone);
+				};
+			})
+			if (is_booking) {
+				$clone = $template.clone().removeClass('hide').removeAttr('id').addClass('total');
+				$clone.find('.result-item-name label').text('Total');
+				$clone.find('.result-item-price label').text(product_currency_symbol + total_price.toFixed(2)).attr('data-total-price', total_price);
+				$('.booking-result-container').append($clone);
+			};
+
+			// showResultBookingWithMultiCurrency();
+		}
+
+		$('.booking-variants-container').on('click', 'button.addButton', function() {
+			$variant_count = $(this).parent().find('[name="variant[][count]"]');
+			var count = parseInt($variant_count.val());
+			if (isNaN(count)) {
+				count = 0;
+			} else {
+				count++;
+			}
+			$variant_count.val(count.toString());
+			showResultBooking();
+		})
+
+		$('.booking-variants-container').on('click', 'button.removeButton', function() {
+			$variant_count = $(this).parent().find('[name="variant[][count]"]');
+			var count = parseInt($variant_count.val());
+			if (isNaN(count)) {
+				count = 0;
+			} else {
+				count--;
+				if (count < 0)
+					count = 0;
+			}
+			$variant_count.val(count.toString());
+			showResultBooking();
+		})
+
+		$('#footer-currency').on('change', function() {
+			selected_currency_symbol = gon.currency_symbols[$(this).val()];
+			selected_currency_rate = parseFloat(gon.currency_rates[$(this).val()]);
+			showResultBookingWithMultiCurrency();
+		})
+
+		var showResultBookingWithMultiCurrency = function() {
+			converted_price = (product_price_cents * selected_currency_rate / 100).toFixed(2);
+			$('#booking-form .totalprice').text('Total : ' + selected_currency_symbol + converted_price.toString());
+
+			// set booking items
+			$('.booking-result-container .form-group.item').each(function() {
+				$result_item_name = $(this).find('.result-item-name label');
+				converted_count = parseInt($result_item_name.attr('data-item-count'));
+				converted_name = $result_item_name.attr('data-item-name');
+
+				converted_price = (parseFloat($result_item_name.attr('data-item-price')) * selected_currency_rate).toFixed(2);
+
+				$result_item_name.text(selected_currency_symbol + converted_price + ' x ' + converted_count + ' ' + converted_name)
+
+				$result_item_price = $(this).find('.result-item-price label');
+
+				$result_item_price.text(selected_currency_symbol + (converted_price * converted_count).toFixed(2))
+			})
+
+			$('.booking-result-container .form-group.total').each(function() {
+				$result_item_price = $(this).find('.result-item-price label');
+				converted_price = (parseFloat($result_item_price.attr('data-total-price')) * selected_currency_rate).toFixed(2);
+				$result_item_price.text(selected_currency_symbol + converted_price);
+			})
+		}
+
+
+		$('#booking-form').formValidation({
+			framework: 'bootstrap',
+			icon: {
+				valid: 'glyphicon glyphicon-ok',
+				invalid: 'glyphicon glyphicon-remove',
+				validating: 'glyphicon glyphicon-refresh'
+			},
+			fields: {
+				'datepicker': {
+					row: '.col-xs-12',
+					validators: {
+						notEmpty: {
+							message: 'The date field is required'
+						}
+					}
+				},
+			}
+		})
+	})
+</script>

@@ -15,9 +15,14 @@
   <%= Gon::Base.render_data %>
 </head>
 <body>
-
+  <%= render 'layouts/header_users' %>
 	<%= yield %>
 	<%= render 'layouts/footer' %>
 
+  <style>
+    ul.dropdown-menu {
+      display: none;
+    }
+  </style>
 </body>
 </html>

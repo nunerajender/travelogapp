@@ -12,7 +12,9 @@ Rails.application.config.assets.version = '1.0'
 
 Rails.application.config.assets.precompile += %w( application_users.css )
 Rails.application.config.assets.precompile += %w( application_users.js )
-Rails.application.config.assets.precompile += %w( application_products.js )
+
+Rails.application.config.assets.precompile += %w( application_product.css )
+Rails.application.config.assets.precompile += %w( application_product.js )
 
 Rails.application.config.assets.precompile += %w( application_old.css )
 Rails.application.config.assets.precompile += %w( application_old.js )

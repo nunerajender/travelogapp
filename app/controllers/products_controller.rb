@@ -12,8 +12,8 @@ class ProductsController < ApplicationController
 		if current_user.status == 'merchant'
 			@products = current_user.products
 
-			@unlisted_products = @products.where.not(:step => 5)
-			@listed_products = @products.where(:step => 5)
+			@unlisted_products = @products.where.not(:step => 5).includes(:product_attachments).includes(:product_reviews)
+			@listed_products = @products.where(:step => 5).includes(:product_attachments).includes(:product_reviews)
 
 			# set_product_attributs(@products)
 			set_product_attributs(@unlisted_products)
@@ -26,7 +26,7 @@ class ProductsController < ApplicationController
 
 	def show
 		@user = @product.user
-		@other_products = Product.where(:step => 5).order('random()').limit(4)
+		@other_products = Product.where(:step => 5).order('random()').limit(4).includes(:product_attachments).includes(:product_reviews)
 		set_product_attributs(@other_products)
 
 		gon.product_cover_image_url = @product.product_attachments.order('id')[0].attachment.url if @product.product_attachments.count > 0
@@ -56,11 +56,24 @@ class ProductsController < ApplicationController
 		end
 		
 		@total_review_count = @product_reviews.count
-		# @product_reviews = @product_reviews.page(params[:page]).per(10)
+		total_review = 0
+		if @total_review_count > 0
+			@product_reviews.each do |product_review|
+				total_review += product_review.rating_stars
+			end
+			@product.review_mark = (total_review / @total_review_count).round
+		else
+			@product.review_mark = 0
+		end
+		
+		
 		@product_reviews = Kaminari.paginate_array(@product_reviews).page(params[:page]).per(10)
+
 		@product_reviews.each do |product_review|
 			product_review.set_avatar_url
 		end
+
+		render :layout => "product_detail"
 	end
 
 	def write_comment
@@ -432,7 +445,21 @@ class ProductsController < ApplicationController
 					product.product_overview_url = product.product_attachments[0].attachment.medium.url
 				end
 				product.user_avatar_url = product.user.get_avatar_url
+
+				# review the mark
+				total_review = 0
+				review_count = product.product_reviews.count
+				if review_count > 0
+					product.product_reviews.each do |review|
+						total_review += review.rating_stars
+					end
+					product.review_mark = (total_review / review_count).round
+				else
+					product.review_mark = 0
+				end
 			end
+
+
 		end
 
 		def set_product_currency_attributes(products)

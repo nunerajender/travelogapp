@@ -116,34 +116,32 @@
 						Profile Photo
 					</div> -->
 
-					<div class="panel panel-default profile-photo">
-						<%= form_for @profile, url: {action: "profile_avatar"}, :html => {:class => "form-horizontal profile-form" } do |f| %>
-
-						<div class="panel-heading">Profile Photo</div>
-						<div class="panel-body">
-							<div class="col-md-3 profileholder">
-								<a class="remove-profile" href="#"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></a>
-								<% if @profile.user_avatar.present? %>
-									<img src="<%= @profile.user_avatar.avatar.small.url %>" class="img-circle">
-									<input type="hidden" name="user_avatar[id]" value="<%= @profile.user_avatar.id %>" >
-								<% else %>
-									<img src="<%= image_url('placehold_150_150.png') %>" class="img-circle">
-								<% end %>
+					<%= form_for @profile, url: {action: "profile_avatar"}, :html => {:class => "form-horizontal profile-form" } do |f| %>
+						<div class="panel panel-default profile-photo">
+							<div class="panel-heading">Profile Photo</div>
+							<div class="panel-body">
+								<div class="col-md-3 profileholder">
+									<a class="remove-profile" href="#"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></a>
+									<% if @profile.user_avatar.present? %>
+										<img src="<%= @profile.user_avatar.avatar.small.url %>" class="img-circle">
+										<input type="hidden" name="user_avatar[id]" value="<%= @profile.user_avatar.id %>" >
+									<% else %>
+										<img src="<%= image_url('placehold_150_150.png') %>" class="img-circle">
+									<% end %>
+									
+								</div> 
 								
-							</div> 
-							
-							<div class="col-md-9">
-								<p>Clear frontal face photos are an important way for hosts and guests to learn about each other. It’s not much fun to host a landscape! Please upload a photo that clearly shows your face.</p>
-								
-								<span class="btn btn-default btn-profile" style="margin-bottom: 20px;">
-									Upload a file form your computer <input type="file" id="file_upload">
-								</span>
-								<%= f.submit 'Submit', :class => 'btn btn-default', :style => 'display: block; margin-bottom: 20px;' %>
-							</div> 
+								<div class="col-md-9">
+									<p>Clear frontal face photos are an important way for hosts and guests to learn about each other. It’s not much fun to host a landscape! Please upload a photo that clearly shows your face.</p>
+									
+									<span class="btn btn-default btn-profile" style="margin-bottom: 20px;">
+										Upload a file form your computer <input type="file" id="file_upload">
+									</span>
+									<%= f.submit 'Submit', :class => 'btn btn-default', :style => 'display: block; margin-bottom: 20px;' %>
+								</div> 
+							</div>
 						</div>
-
-						<% end %>
-					</div>
+					<% end %>
 				</div>
 
 				

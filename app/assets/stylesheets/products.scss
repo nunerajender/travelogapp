@@ -37,10 +37,33 @@
 			font-size: 12px;
 		}
 	}
+	.icon-star {
+		display: inline;
+    color: #d8d8d8;
+    font-size: 16px;
+
+    &.selected {
+    	color: #ffcd00
+    }
+	}
 }
 
 p.totalprice {
 	span {
 		font-size: 16px;
 	}
+}
+
+.header-10-sub .background {
+	// background: image-url("img/vacation.jpg");
+}
+
+.datepicker.dropdown-menu {
+	visibility: visible;
+	opacity: 1;
+	display: none;
+}
+
+#product-show .form-control.testimonials {
+	color: #000;
 }

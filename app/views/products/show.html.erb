@@ -1,186 +1,9 @@
-<div class="side-collapse-container">
-	<section class="header-11-sub bg-empty">
-		<div class="background mountain-empty">
-			&nbsp;
-		</div>
-	</section>
-	<section class="header-11-sub section-details summary" style="z-index: 10;">
-		<div class="container">
-			<div class="row">
-				<div class="col-md-1 picture-block pull-left">
-					<a href="#">
-						<% if @user.get_store_thumb_url.present? %>
-							<img src="<%= @user.get_store_thumb_url %>" class="img-circle" width="90">
-						<% else %>
-							<img src="<%= asset_url('default-avatar.png') %>" class="img-circle" width="90">
-						<% end %>
-					</a>
-				</div>
-				<div class="col-md-7 text-block merchant-details">
-					<h3><%= @product.name %></h3>
-					<!-- <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ipsa rerum voluptatum laborum, perspiciatis necessitatibus officiis, inventore provident praesentium minus non minima, quae vel architecto laudantium veniam nemo et illo similique.</p> -->
-					<%= @product.highlight.html_safe if @product.highlight.present? %>
-				</div>
-				<div class="col-md-4">
-					<div class="book-now-block book-widget-detail-page" style="width: 400px; right: 0; ">
-						<div class="productdetail">
-							<form method="POST" id="booking-form" action="/invoices/new">
-								<%= tag(:input, :name => 'authenticity_token', :type => "hidden", :value => form_authenticity_token) %>
-								<input type="hidden" name="product-id" value="<%= @product.id %>">
-								<p class="totalprice">Total : <%= @current_currency %><%= @product.price_with_currency %></p>
-								<hr>
-								<div class="form-group row">
-									<label class="col-xs-12"><strong>When would you like to visit</strong></label>
-									<div class="col-xs-12">
-										<input type="text" id="datetimepicker" class="form-control date-book" placeholder="Date" name="datepicker">
-									</div>
-								</div>
-								<div class="booking-variants-container">
-									<% @product.variants.each do |variant| %>
-										<div class="form-group row">
-											<input type="hidden" name="variant-price" value="<%= variant.price_cents / 100 %>">
-											<input type="hidden" name="variant-price-with-currency" value="<%= variant.price_with_currency %>">
-											<div class="col-xs-6">
-												<label ><%= variant.name %>:</label><br>
-											</div>
-											<div class="col-xs-6" style="text-align: right;">
-												<button type="button" class="btn btn-default removeButton"><i class="fa fa-minus"></i></button>
-												<input type="hidden" name="variant[][id]" value="<%= variant.id %>">
-												<input type="hidden" name="variant[][name]" value="<%= variant.name %>">
-												<input type="hidden" name="variant[][price_cents]" value="<%= variant.price_cents %>">
-												<input type="text" name="variant[][count]" style="width: 40px; height: 33px; text-align: center;" value="0">
-												<button type="button" class="btn btn-default addButton"><i class="fa fa-plus"></i></button>
-											</div>
-										</div>
-									<% end %>
-								</div>
-								<% if @is_variants %>
-									<hr>
-								<% end %>
-								<div class="form-group row hide" id="booking-result-item-template">
-									<div class="col-xs-7 result-item-name">
-										<label></label>
-									</div>
-									<div class="col-xs-5 result-item-price">
-										<label></label>
-									</div>
-								</div>
-								<div class="booking-result-container">
-									
-								</div>
-								<button type="submit" class="  blue btn-block btn btn-primary btn-pay">Book Now</button>
-							</form>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</section>
-	<section class="header-11-sub section-details content">
-		<div class="container">
-			<div class="row">
-				<div class="col-md-7">
-					<%= @product.description.html_safe if @product.description.present? %>
-				</div>
-				<div class="col-md-2">
-				</div>
-				<div class="col-md-4">
-				</div>
-				<div class="col-md-12  gallery-row">
-					<div id="owl-gallery" data-toggle="modal" data-target="#myModal" class="gallery-block owl-carousel">
-						<!-- <div>
-							<img class='lazyOwl' data-src="img/thumb1.jpg" width='250' alt="" />
-
-						<div>
-							<img class='lazyOwl' data-src="<%= asset_url('thumb1.jpg') %>" width='250' alt="" />
-						</div>
-						<div>
-							<img class='lazyOwl' data-src="<%= asset_url('thumb2.jpg') %>" width='250' alt="" />
-						</div>
-						<div>
-							<img class='lazyOwl' data-src="<%= asset_url('thumb1.jpg') %>" width='250' alt="" />
-						</div>
-						<div>
-							<img class='lazyOwl' data-src="<%= asset_url('thumb2.jpg') %>" width='250' alt="" />
-						</div>
-						<div>
-							<img class='lazyOwl' data-src="<%= asset_url('thumb1.jpg') %>" width='250' alt="" />
-						</div>
-						<div>
-							<img src="<%= asset_url('thumb2.jpg') %>" alt="" />
-						</div>
-						<div>
-							<img src="img/thumb1.jpg" alt="" />
-						</div> -->
-
-							<img src="<%= asset_url('thumb1.jpg') %>" alt="" />
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</section>
+<div class="page-wrapper">
+	
+	<%= render 'product_details' %>
+	<%= render 'gallery_details' %>
 	<%= render 'review_details' %>
-	<section class="header-11-sub section-details content">
-		<div class="container">
-			<div class="row">
-				<div class="col-md-12">
-					<h3 class="title-detailspage">About the Merchant, <%= @user.profile.full_name if @user.profile.present? %></h3>
-				</div>
-				<div class="col-md-1 picture-block">
-					<a href="#">
-						<% if @user.get_store_thumb_url.present? %>
-							<img src="<%= @user.get_store_thumb_url %>" class="img-circle" width="90">
-						<% else %>
-							<img src="<%= asset_url('default-avatar.png') %>" class="img-circle" width="90">
-						<% end %>
-					</a>
-				</div>
-				<div class="col-md-8 merchant-info text-block">
-					<h5 class="review-name"><%= @user.profile.full_name if @user.profile.present? %></h5>
-					<!-- <p> Kuala Lumpur, Malaysia  </p> -->
-					<p> <%= @user.store_setting.city if @user.store_setting.present? %>, <%= @user.store_setting.state if @user.store_setting.present? %></p>
-					<p> Member Since November <%= @user.store_setting.created_at.strftime('%Y') if @user.store_setting.present? %> </p>
-					<br>
-					<a class="btn btn-default btn-small btn-contact " href="#">Contact Me </a>
-				</div>
-			</div>
-			<hr>
-			<div class="row">
-				<div class="col-md-12">
-					<h3 class="title-detailspage">You may also like</h3>
-				</div>
-				<% @other_products.each do |product| %>
-					<div class="col-xs-12 col-sm-6 col-md-3 portfolio-item">
-						<p class="price"><%= @current_currency %> <%= product.price_with_currency %></p>
-						<p class="heart-wrapper ">
-							<input id="heart8" type="checkbox" class="heart-checkbox" />
-							<label for="heart8"> </label>
-						</p>
-						<a href="<%= product_path product %>"><img src="<%= product.user_avatar_url %>" class="img-circle user-thumb" width="52" /></a>
-						<a href="<%= product_path product %>">
-							<img class="" src="<%= product.product_overview_url %>" width="262" alt="">
-						</a>
-						<h4>
-							<a href="<%= product_path product %>"><%= product.name %></a>
-						</h4>
-						<a href="<%= product_path product %>">
-							<p><%= product.city %>, <%= product.country %>
-							</p>
-							<p class="star-rating">
-								<span class="icon-star selected"></span>
-								<span class="icon-star"></span>
-								<span class="icon-star"></span>
-								<span class="icon-star"></span>
-								<span class="icon-star"></span>
-							</p>
-						</a>
-						<p></p>
-					</div>
-				<% end %>
-			</div>
-		</div>
-	</section>
+	<%= render 'merchant_details' %>
 </div>
 
 
@@ -228,7 +51,7 @@
 	});
 
 	$(document).ready(function () {
-		$('.header-11-sub .background.mountain-empty').css({'background-image': 'url(' + gon.product_cover_image_url + ')'})
+		$('.header-10-sub .background').css({'background-image': 'url(' + gon.product_cover_image_url + ')'})
 		var product_currency = "<%= @product.currency %>";
 		var product_price_cents = parseInt("<%= @product.price_cents %>");
 		var selected_currency_symbol = gon.current_currency;
@@ -353,3 +176,224 @@
 		})
 	})
 </script>
+
+
+
+<style>
+	/*detail page only*/
+	/*Overrighting original style.css, please change class name*/ 
+	.paddingzero { padding:0;}
+	.header-10-sub .background {
+		/*background: image-url("img/vacation.jpg");*/
+		opacity: 85;
+		filter: alpha(opacity=8500);
+		opacity: 0.85;
+		filter: alpha(opacity=85);
+		background-repeat: no-repeat;
+    background-size: cover;
+    width: 100%;
+	}
+	.header-10-sub {
+		height: 400px !important;
+	}
+
+
+	.form-control {
+		border: 1px solid #bdc3c7;
+		color: #34495e;
+		border-radius: 2px;
+	}
+	.btn-default { background:#E64A19; color:#FFF; border-radius:1px;}
+	.btn-default:hover {background:#BF360C;}
+	footer p {
+		color: #FFF;
+	}
+	/*Overrighting original style.css, please change class name*/
+	/*Overrighting original header.css*/
+	.navsearch-form {
+		top: 5px;
+	}
+	.navbar-form .form-control {
+		border-radius: 1px;
+	}
+	/*Overrighting original header.css*/
+
+	.titledistance { margin-bottom:40px;}
+
+	p {    font-size: 14px;
+		color: #000;}
+
+	a {   
+		color: #000;}
+
+	.content-8 p {
+		font-size: 14px;
+		font-weight: normal;
+		color: #000;
+		margin-bottom: 43px;margin-bottom: 0;
+	}
+
+	.content-8 h4 {
+		font-weight: normal;
+		margin-top: 0;
+	}
+
+	.content-7 h4{
+		font-weight: normal;
+		margin-top: 0;
+	}
+
+
+
+
+	.book-now-block {
+		background-color: #fff;
+		display: block;
+		width: 400px;
+		min-height: 225px;
+		border: 1px solid #dce0e0;
+		border-radius: 0;
+		z-index:999;
+	}
+	.book-widget-detail-page {
+		position: absolute;
+		top: -94px;opacity: 0.9;
+	}
+
+	.productdetail {
+		/*position: absolute;*/
+		padding: 20px 20px 20px 20px;
+	}
+
+
+	.book-widget-detail-page p { font-weight:normal;font-size: 16px;}
+	.widget-title {
+		background: rgba(0, 0, 0, 0.8);
+		padding: 10px 40px;
+		margin: 0;
+		opacity: 1.5;
+		display: block;
+		width: 400px;
+		border: 1px solid #000;
+	}
+	.widget-title p { color:#FFF; font-weight:300; font-size:18px;margin: 0;}
+
+
+	.greysection {
+		background-color: #f9f9f9;
+		min-height: 150px;
+		border: 1px solid #dce0e0;
+	}
+
+
+	/*1 - about merchant*/
+	.aboutmerchant {    padding-top: 40px;
+		padding-bottom: 40px;text-align: left;}
+
+	/*1 - about merchant*/
+	/*2 - about product*/
+	.aboutproduct {    padding-top: 40px;
+		padding-bottom: 40px;text-align: left;}
+
+	/*2 - about product*/
+	/*3 - gallery*/
+	.gallery {    padding-top: 40px;
+		padding-bottom: 40px;}
+
+	/*3 - gallery*/
+	/*4 - reviews*/
+	.reviews {    padding-top: 40px;
+		padding-bottom: 40px;text-align: left;}
+
+	/*4 - reviews*/
+	/*5 - merchant detail*/
+	.merchantdetail {    padding-top: 40px;
+		padding-bottom: 40px;text-align: left;}
+
+	/*5 - merchant detail*/
+
+	/*detail page only*/
+
+	/*detail page gallery*/
+	.detailpage-images-gallery {}
+	.topleftimg { padding:0 2px 2px 0;}
+	.toprightimg {padding:0 0 2px 2px;}
+	.bottomleftimg {padding:2px 2px 0 0;} 
+	.bottomcentreimg {padding:2px 2px 0 2px;}
+	.bottomrightimg {padding:2px 0  0 2px;}
+	.gallery-overlay-cover {    background: #000;
+		opacity: 0.3; width:215px; height:215px; position:absolute;}
+	.text-overlay-cover { position:absolute; top: 100px;
+		left: 40px; z-index:99; color:#FFF; font-size:16px; font-weight:bold;}
+	.text-overlay-cover:hover {color:#F4511E; }
+	/*detail page gallery*/
+
+	/*Footer*/
+	.bottom-below-footer { margin-top:100px;}
+
+	.btn-currency { border-radius:1px; background:none; border:1px solid #999;}
+	.btn-currency:hover, focus, active {background:none;}
+	.btn-currency:hover,active {  background:none;}
+	.open > ul.currency-dropdown-menu {
+		margin-top: 0;
+	}
+	.open .dropdown-toggle.btn-default.btn-currency {
+		background: #000;
+	}
+
+	/*Footer*/
+
+	/*suggestions*/
+
+	.portfolio-item {
+		margin-bottom: 40px
+	}
+	.portfolio-item h4{
+		color: #333;    margin-top: 20px;
+
+	}
+	.portfolio-item a{
+		color: #333;
+	}
+	.portfolio-item p{
+		color: #333;
+	}
+
+	.user-thumb {
+		position: absolute;
+		top: 220px;
+		left: 205px;
+	}
+
+	.price {
+		opacity: .79;
+		background: #3c3d41;
+		min-width: 100px;
+		padding: 10px;
+		color: #fff;
+		font-size: 18px;
+		position: absolute;
+		top: 180px
+	}
+	.heart-wrapper {
+		position: absolute;
+		top: 5px;
+		left: 235px;
+	}
+	.glyphicon-star {
+		color: #ffcd00;
+	}
+	.starratings { padding-top:5px;}
+	.star-rating .icon-star {
+		display: inline;
+		color: #d8d8d8;
+		font-size: 16px;
+	}
+
+	/*hearts*/
+	input[type=checkbox].heart-checkbox {
+		display: none;
+	}
+
+
+</style>
