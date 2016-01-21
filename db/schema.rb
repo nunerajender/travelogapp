@@ -145,6 +145,7 @@ ActiveRecord::Schema.define(version: 20160118144525) do
     t.string   "store_img"
     t.string   "address"
     t.string   "city"
+    t.string   "country"
     t.string   "state"
     t.datetime "created_at",     null: false
     t.datetime "updated_at",     null: false

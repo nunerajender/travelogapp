@@ -10,6 +10,12 @@ class UserMailer < ActionMailer::Base
   def welcome_merchant(user,store)
   	logger.info "{event=registration_store status=successful store=#{store.name}}"
   end
+  def welcome_merchant_message(user,store)
+    #logger.info "{event=registration_store status=successful store=#{store.name}}"
+    @user = user
+    mail(:to => user.email, :subject => "Welcome to Travelog Become a merchant")
+
+  end
 
   def write_review(from_user, product, message)
   	@from_user = from_user

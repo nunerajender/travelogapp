@@ -6,4 +6,9 @@ class StoreSetting < ActiveRecord::Base
 	validates :store_username, :presence => true, :uniqueness => true
 	validates :store_name, :presence => true
 
+
+	def welcome_merchant_message(user,store)
+    UserMailer.welcome_merchant_message(current_user).deliver_now
+    end
+
 end

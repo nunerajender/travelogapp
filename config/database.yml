@@ -2,8 +2,8 @@ development:
   host: localhost
   adapter: postgresql
   database: travelog_development
-  username: cale
-  password: tigertiger
+  username: postgres
+  password: postgres
   encoding: utf8
   pool: 30
   timeout: 5000
@@ -15,8 +15,8 @@ test:
   host: localhost
   adapter: postgresql
   database: travelog_test
-  username: cale
-  password: tigertiger
+  username: postgres
+  password: postgres
   encoding: utf8
   pool: 20
   timeout: 5000

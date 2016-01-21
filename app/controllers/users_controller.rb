@@ -14,11 +14,15 @@ class UsersController < ApplicationController
 			if current_user.status != 'merchant'
 				@store_setting = StoreSetting.new({:user_id => current_user.id})
 				gon.store_usernames = StoreSetting.select(:store_username).pluck(:store_username)
+				#UserMailer.welcome_merchant_message(current_user).deliver_now
+				puts "1----------------------"
 			else
 				redirect_to root_path
+				#UserMailer.welcome_merchant_message(current_user).deliver_now
 			end	
 		else
 			redirect_to new_user_registration_path
+			#UserMailer.welcome_merchant_message(current_user).deliver_now
 		end
 	end
 
@@ -99,11 +103,20 @@ class UsersController < ApplicationController
 					if @store_setting.save
 						store_image.store_setting = @store_setting
 						store_image.save
+						
 						# change status of the current user
-						current_user.status = 'merchant'
+						#if verify_merchant_status
+						#current_user.status = 'merchant'
+					    #else
+					    #current_user.status != 'merchant'
+						#end
+
 						current_user.save
-						UserMailer.welcome_merchant(current_user,@store_setting)
-						redirect_to products_path
+						UserMailer.welcome_merchant_message(current_user, @store_setting).deliver_now
+						#UserMailer.welcome_merchant(current_user,@store_setting)
+						#redirect_to products_path
+						redirect_to root_path
+						flash[:notice] = "Your Merchant Application successfully created please wait for admin approvel"
 					end
 				end
 			else
@@ -115,6 +128,9 @@ class UsersController < ApplicationController
 			end	
 		end
 	end
+	#verify merchant status
+	#def verify_merchant_status
+	#end
 
 	# verify the store username for uniquness
 	def verify_store_username
@@ -132,7 +148,7 @@ class UsersController < ApplicationController
 
 	private
 		def store_setting_params
-			params.require(:store_setting).permit(:phone_hp, :store_username, :store_name)
+			params.require(:store_setting).permit(:phone_hp, :store_username, :store_name, :country, :city)
 		end
 
 		def profile_params

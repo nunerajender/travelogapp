@@ -9,6 +9,7 @@ class CreateStoreSettings < ActiveRecord::Migration
     	t.string :store_img
     	t.string :address
     	t.string :city
+      t.string :country
     	t.string :state
       t.timestamps null: false
     end
