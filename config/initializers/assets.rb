@@ -16,3 +16,6 @@ Rails.application.config.assets.precompile += %w( application_products.js )
 
 Rails.application.config.assets.precompile += %w( application_old.css )
 Rails.application.config.assets.precompile += %w( application_old.js )
+
+Rails.application.config.assets.precompile += %w( application_result.css )
+Rails.application.config.assets.precompile += %w( application_result.js )

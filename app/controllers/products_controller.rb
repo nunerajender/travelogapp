@@ -382,7 +382,7 @@ class ProductsController < ApplicationController
 		
 		@current_currency = get_all_currency_symbols[session[:currency]]
 
-
+		render :layout => 'product_result'
 	end
 
 	def result_filter
