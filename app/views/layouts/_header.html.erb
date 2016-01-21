@@ -154,7 +154,7 @@
 						<!-- <li><a href="#">Login</a></li>
 						<li><a href="#">Sign Up</a></li> -->
 						<li class="dropdown nav-user-options">
-							<a href="#" class="dropdown-toggle usernavprofile"  data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+							<a href="#" class="dropdown-toggle usernavprofile dropdownselectactive"  data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
 								<% if current_user.profile.present? && current_user.profile.first_name.present? %>
 									<%= current_user.profile.first_name %>
 								<% else %>

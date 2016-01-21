@@ -8,6 +8,8 @@ class Product < ActiveRecord::Base
 	has_many :variants, dependent: :destroy
 	accepts_nested_attributes_for :variants, reject_if: proc { |attributes| attributes['name'].blank? }
 
+	after_initialize :init
+
 	has_many :product_reviews
 
 	enum payment_type: {
@@ -38,4 +40,8 @@ class Product < ActiveRecord::Base
 	# validates :highlight, :presence => true
 	# validates :payment_type, :presence => true
 	
+
+	def init
+		self.currency = 'MYR'
+	end
 end

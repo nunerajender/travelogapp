@@ -139,7 +139,7 @@ class InvoicesController < ApplicationController
     end
 
     payment_request = Paypal::Payment::Request.new(
-      :currency_code => @invoice.currency,   # if nil, PayPal use USD as default
+      :currency_code => @invoice.currency,   # 
       :description   => 'booking travel',    # item description
       :quantity      => 1,      # item quantity
       :items => items,

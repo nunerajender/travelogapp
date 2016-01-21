@@ -4,35 +4,64 @@
 
 <style>
 	ul.sidebar {padding:0;}
-	ul.sidebar li{ list-style:none;margin: 10px 0; }
-	ul.sidebar li a{ color:#adadad;}
-	.profile-details {
-		background-color: #FFF;
-		border:1px solid #e6e6e6; padding:40px 20px;}
-		.profile-form input {background-color: #FFF;
-		border:1px solid #adadad;
-	}
-	.profile-form select {
-		background-color: #FFF;
-		border:1px solid #adadad; width:100px;
-	}
-	.btn-viewprofile { 
-		width:200px;color: #333;
-		background-color: #FFF;
-		border-color: #adadad; margin-top:20px;}
-		.birthdate .dropdown-menu {
-		top: 33px;
-	}
-	.profile-details .dropdown-toggle {
-		width: 130px;
-	}
-	.profile-page {
-		padding-top: 70px;
-		background: #fafafa;
-	}
-	#file_upload {
-		display: none;
-	}
+		ul.sidebar li{ list-style:none;margin: 10px 0; }
+		ul.sidebar li a{ color:#adadad;}
+		.profile-details {background-color: #FFF;
+			border:1px solid #e6e6e6; padding:40px 20px;}
+			.profile-form input {background-color: #FFF;
+				border:1px solid #adadad;
+			}
+			.profile-form select {background-color: #FFF;
+				border:1px solid #adadad; width:100px;
+			}
+			.btn-viewprofile { width:200px;color: #333;
+				background-color: #FFF;
+				border-color: #adadad; margin-top:20px;}
+				.birthdate .dropdown-menu {
+					top: 33px;
+				}
+				.profile-details .dropdown-toggle {
+					width: 130px;
+				}
+				.profile-page {
+					padding-top: 40px;
+					background: #fafafa;
+				}
+				.nav-second-profile {    background: #DBDDDE; padding-top:0;}
+				.nav-second-profile li.active {font-weight: bold; color:#000;}
+				.nav-second-profile .navbar-nav>li>a {
+					padding-top: 15px;
+					color: #777;
+				}
+				
+				.profile-photo p{ font-size: 14px;     color: #333; font-family:Arial, Helvetica, sans-serif;}
+				
+				
+				.btn-profile {
+					position: relative;
+					overflow: hidden;
+				}
+				.btn-profile input[type=file] {
+					position: absolute;
+					top: 0;
+					right: 0;
+					min-width: 100%;
+					min-height: 100%;
+					font-size: 100px;
+					text-align: right;
+					filter: alpha(opacity=0);
+					opacity: 0;
+					outline: none;
+					background: white;
+					cursor: inherit;
+					display: block;
+				}
+				.profileholder { background:#fafafa;padding: 10px;}
+				.remove-profile { position:absolute;    position: absolute;
+					top: 10px;
+					left: 178px;
+					color: red;}
+
 	.attachments-container img {
 		width: 100%;
 	}
@@ -54,39 +83,36 @@
 		<div class="container">
 			<div class="row ">
 				<%= render 'shared/accounts_nav' %>
-				<div class="col-md-8">
-					<div class="panel-header">
-						Profile Photo
-					</div>
-					</div>
-					<div class="col-md-8">
-					<div class="profile-details">
+				<div class="col-md-9">
+					<div class="panel panel-default profile-photo">
 						<%= form_for @store_setting, url: {action: "accounts_photo"}, :html => {:class => "form-horizontal profile-form" } do |f| %>
 
-						<div class="attachments-container row">
-							<div class="form-group col-md-12">
-								<button type="button" id="add-avatar-button" class="btn btn-default active">Add Photo</button>
-								<input name="file_attachment" type="file" id="file_upload">
-							</div>
-
-							<% if @store_setting.store_image.present? && @store_setting.store_image.store_img.small.url.present? %>
-								<div class="form-group col-md-4">
-									<img src="<%= @store_setting.store_image.store_img.small.url %>">
+						<div class="panel-heading">Profile Photo</div>
+						<div class="panel-body">
+							<div class="col-md-3 profileholder">
+								<a class="remove-profile" href="#"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></a>
+								<% if @store_setting.store_image.present? && @store_setting.store_image.store_img.small.url.present? %>
+									<img src="<%= @store_setting.store_image.store_img.small.url %>" class="img-circle">
 									<input type="hidden" name="store_image[id]" value="<%= @store_setting.store_image.id %>">
-									<button type="button" class="btn btn-default delete-attachment">Delete</button>
-								</div>
-							<% end %>
-						</div>
-						
-						<div class="form-group">
-							<div class="form-group col-xs-12">
-								 <%= f.submit 'Submit', :class => 'btn btn-default' %>
-							</div>
+								<% else %>
+									<img src="<%= image_url('placehold_150_150.png') %>" class="img-circle">
+								<% end %>
+								
+							</div> 
+							
+							<div class="col-md-9">
+								<p>Clear frontal face photos are an important way for hosts and guests to learn about each other. It’s not much fun to host a landscape! Please upload a photo that clearly shows your face.</p>
+								
+								<span class="btn btn-default btn-profile" style="margin-bottom: 20px;">
+									Upload a file form your computer <input type="file" id="file_upload">
+								</span>
+								<%= f.submit 'Submit', :class => 'btn btn-default', :style => 'display: block; margin-bottom: 20px;' %>
+							</div> 
 						</div>
 
 						<% end %>
 					</div>
-					</div>
+				</div>
 			</div>
 		</div>
 	</section>
@@ -94,17 +120,13 @@
 
 <script type="text/javascript">
 	$(document).ready(function() {
-		$(document).on('click', '#add-avatar-button', function() {
-			attachment_count = $('.attachments-container .col-md-4').length
-			if (attachment_count < 1) {
-				$('#file_upload').trigger('click');
-			} else {
-				alert("Can't upload more than 1.");
-			}
-		})
-	})
+		
+		$(document).on('change', '#file_upload', function() {
 
-	$('.attachments-container').on('change', '#file_upload', function() {
+			if ($('[name="store_image[id]"]').length > 0) {
+				alert("Can't upload more than 1.");
+				return;
+			};
 
 			var formData = new FormData();
 			formData.append('store_image[store_img]', this.files[0]);
@@ -119,14 +141,12 @@
 			  type: 'POST',
 			  success: function(data) {
 			  	console.log('success');
-			  	append_html = '<div class="form-group col-md-4">';
-			  	append_html += '<img src="' + data.store_img.small.url + '" data-id="' + data.id + '">';
-			  	append_html += '<input type="hidden" name="store_image[id]" value="' + data.id + '">';
-			  	append_html += '<button type="button" class="btn btn-default delete-attachment">Delete</button>';
-			  	append_html += '</div>';
-			  	$('.attachments-container').append(append_html);
-			  	$('#file_upload').val('');
-			  	$('body').loading('stop');
+			  	$('.profileholder img').attr('src', data.store_img.small.url);
+					$('[name="store_image[id]"]').remove();
+					$('.profileholder').append('<input type="hidden" name="store_image[id]" value="' + data.id + '">');
+
+					$('#file_upload').val('');
+					$('body').loading('stop');
 			  },
 			  error: function(error) {
 	      	console.log(error);
@@ -135,7 +155,12 @@
 			});
 		})
 
-		$('.attachments-container').on('click', '.delete-attachment', function(event) {
+		$(document).on('click', '.remove-profile', function(event) {
+			event.preventDefault();
+			if ($(this).parent().find('input[name="store_image[id]"]').length == 0) {
+				return;
+			}
+
 			$this = $(this)
 			$('body').loading({ message: 'Deleting...'});
 			
@@ -146,11 +171,10 @@
 	      dataType: "json",
 	      data: { "_method": "delete" },
 	      success: function(){
-	        console.log('deleted attachment');
-	        $this.parent().fadeOut('slow', function() {
-						$(this).remove();
-					});
+	        $('.profileholder img').attr('src', "<%= image_url('placehold_150_150.png') %>");
+					$('[name="store_image[id]"]').remove();
 					$('body').loading('stop');
+					console.log('deleted attachment');
 	      },
 	      error: function(error) {
 					console.log(error);
@@ -160,4 +184,8 @@
 			event.preventDefault();
 
 		})
+
+	})
+
+		
 </script>

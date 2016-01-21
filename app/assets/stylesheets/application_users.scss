@@ -1,3 +1,8 @@
 @import "variables";
-@import "lib/bootstrap";
+@import "lib/flat-ui/bootstrap/css/bootstrap";
+
+@import "lib/flat-ui/flat-ui";
+@import "lib/common-files/icon-font";
+
+@import "lib/sample-04/style";
 @import "custom";

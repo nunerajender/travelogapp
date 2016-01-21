@@ -221,10 +221,15 @@
                     return that.shown ? that.hide() : that;
                 }
                 //Bhanu added a custom message- Result not Found when no result is found
-                if (items.length == 0) {
-                    items[0] = {'id': -21, 'name': "Result not Found"}
+                // if (items.length == 0) {
+                //     items[0] = {'id': -21, 'name': "Result not Found"}
+                // }
+                if (items.length > 0) {
+                    return that.render(items.slice(0, that.options.items)).show();
+                } else {
+                    that.hide();
                 }
-                return that.render(items.slice(0, that.options.items)).show();
+                
             }
         },
         matcher: function (item) {
