@@ -15,7 +15,7 @@ class UsersController < ApplicationController
 				@store_setting = StoreSetting.new({:user_id => current_user.id})
 				gon.store_usernames = StoreSetting.select(:store_username).pluck(:store_username)
 				#UserMailer.welcome_merchant_message(current_user).deliver_now
-				puts "1----------------------"
+				#puts "1----------------------"
 			else
 				redirect_to root_path
 				#UserMailer.welcome_merchant_message(current_user).deliver_now
