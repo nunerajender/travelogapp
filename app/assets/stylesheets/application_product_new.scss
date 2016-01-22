@@ -1,10 +1,12 @@
 @import "variables";
 @import "bootstrap-sprockets";
 @import "bootstrap";
-@import "lib/bootstrap-select";
+// @import "lib/flat-ui/bootstrap/css/bootstrap";
+
+// @import "lib/bootstrap-select";
 @import "lib/formValidation.min";
-@import "lib/beautycheckbox";
-@import "lib/nouislider.min";
+// @import "lib/beautycheckbox";
+// @import "lib/nouislider.min";
 @import "lib/loading";
 
 @import "font-awesome";
@@ -22,19 +24,26 @@
 @import "plugins/table.min";
 @import "plugins/video.min";
 
-@import "lib/nouislider.min";
-@import "lib/owlcarousel";
+// @import "lib/nouislider.min";
+// @import "lib/owlcarousel";
 @import "lib/datepicker";
 // @import "style";
-
 @import "custom";
 
-@import "lib/sample-04/header";
+
+// @import "lib/flat-ui/flat-ui";
+// @import "lib/common-files/icon-font";
+
 @import "lib/sample-04/style";
+@import "lib/sample-04/header";
 
 
+// @import "lib/style";
+@import "home";
 @import "products";
 @import "store_setting";
 @import "users";
 @import "footer";
+
+
 

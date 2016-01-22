@@ -439,29 +439,6 @@ class ProductsController < ApplicationController
 			op
 		end
 
-		def set_product_attributs(products)
-			products.each do |product|
-				if product.product_attachments.present? && product.product_attachments.count > 0
-					product.product_overview_url = product.product_attachments[0].attachment.medium.url
-				end
-				product.user_avatar_url = product.user.get_avatar_url
-
-				# review the mark
-				total_review = 0
-				review_count = product.product_reviews.count
-				if review_count > 0
-					product.product_reviews.each do |review|
-						total_review += review.rating_stars
-					end
-					product.review_mark = (total_review / review_count).round
-				else
-					product.review_mark = 0
-				end
-			end
-
-
-		end
-
 		def set_product_currency_attributes(products)
 			products.each do |product|
 				if product.currency != session[:currency]

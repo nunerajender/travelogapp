@@ -31,6 +31,8 @@ class Product < ActiveRecord::Base
 	attr_accessor :product_overview_url
 	attr_accessor :user_avatar_url
 
+	attr_accessor :store_logo_url
+
 	attr_accessor :price_with_currency
 	attr_accessor :current_currency
 

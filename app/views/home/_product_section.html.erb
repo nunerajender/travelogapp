@@ -37,7 +37,7 @@
 						<% slice.each do |product| %>
 							<div class="col-sm-4 product-card">
 								<p class="price pull-right text-right"><%= get_all_currency_symbols[product.current_currency] %> <%= product.price_with_currency %></p>
-								<a href="<%= product_path product %>"><img src="<%= product.user.store_setting.store_image.store_img.small if product.user.store_setting.store_image.present? %>" class="img-circle user-thumb" width="52"/></a>
+								<a href="<%= product_path product %>"><img src="<%= product.store_logo_url %>" class="img-circle user-thumb" width="52"/></a>
 								<a href="<%= product_path product %>">
 									<img class="img-responsive" src="<%= product.product_attachments.first.attachment.small.url if product.product_attachments.first.present? %>" alt="" style="width: 100%;">
 								</a>
