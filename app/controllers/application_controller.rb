@@ -65,8 +65,7 @@ class ApplicationController < ActionController::Base
 
       store_setting = product.user.store_setting
       if store_setting.present? && store_setting.store_image.present?
-        # product.store_logo_url = product.user.store_setting.store_image.store_img.small
-        product.store_logo_url = '/assets/default-avatar.png'
+        product.store_logo_url = product.user.store_setting.store_image.store_img.small
       else
         product.store_logo_url = '/assets/default-avatar.png'
       end
