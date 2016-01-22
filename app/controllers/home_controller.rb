@@ -1,5 +1,5 @@
 class HomeController < ApplicationController
-	skip_before_action :authenticate_user!
+	skip_before_action :authenticate_user!, only: [:index, :home_products]
 
 	def index
 
@@ -55,8 +55,6 @@ class HomeController < ApplicationController
 		end
 
 		set_product_attributs(@products)
-		# gon.home_products = @products
-		# binding.pry
 		render :layout => false
 	end
 
