@@ -206,17 +206,18 @@
 		<div class="row attachments-container">
 			<% if !@product.new_record? %>
 				<% @product.product_attachments.each do |attachment| %>
-					<div class="col-xs-6 col-md-4">
-						<div class="thumbnail panel photo-item upload-photo-frame">
-							<img src="<%= attachment.attachment.small.url %>">
-						</div>
+					<div class="col-xs-6 col-md-4 form-group">
+						<!-- <div class="thumbnail panel photo-item upload-photo-frame">
+							
+						</div> -->
+						<img src="<%= attachment.attachment.small.url %>" class="upload-photo-image">
 						<input type="hidden" name="product_attachment[id][]" value="<%= attachment.id %>">
 						<button type="button" class="btn btn-default delete-attachment">Delete</button>
 					</div>
 				<% end %>
 			<% end %>
 
-			<div class="col-xs-6 col-md-4">
+			<div class="col-xs-6 col-md-4 form-group">
 				<div class="thumbnail panel photo-item empty-photo-frame" name="empty-photo-frame">
 					<img src="<%= asset_url('placehold.png') %>">
 				</div>
@@ -747,7 +748,7 @@
 				
 			})
 
-			$('.attachments-container').on('change', '#file_upload', function() {
+			$(document).on('change', '#file_upload', function() {
 				$('body').loading({});
 				var formData = new FormData();
 				formData.append('product_attachment[attachment]', this.files[0]);
@@ -761,13 +762,15 @@
 				  type: 'POST',
 				  success: function(data) {
 				  	console.log('success');
-				  	append_html = '<div class="form-group col-md-4">';
-				  	append_html += '<img src="' + data.attachment.small.url + '" data-id="' + data.id + '">';
+				  	append_html = '<div class="col-xs-6 col-md-4 form-group">';
+				  	append_html += '<img class="upload-photo-image" src="' + data.attachment.small.url + '" data-id="' + data.id + '">';
 				  	append_html += '<input type="hidden" name="product_attachment[id][]" value="' + data.id + '">';
 				  	append_html += '<button type="button" class="btn btn-default delete-attachment">Delete</button>';
 				  	append_html += '</div>';
-				  	$('.attachments-container').append(append_html);
+				  	$('.attachments-container').prepend(append_html);
 				  	$('#file_upload').val('');
+				  	$('form').formValidation('revalidateField', 'empty-photo-frame');
+
 				  	adjustProductAttachments();
 				  	$('body').loading('stop');
 				  },
@@ -910,6 +913,18 @@
 						validators: {
 							notEmpty: {
 								message: 'The variant price is required'
+							}
+						}
+					},
+					'empty-photo-frame': {
+						row: '.col-xs-12',
+						validators: {
+							callback: {
+								message: 'The photo is required',
+								callback: function(value, validator, $field) {
+									var count = $('.attachments-container .upload-photo-image').length;
+									return (count > 0)
+								}
 							}
 						}
 					}
