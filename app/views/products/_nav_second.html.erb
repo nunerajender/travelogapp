@@ -5,7 +5,7 @@
 				<ul class="nav navbar-nav ">
 					<li>
 						<% if @product.name.present? %>
-							<%= @product.name %>
+							<%= truncate(strip_tags(@product.name), length: 31, escape: false) %>
 						<% else %>
 							Places, for traveller
 						<% end %>
