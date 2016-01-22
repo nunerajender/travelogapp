@@ -318,6 +318,8 @@ class ProductsController < ApplicationController
 		
 		@products = Product.where(:step => 5)
 
+		params[:city] = '' if params[:city] == 'all cities'
+
 		if params[:city].present?
 			# str_query += " or (lower(city) LIKE '%#{params[:city].downcase}%' or lower(country) like '%#{params[:city].downcase}%')"
 			@products = @products.where("lower(city) LIKE ? or lower(country) like ?", "%#{params[:city].downcase}%", "%#{params[:city].downcase}%")

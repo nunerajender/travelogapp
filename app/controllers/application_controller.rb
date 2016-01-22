@@ -56,6 +56,8 @@ class ApplicationController < ActionController::Base
     gon.is_display_currency_exchange = true
   end
 
+  protected
+
   def set_product_attributs(products)
     products.each do |product|
       if product.product_attachments.present? && product.product_attachments.count > 0

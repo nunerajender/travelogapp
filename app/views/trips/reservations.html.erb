@@ -4,15 +4,7 @@
 		<div class="container">
 			<div class="row ">
 				<div class="col-md-3">
-					<!-- <ul class="sidebar">
-						<li><a href="/products">Your Listings</a></li>
-						<li><a href="">Your Reservations</a></li>
-						<li><a href="">Reservation Requirements</a></li>
-						<li><a href="/products/new">Add New Listings</a></li>
-					</ul>
-					<a href="/products/new" class="btn btn-block btn-viewprofile">Add New Listings</a> -->
-
-					<%= render "shared/listing_left_nav", :obj => 'listings' %>
+					<%= render "shared/listing_left_nav", :obj => 'reservations' %>
 				</div>
 				<div class="col-md-9">
 					<div class="row" style="margin-bottom: 15px;">
@@ -20,27 +12,27 @@
 						<div class="col-md-2">
 							<select class=" form-control" title="Dropdown" id="listed-change">
 								<option value="all">All</option>
-								<option value="listed">Listed</option>
-								<option value="unlisted">Unlisted</option> 
+								<option value="upcomming">Upcomming</option>
+								<option value="previous">Previous</option> 
 							</select>
 							
 						</div>
 					</div>
 
-					<div class="panel panel-default listed">
+					<div class="panel panel-default upcomming">
 						<div class="panel-heading"> 
 							<h5 class="panel-title">
-								Listed
+								Upcomming
 							</h5> 
 						</div> 
 						<div class="panel-body">
 							<div class="row">
-								<% @listed_products.each_with_index do |product, index|%>
+								<% @upcomming_invoices.each_with_index do |invoice, index|%>
 									<div class="col-md-12">
 										<div class="col-md-3">
-											<a href="/products/<%= product.id %>/edit" class="thumbnail">
-												<% if product.product_overview_url.present? %>
-													<img src="<%= product.product_overview_url %>" alt="...">
+											<a href="#" class="thumbnail">
+												<% if invoice.product.product_overview_url.present? %>
+													<img src="<%= invoice.product.product_overview_url %>" alt="...">
 												<% else %>
 													<img src="<%= asset_url('placehold_200_200.png') %>" alt="...">
 												<% end %>
@@ -48,7 +40,7 @@
 										</div>
 
 										<div class="col-md-7">
-											<h5><%= product.name %>, for traveller in <%= product.city %></h5>
+											<h5><%= invoice.product.name %>, for traveller in <%= invoice.product.city %></h5>
 											<p>Manage Listing and Calendar</p>
 										</div>
 
@@ -56,11 +48,11 @@
 											
 										</div>
 									</div>
-									<% unless index == @listed_products.count - 1 %>
+									<% unless index == @upcomming_invoices.count - 1 %>
 										<!-- <hr> -->
 									<% end %>
 								<% end %>
-								<% if @listed_products.count == 0 %>
+								<% if @upcomming_invoices.count == 0 %>
 									<div class="col-md-12">
 										<div class="col-md-3">
 											<a href="#" class="thumbnail">
@@ -69,7 +61,7 @@
 										</div>
 
 										<div class="col-md-7">
-											<h5>There is no listed product.</h5>
+											<h5>There is no upcomming trip.</h5>
 											<!-- <p>Manage Listing and Calendar</p> -->
 										</div>
 
@@ -82,20 +74,20 @@
 						</div>
 					</div>
 
-					<div class="panel panel-default unlisted">
+					<div class="panel panel-default previous">
 						<div class="panel-heading"> 
 							<h5 class="panel-title">
-								Unlisted
+								Previous
 							</h5> 
 						</div> 
 						<div class="panel-body">
 							<div class="row">
-								<% @unlisted_products.each_with_index do |product, index|%>
+								<% @previous_invoices.each_with_index do |invoice, index|%>
 									<div class="col-md-12">
 										<div class="col-md-3">
-											<a href="/products/<%= product.id %>/edit" class="thumbnail">
-												<% if product.product_overview_url.present? %>
-													<img src="<%= product.product_overview_url %>" alt="...">
+											<a href="#" class="thumbnail">
+												<% if invoice.product.product_overview_url.present? %>
+													<img src="<%= invoice.product.product_overview_url %>" alt="...">
 												<% else %>
 													<img src="<%= asset_url('placehold_200_200.png') %>" alt="...">
 												<% end %>
@@ -103,21 +95,19 @@
 										</div>
 
 										<div class="col-md-7">
-											<h5><%= product.name %>, for traveller in <%= product.city %></h5>
+											<h5><%= invoice.product.name %>, for traveller in <%= invoice.product.city %></h5>
 											<p>Manage Listing and Calendar</p>
 										</div>
 
 										<div  class="col-md-2">
-											<a href="/products/<%= product.id %>/edit" class="btn btn-default btn-list" >
-										    <%= 5 - Product.steps[product.step] %> Steps to list
-										  </a>
+											
 										</div>
 									</div>
-									<% unless index == @unlisted_products.count - 1 %>
+									<% unless index == @previous_invoices.count - 1 %>
 										<!-- <hr> -->
 									<% end %>
 								<% end %>
-								<% if @unlisted_products.count == 0 %>
+								<% if @previous_invoices.count == 0 %>
 									<div class="col-md-12">
 										<div class="col-md-3">
 											<a href="#" class="thumbnail">
@@ -126,7 +116,7 @@
 										</div>
 
 										<div class="col-md-7">
-											<h5>There is no unlisted product.</h5>
+											<h5>There is no previous trip.</h5>
 											<!-- <p>Manage Listing and Calendar</p> -->
 										</div>
 
@@ -202,21 +192,26 @@
 		border: 1px solid #ccc;
 	}
 
+	#listed-change {
+		width: 130px;
+    float: right;
+	}
+
 </style>
 
 <script>
 	$(document).ready(function() {
 		$('#listed-change').on('change', function() {
 			var listed_status = $(this).val();
-			if(listed_status == 'listed') {
-				$('.panel.listed').fadeIn('slow');
-				$('.panel.unlisted').fadeOut('slow');
-			} else if (listed_status == 'unlisted') {
-				$('.panel.listed').fadeOut('slow');
-				$('.panel.unlisted').fadeIn('slow');
+			if(listed_status == 'upcomming') {
+				$('.panel.upcomming').fadeIn('slow');
+				$('.panel.previous').fadeOut('slow');
+			} else if (listed_status == 'previous') {
+				$('.panel.upcomming').fadeOut('slow');
+				$('.panel.previous').fadeIn('slow');
 			} else {
-				$('.panel.listed').fadeIn('slow');
-				$('.panel.unlisted').fadeIn('slow');
+				$('.panel.upcomming').fadeIn('slow');
+				$('.panel.previous').fadeIn('slow');
 			}
 		})
 	})

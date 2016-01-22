@@ -13,6 +13,14 @@ class TripsController < ApplicationController
 		set_product_attributs(@previous_invoices)
 	end
 
+	def reservations
+		current_time = DateTime.now.strftime('%F')
+		@upcomming_invoices = Invoice.includes(:product).where.not(:payer_id => nil).where("booking_date > ?", current_time).where(:user_id => current_user.id)
+		@previous_invoices = Invoice.includes(:product).where.not(:payer_id => nil).where("booking_date <= ?", current_time).where(:user_id => current_user.id)
+		set_product_attributs(@upcomming_invoices)
+		set_product_attributs(@previous_invoices)
+	end
+
 	private
 		def set_product_attributs(invoices)
       invoices.each do |invoice|
@@ -21,6 +29,7 @@ class TripsController < ApplicationController
       	else
       		invoice.product.user_avatar_url = invoice.product.user.get_avatar_url
       	end
+
       end
     end
 

@@ -5,6 +5,7 @@
 				Now trending in 
 				<div class="dropdown trending-list">
 					<a href="" data-toggle="dropdown" class="select-trending">All Cities <span class="caret"></span></a>
+					<input type="hidden" value="all cities" class="location">
 					<ul class="dropdown-menu" aria-labelledby="" id="trending-location">
 						<li><a href="">All Cities</a></li>
 						<!-- <li><a href="">Kuala Lumpur</a></li>
@@ -53,9 +54,16 @@
 				<% end %>
 			</div>
 			<div class="row">
-				<div class="col-sm-6 col-md-4 col-lg-4 col-xs-offset-4 all-destinations-sections">
-					<a href="#" class="btn btn-block btn-destination">See All Destinations</a>
-				</div>                     
+				<form method="POST" action="/products/result" id="trending-form">
+					<%= tag(:input, :name => 'authenticity_token', :type => "hidden", :value => form_authenticity_token) %>
+					<% ProductCategory.order('id').each do |category| %>
+						<input type="hidden" name="category_<%= category.id %>" value="1">
+					<% end %>
+					<input type="hidden" name="city" value="all cities">
+					<div class="col-sm-6 col-md-4 col-lg-4 col-xs-offset-4 all-destinations-sections">
+						<button type="submit" class="btn btn-block btn-destination">See All Destinations</button>
+					</div>
+				</form>
 			</div>
 			
 		</div>
@@ -82,15 +90,18 @@
 			  	console.log('success');
 			  	$('.select-trending').empty();
 			  	$('.select-trending').append(location + ' ' + '<span class="caret"></span>');
+			  	$('#trending-form input[name=city]').val(location);
 			  	$('#product-list').empty();
 			  	$('#product-list').append(data);
 			  },
 			  error: function(error) {
 	      	console.log(error);
 	      },
-	      timeout: 100000
+	      timeout: 10000
 			});
   	})
+
+  	
 
   });
 </script>
