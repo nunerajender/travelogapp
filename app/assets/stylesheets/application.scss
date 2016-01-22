@@ -26,19 +26,22 @@
 
 // @import "lib/nouislider.min";
 // @import "lib/owlcarousel";
-// @import "lib/datepicker";
+@import "lib/datepicker";
 // @import "style";
 // @import "custom";
 @import "lib/flat-ui/flat-ui";
 @import "lib/common-files/icon-font";
 
-@import "lib/sample-04/header";
 @import "lib/sample-04/style";
+@import "lib/sample-04/header";
+
 
 // @import "lib/style";
+@import "home";
 @import "products";
 @import "store_setting";
 @import "users";
+@import "footer";
 
 
 

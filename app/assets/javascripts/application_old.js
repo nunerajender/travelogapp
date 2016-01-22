@@ -51,6 +51,7 @@
 //= require lib/owlcarousel
 //= require lib/loading
 //= require lib/bootstrap-datepicker
+//= require lib/sample-04/custom
 //= require places-form
 //= require ngAutocomplete
 //= require jquery.mockjax

@@ -3,7 +3,7 @@ class HomeController < ApplicationController
 
 	def index
 
-		@products = Product.where(:step => 5).limit(6)
+		@products = Product.where(:step => 5).limit(6).includes(:product_attachments).includes(:product_reviews)
 
 		@products.each do |product|
 			if product.currency != session[:currency]
@@ -36,7 +36,7 @@ class HomeController < ApplicationController
 	def home_products
 		city = params[:city]
 		if city.downcase == 'all cities'
-			@products = Product.where(:step => 5).limit(6)
+			@products = Product.where(:step => 5).limit(6).includes(:product_attachments).includes(:product_reviews)
 		else
 			@products = Product.where(:step => 5).where("lower(city) LIKE ? or lower(country) like ?", "%#{params[:city].downcase}%", "%#{params[:city].downcase}%").limit(6)
 		end

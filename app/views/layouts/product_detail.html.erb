@@ -17,14 +17,14 @@
 
   <link rel="icon" href="../../favicon.ico">
   <title><%= page_title yield(:page_title) %></title>
-  <%= stylesheet_link_tag    'application_old', media: 'all' %>
-  <%= javascript_include_tag 'application_old' %>
+  <%= stylesheet_link_tag    'application_product', media: 'all' %>
+  <%= javascript_include_tag 'application_product' %>
   <%= csrf_meta_tags %>
   <%= Gon::Base.render_data %>
 </head>
 <body>
 
-  <%= render 'layouts/white_header' %>
+  <%= render 'layouts/result_header' %>
   <%= yield %>
   <%= render 'layouts/footer' %>
 
@@ -33,3 +33,4 @@
   </style>
 </body>
 </html>
+

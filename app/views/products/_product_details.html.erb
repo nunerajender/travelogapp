@@ -1,0 +1,139 @@
+<section class="header-10-sub v-center ">
+	<div class="background">
+		&nbsp;
+	</div>
+	<div>
+		<div class="container">
+			<div class="hero-unit">
+
+			</div>
+		</div>
+	</div>
+</section>
+
+<!-- About Merchant  -->
+<section class="content-7 aboutmerchant">
+	<div class="row">
+		<div class="col-md-7 col-md-offset-1">                  
+
+			<div class="col-md-2">
+				<a href="#">
+					<% if @user.get_store_thumb_url.present? %>
+						<img src="<%= @user.get_store_thumb_url %>" class="img-circle" width="90">
+					<% else %>
+						<img src="<%= asset_url('default-avatar.png') %>" class="img-circle" width="90">
+					<% end %>
+				</a>
+			</div>
+			<div class="col-md-10">
+				
+				<div class="col-md-6 paddingzero">
+					
+					<h4><%= @product.name %></h4>
+				</div>
+				<div class="col-md-6">
+					<p class="star-rating">
+						<span class="icon-star glyphicon glyphicon-star <%= 'selected' if @product.review_mark > 0 %>"></span>
+						<span class="icon-star glyphicon glyphicon-star <%= 'selected' if @product.review_mark > 1 %>"></span>
+						<span class="icon-star glyphicon glyphicon-star <%= 'selected' if @product.review_mark > 2 %>"></span>
+						<span class="icon-star glyphicon glyphicon-star <%= 'selected' if @product.review_mark > 3 %>"></span>
+						<span class="icon-star glyphicon glyphicon-star <%= 'selected' if @product.review_mark > 4 %>"></span>
+					</p>
+				</div>
+
+				<div class="col-md-12">
+					<%= @product.highlight.html_safe if @product.highlight.present? %>
+				</div>
+
+			</div>
+		</div>
+		<!--booking-->
+
+		<div class="col-md-4">
+
+			<div class="book-now-block book-widget-detail-page">
+				<div class="widget-title">
+					<p><%= @current_currency %> <%= @product.price_with_currency %></p>
+				</div>
+				<div class="productdetail">
+					<form method="POST" id="booking-form" action="/invoices/new">
+						<%= tag(:input, :name => 'authenticity_token', :type => "hidden", :value => form_authenticity_token) %>
+						<input type="hidden" name="product-id" value="<%= @product.id %>">
+
+						<div class="form-group row">
+							<label class="col-xs-12"><strong>When would you like to visit</strong></label>
+							<div class="col-xs-12">
+								<input type="text" id="datetimepicker" class="form-control date-book" placeholder="Date" name="datepicker">
+							</div>
+						</div>
+
+						<div class="booking-variants-container">
+							<% @product.variants.each do |variant| %>
+								<div class="form-group row">
+									<input type="hidden" name="variant-price" value="<%= variant.price_cents / 100 %>">
+									<input type="hidden" name="variant-price-with-currency" value="<%= variant.price_with_currency %>">
+									<div class="col-xs-6">
+										<label ><%= variant.name %>:</label><br>
+									</div>
+									<div class="col-xs-6" style="text-align: right;">
+										<button type="button" class="btn btn-default removeButton"><i class="fa fa-minus"></i></button>
+										<input type="hidden" name="variant[][id]" value="<%= variant.id %>">
+										<input type="hidden" name="variant[][name]" value="<%= variant.name %>">
+										<input type="hidden" name="variant[][price_cents]" value="<%= variant.price_cents %>">
+										<input type="text" name="variant[][count]" style="width: 40px; height: 40px; text-align: center;" value="0">
+										<button type="button" class="btn btn-default addButton"><i class="fa fa-plus"></i></button>
+									</div>
+								</div>
+							<% end %>
+						</div>
+						<% if @is_variants %>
+							<hr>
+						<% end %>
+						<div class="form-group row hide" id="booking-result-item-template">
+							<div class="col-xs-7 result-item-name">
+								<label></label>
+							</div>
+							<div class="col-xs-5 result-item-price">
+								<label></label>
+							</div>
+						</div>
+						<div class="booking-result-container">
+									
+						</div>
+						<button type="submit" class="btn btn-block btn-default">Book Now</button>
+
+
+						<!-- <p><strong>When would you like to visit</strong></p>
+						<input type="text" class="form-control date-book" placeholder="Date">
+						<br>
+						<button type="button" class="btn btn-block btn-default">Book Now</button> -->
+					</form>
+				</div>
+			</div>
+
+		</div>
+		<!--booking-->
+
+	</div>
+</section>
+
+<!-- content-8  -->
+<section class="content-8 greysection aboutproduct">
+	<div>
+		<div class="container">
+
+			<div class="row">
+				<div class="col-md-7">
+					<%= @product.description.html_safe if @product.description.present? %>
+				</div>
+			</div>                        
+
+		</div>
+	</div>
+</section>
+
+<script>
+	$(document).ready(function() {
+
+	})
+</script>

@@ -1,33 +1,32 @@
-<!-- Reviews  -->
-<section class="content-8 reviews">
-	<div>
-		<div class="container">
-			<div class="row">
-				<div class="col-md-12 titledistance">
-					<h5><%= @total_review_count %> Reviews </h5>
-				</div>
+<section class="header-11-sub section-details review">
+	<div class="container">
+		<div class="row  title-row">
+			<div class="col-md-12">
+				<h3 class="title-detailspage"><%= @total_review_count %> Reviews </h3>
 			</div>
+		</div>
 
+		<div id="review-content">
 			<% @product_reviews.each do |product_review| %>
 				<div class="row">
 					<div class="col-md-1 picture-block">
 						<a href="#" style="display: block;"><img src="<%= product_review.avatar_url %>" class="img-circle" width="67" height="67"></a>
 						<p class="star-rating small">
-							<span class="icon-star glyphicon glyphicon-star <%= 'selected' if product_review.rating_stars > 0 %>"></span>
-							<span class="icon-star glyphicon glyphicon-star <%= 'selected' if product_review.rating_stars > 1 %>"></span>
-							<span class="icon-star glyphicon glyphicon-star <%= 'selected' if product_review.rating_stars > 2 %>"></span>
-							<span class="icon-star glyphicon glyphicon-star <%= 'selected' if product_review.rating_stars > 3 %>"></span>
-							<span class="icon-star glyphicon glyphicon-star <%= 'selected' if product_review.rating_stars > 4 %>"></span>
+							<span class="icon-star <%= 'selected' if product_review.rating_stars > 0 %>"></span>
+							<span class="icon-star <%= 'selected' if product_review.rating_stars > 1 %>"></span>
+							<span class="icon-star <%= 'selected' if product_review.rating_stars > 2 %>"></span>
+							<span class="icon-star <%= 'selected' if product_review.rating_stars > 3 %>"></span>
+							<span class="icon-star <%= 'selected' if product_review.rating_stars > 4 %>"></span>
 						</p>
 					</div>
 					<div class="col-md-6 text-block">
-						<h6 class="review-name"><%= product_review.user.profile.first_name if product_review.user.profile.present? %></h6>
+						<h5 class="review-name"><%= product_review.user.profile.first_name if product_review.user.profile.present? %></h5>
 						<p><%= product_review.message %></p>
 						<hr>
 					</div>
 				</div>
 			<% end %>
-
+			
 			<% if current_user.present? && @product.user != current_user %>
 				<div class="row">
 					<form id="product-show" action="/products/<%= @product.id %>/write_comment" method="post">
@@ -38,11 +37,11 @@
 						</div>
 						<div class="col-md-6 col-xs-offset-1">
 							<p class="star-rating" name="star-rating">
-								<span class="icon-star glyphicon glyphicon-star"></span>
-								<span class="icon-star glyphicon glyphicon-star"></span>
-								<span class="icon-star glyphicon glyphicon-star"></span>
-								<span class="icon-star glyphicon glyphicon-star"></span>
-								<span class="icon-star glyphicon glyphicon-star"></span>
+								<span class="icon-star"></span>
+								<span class="icon-star"></span>
+								<span class="icon-star"></span>
+								<span class="icon-star"></span>
+								<span class="icon-star"></span>
 							</p>
 							<input type="hidden" name="rating-stars" value="0" id="rating-stars">
 						</div>
@@ -59,7 +58,6 @@
 					</form>
 				</div>
 			<% end %>
-
 			<div class="row">
 				<div class="col-md-6 col-md-offset-1 text-center">
 					<%= paginate @product_reviews %>
@@ -68,7 +66,6 @@
 		</div>
 	</div>
 </section>
-
 
 <script>
 	$(document).ready(function() {

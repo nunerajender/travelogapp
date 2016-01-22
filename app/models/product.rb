@@ -34,6 +34,8 @@ class Product < ActiveRecord::Base
 	attr_accessor :price_with_currency
 	attr_accessor :current_currency
 
+	attr_accessor :review_mark
+
 	validates :name, :presence => true
 	validates :product_category_id, :presence => true
 	# validates :description, :presence => true
