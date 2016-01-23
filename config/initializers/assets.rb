@@ -27,3 +27,7 @@ Rails.application.config.assets.precompile += %w( application_detail.js )
 
 Rails.application.config.assets.precompile += %w( application_product_new.css )
 # Rails.application.config.assets.precompile += %w( application_product.js )
+
+
+Rails.application.config.assets.precompile += %w( application_merchant.css )
+Rails.application.config.assets.precompile += %w( application_merchant.js )
