@@ -212,7 +212,7 @@
 						</div> -->
 						<img src="<%= attachment.attachment.small.url %>" class="upload-photo-image">
 						<input type="hidden" name="product_attachment[id][]" value="<%= attachment.id %>">
-						<button type="button" class="btn btn-default delete-attachment">Delete</button>
+						<a class="delete-attachment" href="#"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></a>
 					</div>
 				<% end %>
 			<% end %>
@@ -731,7 +731,7 @@
 				  	append_html = '<div class="col-xs-6 col-md-4 form-group">';
 				  	append_html += '<img class="upload-photo-image" src="' + data.attachment.small.url + '" data-id="' + data.id + '">';
 				  	append_html += '<input type="hidden" name="product_attachment[id][]" value="' + data.id + '">';
-				  	append_html += '<button type="button" class="btn btn-default delete-attachment">Delete</button>';
+				  	append_html += '<a class="delete-attachment" href="#"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></a>';
 				  	append_html += '</div>';
 				  	$('.attachments-container .empty-photo-frame').parent().before(append_html);
 				  	$('#file_upload').val('');
@@ -1041,3 +1041,13 @@
 	
 </script>
 
+
+<!-- custom style by me for photo delete -->
+<style>
+	.delete-attachment {
+    position: absolute;
+    top: 10px;
+    right: 25px;
+    color: red;
+	}
+</style>
