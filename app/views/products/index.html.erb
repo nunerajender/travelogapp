@@ -146,6 +146,28 @@
 </div>
 <!-- /side-collapse-container  -->
 
+
+
+<script>
+	$(document).ready(function() {
+		$('#listed-change').on('change', function() {
+			var listed_status = $(this).val();
+			if(listed_status == 'listed') {
+				$('.panel.listed').fadeIn('slow');
+				$('.panel.unlisted').fadeOut('slow');
+			} else if (listed_status == 'unlisted') {
+				$('.panel.listed').fadeOut('slow');
+				$('.panel.unlisted').fadeIn('slow');
+			} else {
+				$('.panel.listed').fadeIn('slow');
+				$('.panel.unlisted').fadeIn('slow');
+			}
+		})
+	})
+
+
+</script>
+
 <style>
 	ul.sidebar {padding:0;}
 	ul.sidebar li{ list-style:none;margin: 10px 0; }
@@ -203,23 +225,3 @@
 	}
 
 </style>
-
-<script>
-	$(document).ready(function() {
-		$('#listed-change').on('change', function() {
-			var listed_status = $(this).val();
-			if(listed_status == 'listed') {
-				$('.panel.listed').fadeIn('slow');
-				$('.panel.unlisted').fadeOut('slow');
-			} else if (listed_status == 'unlisted') {
-				$('.panel.listed').fadeOut('slow');
-				$('.panel.unlisted').fadeIn('slow');
-			} else {
-				$('.panel.listed').fadeIn('slow');
-				$('.panel.unlisted').fadeIn('slow');
-			}
-		})
-	})
-
-
-</script>
