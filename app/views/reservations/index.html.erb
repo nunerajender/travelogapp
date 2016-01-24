@@ -10,11 +10,11 @@
 					<div class="row" style="margin-bottom: 15px;">
 						<div class="col-md-10"></div>
 						<div class="col-md-2">
-							<select class=" form-control" title="Dropdown" id="listed-change">
+							<!-- <select class=" form-control" title="Dropdown" id="listed-change">
 								<option value="all">All</option>
 								<option value="upcomming">Upcomming</option>
 								<option value="previous">Previous</option> 
-							</select>
+							</select> -->
 							
 						</div>
 					</div>
@@ -37,7 +37,7 @@
 										<% @invoices.each do |invoice| %>
 											<tr>
 												<th scope="row">
-													<p class="accepted"><%= invoice.get_merchant_status %></p>
+													<p class="merchant-status"><%= invoice.get_merchant_status %></p>
 												</th>
 												<td>
 													<p><%= invoice.booking_date.strftime('%d %B %Y') %><br>

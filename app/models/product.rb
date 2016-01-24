@@ -48,4 +48,10 @@ class Product < ActiveRecord::Base
 	def init
 		self.currency = 'MYR'
 	end
+
+	def full_address
+		full_address = "#{self.city}, self.country"
+		full_address = "#{self.address}, #{full_address}" if self.address.present?
+		full_address
+	end
 end
