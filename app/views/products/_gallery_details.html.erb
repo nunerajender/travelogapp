@@ -1,43 +1,61 @@
 <section class="content-8 gallery">
-						<div>
-							 <div class="container">
-									<div class="row">
-										 <div id="lightgallery" class="col-md-7 detailpage-images-gallery" >
-												<div class="col-md-6 topleftimg" data-responsive="img/12.png" data-src="img/12.png" data-sub-html="<h4>Fading Light</h4><p>Classic view from Rigwood Jetty on Coniston Water an old archive shot similar to an old post but a little later on.</p>">                
-													 <a href="">
-													 <img src="img/12.png" class="img-responsive">
-													 </a>
-												</div>
-												
-												<div class="col-md-6 toprightimg" data-responsive="img/13.png" data-src="img/13.png" data-sub-html="<h4>Bowness Bay</h4><p>A beautiful Sunrise this morning taken En-route to Keswick not one as planned but I'm extremely happy I was passing the right place at the right time....</p>">                
-													 <a href="">
-													 <img src="img/13.png" class="img-responsive">
-													 </a>
-												</div>
-												
-												<div class="col-md-4 bottomleftimg" data-responsive="img/14.png" data-src="img/14.png" data-sub-html="<h4>Bowness Bay</h4><p>A beautiful Sunrise this morning taken En-route to Keswick not one as planned but I'm extremely happy I was passing the right place at the right time....</p>">                
-													 <a href="">
-													 <img src="img/14.png" class="img-responsive">
-													 </a>
-												</div>
-												
-												<div class="col-md-4 bottomcentreimg" data-responsive="img/15.png" data-src="img/15.png" data-sub-html="<h4>Bowness Bay</h4><p>A beautiful Sunrise this morning taken En-route to Keswick not one as planned but I'm extremely happy I was passing the right place at the right time....</p>">                
-													 <a href="">
-													 <img src="img/15.jpg" class="img-responsive">
-													 </a>
-												</div>
-												
-												<div class="col-md-4 bottomrightimg" data-responsive="img/12.png" data-src="img/12.png" data-sub-html="<h4>Fading Light</h4><p>Classic view from Rigwood Jetty on Coniston Water an old archive shot similar to an old post but a little later on.</p>">
-													 <a href="" class="text-overlay-cover">See all 10 photos</a>
-													 <div class="gallery-overlay-cover"></div>
-													 <img src="img/16.jpg" class="img-responsive">
-												</div>
-												
-										 </div>
-									</div>
-									<!--gallery-->   
-									
-									 
-									
-						</div>
-				 </section>
+	<div>
+		<div class="container">
+			<div class="row">
+				<div id="lightgallery" class="col-md-7 detailpage-images-gallery" >
+					<% if @product.product_attachments.present? && @product.product_attachments.count > 0 %>
+						<% @product.product_attachments.each_with_index do |attachment, index| %>
+							<% if index == 0 %>
+								<div class="col-md-6 topleftimg" data-responsive="<%= attachment.attachment.url %>" data-src="<%= attachment.attachment.url %>" data-sub-html="<%= @product.highlight %>">                
+									<a href="">
+										<img src="<%= attachment.attachment.small.url %>" class="img-responsive">
+									</a>
+								</div>
+							<% elsif index == 1 %>
+								<div class="col-md-6 toprightimg" data-responsive="<%= attachment.attachment.url %>" data-src="<%= attachment.attachment.url %>" data-sub-html="<%= @product.highlight %>">                
+									<a href="">
+										<img src="<%= attachment.attachment.small.url %>" class="img-responsive">
+									</a>
+								</div>
+							<% elsif index == 2 %>
+								<div class="col-md-4 bottomleftimg" data-responsive="<%= attachment.attachment.url %>" data-src="<%= attachment.attachment.url %>" data-sub-html="<%= @product.highlight %>">                
+									<a href="">
+										<img src="<%= attachment.attachment.small.url %>" class="img-responsive">
+									</a>
+								</div>
+							<% elsif index == 3 %>
+								<div class="col-md-4 bottomcentreimg" data-responsive="<%= attachment.attachment.url %>" data-src="<%= attachment.attachment.url %>" data-sub-html="<%= @product.highlight %>">                
+									<a href="">
+										<img src="<%= attachment.attachment.small.url %>" class="img-responsive">
+									</a>
+								</div>
+							<% elsif index == 4 %>
+								<div class="col-md-4 bottomrightimg" data-responsive="<%= attachment.attachment.url %>" data-src="<%= attachment.attachment.url %>" data-sub-html="<%= @product.highlight %>">
+									<div class="gallery-overlay-cover"></div>
+									<a href="">
+										<img src="<%= attachment.attachment.small.url %>" class="img-responsive">
+									</a>
+								</div>
+							<% else %>
+							<% end %>
+							
+						<% end %>
+					<% end %>
+
+				</div>
+			</div>
+			<!--gallery-->   
+		</div>
+
+	</div>
+</section>
+
+<style>
+	.lg-sub-html {
+		background: white;
+		max-height: 100px;
+	}
+	.gallery-overlay-cover:hover {
+	  cursor: pointer;
+	}
+</style>

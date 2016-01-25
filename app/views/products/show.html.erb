@@ -20,15 +20,6 @@
 	}
 
 
-	function initGallery() {
-		$("#owl-gallery").owlCarousel({
-			navigation: false,
-			pagination: false,
-			lazyLoad: true,
-			autoPlay: 5000, //Set AutoPlay to 3 seconds
-		});
-	}
-
 	function initCalendarDate() {
 		var nowTemp = new Date();
 		var now =  new Date(nowTemp.getFullYear(), nowTemp.getMonth(), nowTemp.getDate(), 0, 0, 0, 0);
@@ -43,10 +34,10 @@
     });
 	}
 	$(window).load(function() {
-		initResponsiveHeader();
+		// initResponsiveHeader();
 		initCalendarDate();
 		$(document).ready(function() {
-			initGallery();
+			$('#lightgallery').lightGallery();
 		});
 	});
 

@@ -47,7 +47,7 @@ function fadedEls(el, shift) {
 
         // Parallax
         $('.header-10-sub, .content-23').each(function() {
-            $(this).parallax('50%', 0.3, true);
+            // $(this).parallax('50%', 0.3, true);
         });
 
         /* For the section content-8 */
@@ -68,7 +68,7 @@ function fadedEls(el, shift) {
 
                 $(window).resize(function() {
                     if (!el.hasClass('ani-processed')) {
-                        el.data('scrollPos', el.offset().top - $(window).height() + el.outerHeight());
+                        // el.data('scrollPos', el.offset().top - $(window).height() + el.outerHeight());
                     }
                 }).scroll(function() {
                     if (!el.hasClass('ani-processed')) {
@@ -89,7 +89,7 @@ function fadedEls(el, shift) {
 
             $(window).resize(function() {
                 if (!el.hasClass('ani-processed')) {
-                    el.data('scrollPos', el.offset().top - $(window).height() + el.outerHeight());
+                    // el.data('scrollPos', el.offset().top - $(window).height() + el.outerHeight());
                 }
             }).scroll(function() {
                 if (!el.hasClass('ani-processed')) {
