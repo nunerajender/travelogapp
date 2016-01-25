@@ -46,11 +46,16 @@
 													<tr>
 														<th scope="row">
 															<!-- <p class="merchant-status"><%= invoice.get_merchant_status %></p> -->
-															<select class="form-control change-status" title="Dropdown" invoice-id="<%= invoice.id %>" >
-																<% invoice.get_guest_available_status_list.each do |status| %>
-																	<option value="<%= status %>"><%= status.capitalize %></option>
-																<% end %>
-															</select>
+															<% if invoice.fullfilled? %>
+																<select class="form-control change-status" title="Dropdown" invoice-id="<%= invoice.id %>" >
+																	<option value="fullfilled" style="display: none;">Fullfilled</option>
+																	<% invoice.get_guest_available_status_list.each do |status| %>
+																		<option value="<%= status %>"><%= status.capitalize %></option>
+																	<% end %>
+																</select>
+															<% else %>
+																<p class="merchant-status"><%= invoice.status.capitalize %></p>
+															<% end %>
 															
 														</th>
 														<td>
@@ -130,11 +135,17 @@
 													<tr>
 														<th scope="row">
 															<!-- <p class="merchant-status"><%= invoice.get_merchant_status %></p> -->
-															<select class="form-control change-status" title="Dropdown" invoice-id="<%= invoice.id %>" >
-																<% invoice.get_guest_available_status_list.each do |status| %>
-																	<option value="<%= status %>"><%= status.capitalize %></option>
-																<% end %>
-															</select>
+															<% if invoice.fullfilled? %>
+																<select class="form-control change-status" title="Dropdown" invoice-id="<%= invoice.id %>" >
+																	<option value="fullfilled" style="display: none;">Fullfilled</option>
+																	<% invoice.get_guest_available_status_list.each do |status| %>
+																		<option value="<%= status %>"><%= status.capitalize %></option>
+																	<% end %>
+																</select>
+															<% else %>
+																<p class="merchant-status"><%= invoice.status.capitalize %></p>
+															<% end %>
+															
 															
 														</th>
 														<td>
@@ -281,6 +292,8 @@
 
 		$(document).on('change', '.change-status', function() {
 			var invoice_id = $(this).attr('invoice-id');
+			var update_status = $(this).val();
+			var $parent = $(this).parent();
 
 			var formData = new FormData();
   		formData.append('status', $(this).val());
@@ -294,6 +307,9 @@
 			  type: 'POST',
 			  success: function(data) {
 			  	console.log('update status success');
+			  	$parent.empty();
+			  	$parent.append('<p class="guest-status">' + update_status.charAt(0).toUpperCase() + update_status.slice(1) + '</p>');
+
 			  },
 			  error: function(error) {
 	      	console.log(error);
@@ -317,5 +333,8 @@
 
 	.panel.upcomming, .panel.previous {
 		border: none;
+	}
+	.merchant-status {
+		min-width: 120px;
 	}
 </style>

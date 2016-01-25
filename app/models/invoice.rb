@@ -51,7 +51,6 @@ class Invoice < ActiveRecord::Base
 	def get_merchant_available_status_list
 		status_list = []
 		if self.paid?
-			status_list.push('paid')
 			status_list.push('fullfilled')
 			status_list.push('cancelled')
 		else
@@ -63,7 +62,6 @@ class Invoice < ActiveRecord::Base
 	def get_guest_available_status_list
 		status_list = []
 		if self.fullfilled?
-			status_list.push('fullfilled')
 			status_list.push('completed')
 		else
 			status_list.push(self.status)
