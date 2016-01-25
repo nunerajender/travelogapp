@@ -13,8 +13,16 @@ class ReservationsController < ApplicationController
 
 		# Activity.joins(:locations).where('locations.country = "Australia"')
 
-		@invoices = Invoice.joins(:product).where.not(:payer_id => nil).where("products.user_id = #{current_user.id}")
+		@invoices = Invoice.joins(:product).where.not(:payer_id => nil).where("products.user_id = #{current_user.id}").order('booking_date desc')
 		set_product_attributs(@invoices)
+	end
+
+	def update_status
+		invoice = Invoice.find(params[:reservation_id])
+		status = params[:status]
+		invoice.status = status
+		invoice.save
+		render :nothing => true, :status => 200, :content_type => 'text/html'
 	end
 
 	private

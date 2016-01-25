@@ -37,7 +37,13 @@
 										<% @invoices.each do |invoice| %>
 											<tr>
 												<th scope="row">
-													<p class="merchant-status"><%= invoice.get_merchant_status %></p>
+													<!-- <p class="merchant-status"><%= invoice.get_merchant_status %></p> -->
+													<select class="form-control change-status" title="Dropdown" invoice-id="<%= invoice.id %>" >
+														<% invoice.get_merchant_available_status_list.each do |status| %>
+															<option value="<%= status %>"><%= status.capitalize %></option>
+														<% end %>
+													</select>
+													
 												</th>
 												<td>
 													<p><%= invoice.booking_date.strftime('%d %B %Y') %><br>
@@ -50,7 +56,7 @@
 															<td width="35%" rowspan="2">
 																<img src="<%= invoice.product.user_avatar_url %>" width="60" class="img-circle"></td>
 															<td width="65%">
-																<h6><%= invoice.product.user.full_name %></h6>
+																<h6><%= invoice.user.full_name %></h6>
 															</td>
 														</tr>
 														<tr>
@@ -77,7 +83,7 @@
 								</table>
 							</div>
 						</div>
-				 </div>
+				 	</div>
 				</div>
 			</div>
 		</div>
@@ -164,7 +170,38 @@
 				$('.panel.previous').fadeIn('slow');
 			}
 		})
+
+		$(document).on('change', '.change-status', function() {
+			var invoice_id = $(this).attr('invoice-id');
+
+			var formData = new FormData();
+  		formData.append('status', $(this).val());
+			$.ajax({
+			  url: '/reservations/' + invoice_id + '/update_status',
+			  // dataType: "json",
+			  data: formData,
+			  cache: false,
+			  contentType: false,
+			  processData: false,
+			  type: 'POST',
+			  success: function(data) {
+			  	console.log('update status success');
+			  },
+			  error: function(error) {
+	      	console.log(error);
+	      },
+	      timeout: 10000
+			});
+
+		})
 	})
 
 
 </script>
+
+<!-- custom css by me -->
+<style>
+	.change-status {
+		min-width: 120px;
+	}
+</style>

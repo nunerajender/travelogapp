@@ -61,8 +61,12 @@ Rails.application.routes.draw do
   # get 'trips' => 'trips#index'
   # get 'reservations' => 'trips#reservations'
 
-  resources :trips
-  resources :reservations
+  resources :trips do
+    post 'update_status' => 'trips#update_status'
+  end
+  resources :reservations do
+    post 'update_status' => 'reservations#update_status'
+  end
   
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
