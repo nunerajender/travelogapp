@@ -632,22 +632,22 @@
 			var updateCurrencySymbol = function() {
 				switch($('#product_currency').val()) {
 					case 'USD':
-						$('.amount-inner .currency-value').text('$');
+						$('.currency-symbol').text('$');
 						break;
 					case 'MYR':
-						$('.amount-inner .currency-value').text('RM');
+						$('.currency-symbol').text('RM');
 						break;
 					case 'SGD':
-						$('.amount-inner .currency-value').text('$');
+						$('.currency-symbol').text('$');
 						break;
 					case 'THB':
-						$('.amount-inner .currency-value').text('฿');
+						$('.currency-symbol').text('฿');
 						break;
 					case 'PHP':
-						$('.amount-inner .currency-value').text('$');
+						$('.currency-symbol').text('$');
 						break;
 					case 'TWD':
-						$('.amount-inner .currency-value').text('NT$');
+						$('.currency-symbol').text('NT$');
 						break;
 				}
 			}

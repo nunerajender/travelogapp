@@ -90,6 +90,13 @@ class User < ActiveRecord::Base
     ret
   end
 
+  def is_buyed_product?(product)
+    ret = false
+    invoice = Invoice.where(:product_id => product.id, :user_id => self.id).where.not(:payer_id => nil).first
+    ret = true if invoice.present?
+    ret
+  end
+
   def sign_up
     save
   end

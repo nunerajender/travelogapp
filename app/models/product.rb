@@ -8,7 +8,7 @@ class Product < ActiveRecord::Base
 	has_many :variants, dependent: :destroy
 	accepts_nested_attributes_for :variants, reject_if: proc { |attributes| attributes['name'].blank? }
 
-	after_initialize :init
+	after_create :init
 
 	has_many :product_reviews
 
@@ -54,4 +54,6 @@ class Product < ActiveRecord::Base
 		full_address = "#{self.address}, #{full_address}" if self.address.present?
 		full_address
 	end
+
+	
 end

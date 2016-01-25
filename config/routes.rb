@@ -23,6 +23,7 @@ Rails.application.routes.draw do
       match "edit_photo",  via: [:get]
       match "edit_price",  via: [:get]
       post "write_comment" => 'products#write_comment'
+      post "remove_comment" => 'products#remove_comment'
     end
   end
   resources :store

@@ -146,6 +146,8 @@ class InvoicesController < ApplicationController
       :amount        => @invoice.amount_cents / 100   # item value
     )
 
+    # binding.pry
+
     begin
       response = request.setup(
         payment_request,
@@ -171,6 +173,9 @@ class InvoicesController < ApplicationController
       end  
     rescue Paypal::Exception::APIError => e
       # puts e.response for debugging.
+      # binding.pry
+      print(e.response.details)
+      redirect_to new_invoice_url(params)
     end
 
   end
