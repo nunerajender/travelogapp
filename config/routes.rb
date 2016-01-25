@@ -34,7 +34,7 @@ Rails.application.routes.draw do
   post 'invoices/new' => 'invoices#new'
   get 'invoices/success_checkout' => "invoices/success_checkout"
   get 'invoices/cancel_checkout' => "invoices/cancel_checkout"
-  resources :invoices, :only => [:new, :create] do
+  resources :invoices do
   end
 
   get 'become_merchant' => 'users#become_merchant'

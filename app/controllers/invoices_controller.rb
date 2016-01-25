@@ -216,9 +216,11 @@ class InvoicesController < ApplicationController
       flash[:alert] = "There is an error while processing the payment"
     end
 
-    
-    # inspect this attribute for more details
-    # response.payment_info
+  end
+
+  def show
+    @invoice = Invoice.find(params[:id])
+    render :success_checkout
   end
 
   def cancel_checkout
