@@ -29,6 +29,7 @@ class ApplicationController < ActionController::Base
   def init_action
 
     # setting current currency
+    CUSTOM_CONFIG[:root_url] = root_url
     session[:currency] = 'MYR' if session[:currency].blank?
     gon.current_currency = session[:currency]
     gon.currency_symbols = get_all_currency_symbols

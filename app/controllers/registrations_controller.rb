@@ -5,7 +5,6 @@ class RegistrationsController < Devise::RegistrationsController
 		if @user.sign_up
 			sign_in_and_redirect(:user, @user)
 		end
-
 	end
 
 	def new

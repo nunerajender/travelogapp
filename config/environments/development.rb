@@ -39,7 +39,7 @@ Rails.application.configure do
   # Raises error for missing translations
   # config.action_view.raise_on_missing_translations = true
 
-  # For mailer configs
+  For mailer configs
   config.action_mailer.delivery_method = :smtp
   config.action_mailer.perform_deliveries = true
   config.action_mailer.default_url_options = { host: 'www.travelog.com'};
@@ -51,6 +51,12 @@ Rails.application.configure do
     :password       => 'AjPIIq3KwQ1mfMW7AYWELgFdeyoewkqm/hJUyhLvlQ9F',
     :enable_starttls_auto => true
   }
+
+  # For mailer configs
+  # config.action_mailer.delivery_method = :smtp
+  # config.action_mailer.smtp_settings = { :address => 'localhost', :port => 1025 }
+
+  # config.action_mailer.default_url_options = 'localhost:3000/';
   
  
   

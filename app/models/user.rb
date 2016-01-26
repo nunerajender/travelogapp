@@ -1,14 +1,14 @@
 class User < ActiveRecord::Base
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
-  devise :database_authenticatable, :registerable,
+  devise :invitable, :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable, :omniauthable, :omniauth_providers => [:facebook]
   attr_accessor :first_name, :last_name
   
   has_many :products
   has_one :profile
   has_one :store_setting
-  after_create :send_welcome_message
+  # after_create :send_welcome_message
   enum status: {
     normal: 0,
     merchant: 1

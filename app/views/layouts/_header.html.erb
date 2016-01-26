@@ -28,7 +28,7 @@
 							</a>
 							<ul class="dropdown-menu profile-nav-dropdown">
 								<li><%= link_to 'Edit Profile', profile_path  %></li>
-								<li><a href="#">Invite Friends</a></li>
+								<li><a href="/users/invitation/new">Invite Friends</a></li>
 								<% if current_user.status == 'merchant' %>
 									<li><%= link_to 'Account Settings', accounts_path %></li>
 								<% end %>
