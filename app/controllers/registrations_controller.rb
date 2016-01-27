@@ -4,7 +4,10 @@ class RegistrationsController < Devise::RegistrationsController
 		@user = User.build(user_params)
 		if @user.sign_up
 			sign_in_and_redirect(:user, @user)
+		else
+			render 'registrations/new'
 		end
+
 	end
 
 	def new

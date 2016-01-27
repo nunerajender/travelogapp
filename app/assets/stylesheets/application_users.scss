@@ -1,5 +1,9 @@
 @import "variables";
-@import "lib/flat-ui/bootstrap/css/bootstrap";
+// @import "lib/flat-ui/bootstrap/css/bootstrap";
+@import "bootstrap-sprockets";
+@import "bootstrap";
+
+@import "lib/formValidation.min";
 
 @import "lib/flat-ui/flat-ui";
 @import "lib/common-files/icon-font";
