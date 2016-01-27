@@ -36,10 +36,14 @@ class UsersController < ApplicationController
 			
 			if params[:user][:new_password].present?
 				current_user.password = params[:user][:new_password]
-				current_user.save
+				if current_user.save
+					redirect_to root_path
+				else
+					return render
+				end
+				
 			end
 
-			redirect_to root_path
 		end
 	end
 
