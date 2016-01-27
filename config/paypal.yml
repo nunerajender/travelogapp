@@ -1,7 +1,7 @@
 development: &sandbox # change to your own
-  username: itsjinlie-facilitator_api1.hotmail.com
-  password: BWFRJLCTQQ58WFJ9
-  signature: An5ns1Kso7MWUdW4ErQKJJJ4qi4-A-.I2OfKc.hbMrsyQ5po718H-F28
+  username: xuxianzhi-facilitator_api1.me.com
+  password: FNUC2YY6UUNS33UQ
+  signature: AFcWxV21C7fd0v3bYYYRCpSSRl31A.CNy1TAgNFY37Aht06fjnhlWhX8
   sandbox: true
 
 test:

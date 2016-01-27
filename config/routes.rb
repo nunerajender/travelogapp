@@ -5,6 +5,7 @@ Rails.application.routes.draw do
                                       :registrations => "registrations"}
   root 'home#index'
 
+  get 'products/review' => 'products#review'
   get 'products/result' => 'products#result'
   post 'products/result' => 'products#result'
   post 'products/result_filter' => 'products#result_filter'

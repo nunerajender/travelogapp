@@ -61,7 +61,7 @@ class User < ActiveRecord::Base
     logger.info "status=Check opts value opts=#{opts[:first_name]}"
     self.email = opts[:email]
     self.valid?
-    self.set_profile(Profile.new(first_name:opts[:first_name].capitalize, last_name:opts[:last_name].capitalize))
+    #self.set_profile(Profile.new(first_name:opts[:first_name].capitalize, last_name:opts[:last_name].capitalize))
     self
   end
 

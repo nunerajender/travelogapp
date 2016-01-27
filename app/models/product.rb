@@ -11,6 +11,9 @@ class Product < ActiveRecord::Base
 	after_initialize :init
 
 	has_many :product_reviews
+	#-------
+	has_many :invoices
+	#belongs_to :product_reviews
 
 	enum payment_type: {
 		visa: 0,

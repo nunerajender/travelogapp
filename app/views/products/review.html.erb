@@ -1,0 +1,234 @@
+
+
+
+<%= render "shared/settings_nav", :obj => 'trips' %>
+
+<div class="side-collapse-container">
+	<section class="header-11-sub profile-page">
+		<div class="container">
+			<div class="row ">
+				<div class="col-md-3">
+					<ul class="sidebar">
+						<li><a href="#"> All Reviews </a></li>
+						
+					</ul>
+					
+				</div>
+				<div class="col-md-9">
+					<div class="row" style="margin-bottom: 15px;">
+						<div class="col-md-10"></div>
+						<div class="col-md-2">
+							<select class=" form-control" title="Dropdown" id="listed-change">
+								<option value="all">All</option>
+								<option value="Rechived">All Reviews Received </option>
+								<option value="Review">Review Posted by User</option> 
+							</select>
+							
+						</div>
+					</div>
+
+					<div class="panel panel-default Rechived">
+						<div class="panel-heading"> 
+							<h5 class="panel-title">
+								All Reviews Received
+							</h5> 
+						</div> 
+						<div class="panel-body">
+
+									<div class="col-md-12">
+									
+
+										<div class="col-md-7">
+											
+											<!-- <p>Manage Listing and Calendar</p> -->
+											
+							<%= @rechived_reviews.find_each do |rechived_review| %>
+<% if rechived_review.id.present? %>
+
+<a href="#" style="display: block;"><img src="<%= rechived_review.avatar_url %>" class="img-circle" width="67" height="67"></a>
+
+<h5 > User Name :<%= rechived_review.user.profile.first_name if rechived_review.user.profile.present? %></h5>
+
+
+
+						<h5>Rating_stars  <%= rechived_review.rating_stars %> </h5>
+											<p class="star-rating small">
+							<span class="icon-star glyphicon glyphicon-star <%= 'selected' if rechived_review.rating_stars > 0 %>"></span>
+							<span class="icon-star glyphicon glyphicon-star <%= 'selected' if rechived_review.rating_stars > 1 %>"></span>
+							<span class="icon-star glyphicon glyphicon-star <%= 'selected' if rechived_review.rating_stars > 2 %>"></span>
+							<span class="icon-star glyphicon glyphicon-star <%= 'selected' if rechived_review.rating_stars > 3 %>"></span>
+							<span class="icon-star glyphicon glyphicon-star <%= 'selected' if rechived_review.rating_stars > 4 %>"></span>
+						</p>
+
+											<h5>Reviews </h5>
+							
+											<p> <%= rechived_review.message %> </p>	
+											</br>	</br> </br>	
+		<% else %>
+
+		<h5>There is no Reviews.</h5>
+		<% end %>
+							<% end %>
+
+			
+
+										</div>
+
+										<div class="col-md-2">
+											
+										</div>
+								
+									</div>
+						
+						</div>
+					</div>
+
+					<div class="panel panel-default Review">
+						<div class="panel-heading"> 
+							<h5 class="panel-title">
+								Review Posted by User
+							</h5> 
+
+						</div>
+						<div class="panel-body">
+
+									<div class="col-md-12">
+									
+
+										<div class="col-md-7">
+									
+											<!-- <p>Manage Listing and Calendar</p> -->
+
+											<%= @product.find_each do |product| %>
+							<% if product.id.present? %>
+												<h5>Product photo </h5>
+
+
+
+						<a href="#" style="display: block;"><img src="<%= product.user_avatar_url %>"  width="100" height="67"></a>
+											
+													
+											
+										
+											
+
+												<h5>Product Name </h5>
+							
+											<p> <%= product.name %></p>
+
+
+
+
+											<h5>Reviews </h5>
+											
+
+            </br>	</br> </br>	
+							
+									<% else %>
+
+		<h5>There is no Reviews.</h5>
+		<% end %>
+											<% end %>
+										<div class="col-md-2">
+											
+										</div>
+								
+									</div>
+						
+						</div>
+						
+						</div>
+					</div>
+
+
+				</div>
+			</div>
+		</div>
+	</section>
+	<!-- full-box-border -->
+</div>
+<!-- /side-collapse-container  -->
+
+<style>
+	ul.sidebar {padding:0;}
+	ul.sidebar li{ list-style:none;margin: 10px 0; }
+	ul.sidebar li a{ color:#adadad;}
+	.listing-details {
+		background-color: #FFF;
+		border:1px solid #e6e6e6; padding:40px 20px;
+	}
+	.profile-form input {background-color: #FFF;
+		border:1px solid #adadad;
+	}
+	.profile-form select {background-color: #FFF;
+		border:1px solid #adadad; width:100px;
+	}
+	.btn-viewprofile { width:200px;color: #333;
+		background-color: #FFF;
+		border-color: #adadad; margin-top:20px;
+	}
+	.birthdate .dropdown-menu {
+		top: 33px;
+	}
+	.profile-details .dropdown-toggle {
+		width: 130px;
+	}
+	.profile-page {
+		padding-top: 40px;
+		background: #fafafa;
+	}
+	.nav-second-profile {  z-index:2;  background: #DBDDDE; padding-top:0;}
+	.nav-second-profile li.active {font-weight: bold; color:#000;}
+	.nav-second-profile .navbar-nav>li>a {
+		padding-top: 15px;
+		color: #777;
+	}
+
+	/*Listings*/
+
+	h5.panel-title {
+		font-weight: normal;
+		font-family: Arial, Helvetica, sans-serif;
+		font-size: 20px;
+		color: #000;
+		line-height: 26px;margin-left: 15px;
+	}
+
+	.header-11-sub p {
+		color: #000;font-family: Arial, Helvetica, sans-serif;
+		font-size: 14px;
+	}
+
+	.btn-list {    background: #2d5be3; color:#FFF; border-color:#2d5be3}
+
+	.form-control {
+		border: 1px solid #ccc;
+	}
+
+	#listed-change {
+		width: 130px;
+    float: right;
+	}
+
+</style>
+
+
+<script>
+	$(document).ready(function() {
+		$('#listed-change').on('change', function() {
+			var listed_status = $(this).val();
+			if(listed_status == 'Rechived') {
+				$('.panel.Rechived').fadeIn('slow');
+				$('.panel.Review').fadeOut('slow');
+			} else if (listed_status == 'Review') {
+				$('.panel.Rechived').fadeOut('slow');
+				$('.panel.Review').fadeIn('slow');
+			} else {
+				$('.panel.Rechived').fadeIn('slow');
+				$('.panel.Review').fadeIn('slow');
+			}
+		})
+	})
+
+
+</script>
