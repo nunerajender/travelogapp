@@ -61,6 +61,7 @@ Rails.application.routes.draw do
   get 'profile/photos' => 'users#photos'
   post 'profile/photos' => 'users#photos'
   post 'complete_merchant' => 'users#complete_merchant'
+  get 'dashboard' => 'users#dashboard'
 
   get 'users/verify_store_username' => 'users#verify_store_username'
 

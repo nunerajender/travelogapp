@@ -164,11 +164,18 @@ class UsersController < ApplicationController
   	if current_user
   		return redirect_to root_path
   	end
-    @user = User.find_by_fb_share_token(@fb_share_token)
-    if @user.blank?
+    @inviter = User.find_by_fb_share_token(@fb_share_token)
+    if @inviter.blank?
   		return redirect_to root_path
   	end
+  	@user = User.new
     render :template => 'users/fbshare_accept', :layout => 'users'
+  end
+
+
+  # dashboard page
+  def dashboard
+  	
   end
 
 	private
