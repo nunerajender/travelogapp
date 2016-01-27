@@ -36,6 +36,7 @@ class InvitationsController < Devise::InvitationsController
 
   # PUT /resource/invitation
   def update
+
     raw_invitation_token = update_resource_params[:invitation_token]
     self.resource = accept_resource
     invitation_accepted = resource.errors.empty?
@@ -49,9 +50,14 @@ class InvitationsController < Devise::InvitationsController
         inviter = resource.invited_by
         inviter.reward_credit += 5
         inviter.save
+
+        profile = Profile.new(first_name:params[:user][:first_name].capitalize, last_name:params[:user][:last_name].capitalize, user_id: resource.id)
+        profile.save
+
         flash_message = resource.active_for_authentication? ? :updated : :updated_not_active
         set_flash_message :notice, flash_message if is_flashing_format?
         sign_in(resource_name, resource)
+        binding.pry
         respond_with resource, :location => after_accept_path_for(resource)
       else
         set_flash_message :notice, :updated_not_active if is_flashing_format?

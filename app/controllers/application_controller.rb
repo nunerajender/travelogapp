@@ -10,6 +10,8 @@ class ApplicationController < ActionController::Base
   layout :layout_by_resource
   skip_before_action :authenticate_user!, only: [:set_currency]
 
+  before_filter :set_current_user
+
   def set_currency
     session[:currency] = params["footer-currency"]
     redirect_to params["current-url"]
@@ -85,6 +87,10 @@ class ApplicationController < ActionController::Base
         product.review_mark = 0
       end
     end
+  end
+
+  def set_current_user
+    User.current_user = current_user
   end
 
 end

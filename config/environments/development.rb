@@ -40,24 +40,22 @@ Rails.application.configure do
   # config.action_view.raise_on_missing_translations = true
 
   #For mailer configs
-  config.action_mailer.delivery_method = :smtp
-  config.action_mailer.perform_deliveries = true
-  config.action_mailer.default_url_options = { host: 'www.travelog.com'};
-  config.action_mailer.smtp_settings = {
-    :address        => 'email-smtp.us-west-2.amazonaws.com',
-    :port => 587,
-    :authentication => :plain,
-    :user_name      => 'AKIAI6U6JYWJ4PHXFISA',
-    :password       => 'AjPIIq3KwQ1mfMW7AYWELgFdeyoewkqm/hJUyhLvlQ9F',
-    :enable_starttls_auto => true
-  }
+  # config.action_mailer.delivery_method = :smtp
+  # config.action_mailer.perform_deliveries = true
+  # config.action_mailer.default_url_options = { host: 'www.travelog.com'};
+  # config.action_mailer.smtp_settings = {
+  #   :address        => 'email-smtp.us-west-2.amazonaws.com',
+  #   :port => 587,
+  #   :authentication => :plain,
+  #   :user_name      => 'AKIAI6U6JYWJ4PHXFISA',
+  #   :password       => 'AjPIIq3KwQ1mfMW7AYWELgFdeyoewkqm/hJUyhLvlQ9F',
+  #   :enable_starttls_auto => true
+  # }
 
   # For mailer configs
-  # config.action_mailer.delivery_method = :smtp
-  # config.action_mailer.smtp_settings = { :address => 'localhost', :port => 1025 }
+  config.action_mailer.delivery_method = :smtp
+  config.action_mailer.smtp_settings = { :address => 'localhost', :port => 1025 }
 
-  # config.action_mailer.default_url_options = 'localhost:3000/';
-  
- 
+  config.action_mailer.default_url_options = 'localhost:3000/';
   
 end

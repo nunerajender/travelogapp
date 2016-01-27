@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-	skip_before_action :authenticate_user!, only:[:become_merchant]
+	skip_before_action :authenticate_user!, only:[:become_merchant, :invite]
 	before_action :set_user_profile, only: [:profile, :profile_avatar, :profile_accounts]
 	before_action :set_accounts, only: [:accounts, :accounts_photo]
 
@@ -134,6 +134,17 @@ class UsersController < ApplicationController
 			end
 		end
 	end
+
+	# GET /resource/invitation/invite?invitation_token=abcdef 
+
+  def invite
+  	if current_user
+  		redirect_to root_path
+  	end
+    @invitation_token = params[:invitation_token]
+    @user = User.find_by_id(params[:user_id])
+    render :invite
+  end
 
 	private
 		def store_setting_params

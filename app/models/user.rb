@@ -17,6 +17,7 @@ class User < ActiveRecord::Base
   has_many :product_reviews
 
   attr_accessor :avatar_url
+  cattr_accessor :current_user
   
   def self.from_omniauth(auth)
   	
@@ -100,6 +101,8 @@ class User < ActiveRecord::Base
   def sign_up
     save
   end
+
+
   private
 
     def send_welcome_message

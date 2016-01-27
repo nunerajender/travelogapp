@@ -433,9 +433,6 @@ class ProductsController < ApplicationController
 		end
 	end
 
-
-	
-
 	private
 		def set_product
 			@product = Product.find(params[:id])

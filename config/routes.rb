@@ -3,6 +3,9 @@ Rails.application.routes.draw do
  
   devise_for :users, :controllers => {:omniauth_callbacks => "users/omniauth_callbacks",
                                       :registrations => "registrations", :invitations => 'invitations'}
+
+
+  get '/users/invitation/invite' => 'users#invite'
   root 'home#index'
 
   get 'products/result' => 'products#result'
