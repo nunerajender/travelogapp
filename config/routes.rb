@@ -6,6 +6,8 @@ Rails.application.routes.draw do
 
 
   get '/users/invitation/invite' => 'users#invite'
+  get '/users/fbshare' => 'users#fbshare'
+  get '/users/fbshare_accept' => 'users#fbshare_accept'
   root 'home#index'
 
   get 'products/result' => 'products#result'

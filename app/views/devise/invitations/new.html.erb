@@ -42,11 +42,11 @@
 
 						<div class="form-group">
 							<!-- <input type="text" class="form-control" id="" placeholder="www.travelog.com/c/macv3?s=8"> -->
-							<input type="text" class="form-control" id="fb-share-link" name="fb-share-link" placeholder="www.travelog.com/c/macv3?s=8" readonly>
+							<input type="text" class="form-control" id="fb-share-link" name="fb-share-link" placeholder="<%= @fb_share_link %>" readonly>
 						</div>
 
 						<!-- <button type="submit" class="btn btn-sharefacebook">Facebook</button> -->
-						<a class="btn btn-sharefacebook" data-network="facebook" rel="nofollow" title="Facebook" href="<%= URI.encode("http://www.facebook.com/sharer.php?u=" + root_url + 'c/macv3') %>" target="_blank" style="color: white;">
+						<a class="btn btn-sharefacebook" data-network="facebook" rel="nofollow" title="Facebook" href="<%= URI.encode("http://www.facebook.com/sharer.php?u=" + @fb_share_link) %>" target="_blank" style="color: white;">
 							<i class="icon icon-facebook"></i>
 							Facebook
 						</a>

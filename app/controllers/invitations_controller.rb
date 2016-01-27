@@ -4,6 +4,13 @@ class InvitationsController < Devise::InvitationsController
 	# GET /resource/invitation/new
   def new
     self.resource = resource_class.new
+
+    # create a fb share link
+    if current_user.fb_share_token.blank?
+      current_user.set_fb_share_token
+    end
+
+    @fb_share_link = "#{root_url}users/fbshare?token=#{current_user.fb_share_token}"
     render :layout => 'product', :template => 'devise/invitations/new'
     # render 'new'
   end

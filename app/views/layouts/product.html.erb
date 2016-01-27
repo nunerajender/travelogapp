@@ -7,12 +7,10 @@
   <meta name="description" content="">
   <meta name="author" content="">
 
-  <!-- og meta for facebook share -->
-  <meta property="fb:app_id" content="myid" /> 
-  <meta property="og:type"   content="sdff:post" /> 
-  <meta property="og:url"    content="testtest" /> 
-  <meta property="og:title"  content="Sample" /> 
-  <!-- <meta property="og:image"  content="https://fbstatic-a.akamaihd.net/images/devsite/attachment_blank.png" /> -->
+  
+  <% if content_for?(:head) %>
+    <%= yield(:head) %>
+  <% end %>
 
 
   <link rel="icon" href="../../favicon.ico">

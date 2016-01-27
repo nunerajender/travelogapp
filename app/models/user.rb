@@ -103,10 +103,23 @@ class User < ActiveRecord::Base
   end
 
 
+  def set_fb_share_token
+    self.fb_share_token = generate_fb_share_token
+    save
+  end
+
+
   private
 
     def send_welcome_message
       UserMailer.welcome_message(self).deliver
+    end
+
+    def generate_fb_share_token
+      loop do
+        token = "#{Devise.friendly_token}"
+        break token unless User.where(fb_share_token: token).first
+      end
     end
 
 end
