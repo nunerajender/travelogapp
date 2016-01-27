@@ -41,7 +41,8 @@ class UsersController < ApplicationController
 				else
 					return render
 				end
-				
+			else
+				redirect_to root_path
 			end
 
 		end
