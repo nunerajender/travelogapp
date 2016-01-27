@@ -24,4 +24,11 @@ class UserMailer < ActionMailer::Base
   	@product_name = product.name
   	mail(:to => @merchant.email, :subject => "Review message on Travelog")
   end
+
+  def invite_message(invitee, accept_link)
+    @invitee = invitee
+    @inviter_name = @invitee.invited_by.full_name
+    @accept_link = accept_link
+    mail(:to => @invitee.email, :subject => "#{@inviter_name} invited you to Travelog")
+  end
 end

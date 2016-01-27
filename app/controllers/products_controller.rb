@@ -1,6 +1,6 @@
 require 'money/bank/google_currency'
 class ProductsController < ApplicationController
-	before_action :set_product, only: [:show, :edit, :update, :destroy, :write_comment]
+	before_action :set_product, only: [:show, :edit, :update, :destroy, :write_comment, :remove_comment]
 	before_action :set_product_widget, only: [:edit_basic, :edit_description, :edit_location, :edit_photo, :edit_price]
 	skip_before_action :authenticate_user!, only: [:result, :show]
 
@@ -89,6 +89,17 @@ class ProductsController < ApplicationController
 		else
 			redirect_to root_path
 		end
+	end
+
+	def remove_comment
+		product_review = ProductReview.find_by_id(params[:review_id])
+		if product_review.present? && product_review.product_id == @product.id && product_review.user_id == current_user.id
+			product_review.destroy
+			render :json => {:status => 'success'}.to_json
+		else
+			render :json => {:status => 'fail'}.to_json
+		end
+
 		
 	end
 
@@ -224,7 +235,7 @@ class ProductsController < ApplicationController
 	def update
 		respond_to do |format|
 			if params[:product].present?
-				unless @product.update(product_params)
+				unless @product.update_attributes(product_params)
 					format.html { render :edit }
 					format.json { render json: @product_attachment.errors, status: :unprocessable_entity }
 				end
@@ -317,6 +328,8 @@ class ProductsController < ApplicationController
 		# str_query = 'product_category_id = -1'
 		
 		@products = Product.where(:step => 5)
+
+		params[:city] = '' if params[:city] == 'all cities'
 
 		if params[:city].present?
 			# str_query += " or (lower(city) LIKE '%#{params[:city].downcase}%' or lower(country) like '%#{params[:city].downcase}%')"
@@ -538,6 +551,8 @@ class ProductsController < ApplicationController
 			format.json { head :no_content }
 		end
 	end
+
+
 	
 
 	private
@@ -553,32 +568,9 @@ class ProductsController < ApplicationController
 		def product_params
 			op = params.require(:product).permit(:name, :product_category_id, :payment_type, :location_id, 
 				:country, :address, :apt, :city, :state, :zip, :price_cents, :currency, :description, 
-				:highlight, :refundable, :refund_day, :refund_percent, :variants_attributes => [:id, :name, :price_cents])
+				:highlight, :refundable, :refund_day, :refund_percent, :discount, :variants_attributes => [:id, :name, :price_cents])
 			op[:price_cents] = op[:price_cents].to_i * 100
 			op
-		end
-
-		def set_product_attributs(products)
-			products.each do |product|
-				if product.product_attachments.present? && product.product_attachments.count > 0
-					product.product_overview_url = product.product_attachments[0].attachment.medium.url
-				end
-				product.user_avatar_url = product.user.get_avatar_url
-
-				# review the mark
-				total_review = 0
-				review_count = product.product_reviews.count
-				if review_count > 0
-					product.product_reviews.each do |review|
-						total_review += review.rating_stars
-					end
-					product.review_mark = (total_review / review_count).round
-				else
-					product.review_mark = 0
-				end
-			end
-
-
 		end
 
 		def set_product_currency_attributes(products)

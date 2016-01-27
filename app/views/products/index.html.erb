@@ -4,13 +4,15 @@
 		<div class="container">
 			<div class="row ">
 				<div class="col-md-3">
-					<ul class="sidebar">
+					<!-- <ul class="sidebar">
 						<li><a href="/products">Your Listings</a></li>
 						<li><a href="">Your Reservations</a></li>
 						<li><a href="">Reservation Requirements</a></li>
 						<li><a href="/products/new">Add New Listings</a></li>
 					</ul>
-					<a href="/products/new" class="btn btn-block btn-viewprofile">Add New Listings</a>
+					<a href="/products/new" class="btn btn-block btn-viewprofile">Add New Listings</a> -->
+
+					<%= render "shared/listing_left_nav", :obj => 'listings' %>
 				</div>
 				<div class="col-md-9">
 					<div class="row" style="margin-bottom: 15px;">
@@ -144,6 +146,28 @@
 </div>
 <!-- /side-collapse-container  -->
 
+
+
+<script>
+	$(document).ready(function() {
+		$('#listed-change').on('change', function() {
+			var listed_status = $(this).val();
+			if(listed_status == 'listed') {
+				$('.panel.listed').fadeIn('slow');
+				$('.panel.unlisted').fadeOut('slow');
+			} else if (listed_status == 'unlisted') {
+				$('.panel.listed').fadeOut('slow');
+				$('.panel.unlisted').fadeIn('slow');
+			} else {
+				$('.panel.listed').fadeIn('slow');
+				$('.panel.unlisted').fadeIn('slow');
+			}
+		})
+	})
+
+
+</script>
+
 <style>
 	ul.sidebar {padding:0;}
 	ul.sidebar li{ list-style:none;margin: 10px 0; }
@@ -201,23 +225,3 @@
 	}
 
 </style>
-
-<script>
-	$(document).ready(function() {
-		$('#listed-change').on('change', function() {
-			var listed_status = $(this).val();
-			if(listed_status == 'listed') {
-				$('.panel.listed').fadeIn('slow');
-				$('.panel.unlisted').fadeOut('slow');
-			} else if (listed_status == 'unlisted') {
-				$('.panel.listed').fadeOut('slow');
-				$('.panel.unlisted').fadeIn('slow');
-			} else {
-				$('.panel.listed').fadeIn('slow');
-				$('.panel.unlisted').fadeIn('slow');
-			}
-		})
-	})
-
-
-</script>

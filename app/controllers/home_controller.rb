@@ -1,5 +1,5 @@
 class HomeController < ApplicationController
-	skip_before_action :authenticate_user!
+	skip_before_action :authenticate_user!, only: [:index, :home_products]
 
 	def index
 
@@ -31,6 +31,8 @@ class HomeController < ApplicationController
 		get_all_cities.each do |city|
 			@count_per_city[city] = Product.where(:step => 5).where("lower(city) LIKE ? or lower(country) like ?", "%#{city.downcase}%", "%#{city.downcase}%").count
 		end
+
+		set_product_attributs(@products)
 	end
 
 	def home_products
@@ -51,8 +53,8 @@ class HomeController < ApplicationController
 			product.price_with_currency = (product.price_cents * rate / 100).round(2)
 			product.current_currency = session[:currency]
 		end
-		# gon.home_products = @products
-		# binding.pry
+
+		set_product_attributs(@products)
 		render :layout => false
 	end
 

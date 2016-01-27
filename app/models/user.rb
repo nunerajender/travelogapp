@@ -1,14 +1,14 @@
 class User < ActiveRecord::Base
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
-  devise :database_authenticatable, :registerable,
+  devise :invitable, :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable, :omniauthable, :omniauth_providers => [:facebook]
   attr_accessor :first_name, :last_name
   
   has_many :products
   has_one :profile
   has_one :store_setting
-  after_create :send_welcome_message
+  # after_create :send_welcome_message
   enum status: {
     normal: 0,
     merchant: 1
@@ -87,6 +87,13 @@ class User < ActiveRecord::Base
     if self.store_setting.present? && self.store_setting.store_image.present?
       ret = self.store_setting.store_image.store_img.thumb.url
     end
+    ret
+  end
+
+  def is_buyed_product?(product)
+    ret = false
+    invoice = Invoice.where(:product_id => product.id, :user_id => self.id).where.not(:payer_id => nil).first
+    ret = true if invoice.present?
     ret
   end
 

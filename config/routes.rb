@@ -2,7 +2,7 @@ Rails.application.routes.draw do
 
  
   devise_for :users, :controllers => {:omniauth_callbacks => "users/omniauth_callbacks",
-                                      :registrations => "registrations"}
+                                      :registrations => "registrations", :invitations => 'invitations'}
   root 'home#index'
 
   get 'products/review' => 'products#review'
@@ -24,6 +24,7 @@ Rails.application.routes.draw do
       match "edit_photo",  via: [:get]
       match "edit_price",  via: [:get]
       post "write_comment" => 'products#write_comment'
+      post "remove_comment" => 'products#remove_comment'
     end
   end
   resources :store
@@ -34,7 +35,7 @@ Rails.application.routes.draw do
   post 'invoices/new' => 'invoices#new'
   get 'invoices/success_checkout' => "invoices/success_checkout"
   get 'invoices/cancel_checkout' => "invoices/cancel_checkout"
-  resources :invoices, :only => [:new, :create] do
+  resources :invoices do
   end
 
   get 'become_merchant' => 'users#become_merchant'
@@ -59,7 +60,15 @@ Rails.application.routes.draw do
 
   get 'users/verify_store_username' => 'users#verify_store_username'
 
-  get 'trips' => 'trips#index'
+  # get 'trips' => 'trips#index'
+  # get 'reservations' => 'trips#reservations'
+
+  resources :trips do
+    post 'update_status' => 'trips#update_status'
+  end
+  resources :reservations do
+    post 'update_status' => 'reservations#update_status'
+  end
   
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

@@ -146,6 +146,8 @@ class InvoicesController < ApplicationController
       :amount        => @invoice.amount_cents / 100   # item value
     )
 
+    # binding.pry
+
     begin
       response = request.setup(
         payment_request,
@@ -171,6 +173,9 @@ class InvoicesController < ApplicationController
       end  
     rescue Paypal::Exception::APIError => e
       # puts e.response for debugging.
+      # binding.pry
+      print(e.response.details)
+      redirect_to new_invoice_url(params)
     end
 
   end
@@ -211,9 +216,11 @@ class InvoicesController < ApplicationController
       flash[:alert] = "There is an error while processing the payment"
     end
 
-    
-    # inspect this attribute for more details
-    # response.payment_info
+  end
+
+  def show
+    @invoice = Invoice.find(params[:id])
+    render :success_checkout
   end
 
   def cancel_checkout

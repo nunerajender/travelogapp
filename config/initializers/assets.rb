@@ -21,3 +21,16 @@ Rails.application.config.assets.precompile += %w( application_old.js )
 
 Rails.application.config.assets.precompile += %w( application_result.css )
 Rails.application.config.assets.precompile += %w( application_result.js )
+
+Rails.application.config.assets.precompile += %w( application_detail.css )
+Rails.application.config.assets.precompile += %w( application_detail.js )
+
+Rails.application.config.assets.precompile += %w( application_product_new.css )
+# Rails.application.config.assets.precompile += %w( application_product.js )
+
+
+Rails.application.config.assets.precompile += %w( application_merchant.css )
+Rails.application.config.assets.precompile += %w( application_merchant.js )
+
+Rails.application.config.assets.precompile += %w( application_user_invite.css )
+Rails.application.config.assets.precompile += %w( application_user_invite.js )

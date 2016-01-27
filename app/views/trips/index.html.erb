@@ -26,40 +26,75 @@
 					</div>
 
 					<div class="panel panel-default upcomming">
-						<div class="panel-heading"> 
-							<h5 class="panel-title">
-								Upcomming
-							</h5> 
-						</div> 
-						<div class="panel-body">
-							<div class="row">
-								<% @upcomming_invoices.each_with_index do |invoice, index|%>
-									<div class="col-md-12">
-										<div class="col-md-3">
-											<a href="#" class="thumbnail">
-												<% if invoice.product.product_overview_url.present? %>
-													<img src="<%= invoice.product.product_overview_url %>" alt="...">
-												<% else %>
-													<img src="<%= asset_url('placehold_200_200.png') %>" alt="...">
+						<div class="panel panel-default profile-photo">
+						<div class="panel-heading"><strong>Upcomming</strong></div>
+							<div class="panel-body">
+								<div class="col-md-12">
+									<% if @upcomming_invoices.count > 0 %>
+										<table class="table table-bordered">
+											<thead>
+												<tr>
+													<th width="12%">Status</th>
+													<th width="19%">Date & Locations</th>
+													<th width="36%">Merchant</th>
+													<th width="33%">Details</th>
+												</tr>
+											</thead>
+											<tbody>
+												
+												<% @upcomming_invoices.each do |invoice| %>
+													<tr>
+														<th scope="row">
+															<!-- <p class="merchant-status"><%= invoice.get_merchant_status %></p> -->
+															<% if invoice.fullfilled? %>
+																<select class="form-control change-status" title="Dropdown" invoice-id="<%= invoice.id %>" >
+																	<option value="fullfilled" style="display: none;">Fullfilled</option>
+																	<% invoice.get_guest_available_status_list.each do |status| %>
+																		<option value="<%= status %>"><%= status.capitalize %></option>
+																	<% end %>
+																</select>
+															<% else %>
+																<p class="merchant-status"><%= invoice.status.capitalize %></p>
+															<% end %>
+															
+														</th>
+														<td>
+															<p><%= invoice.booking_date.strftime('%d %B %Y') %><br>
+																<%= invoice.product.full_address %>
+															</p>
+														</td>
+														<td>
+															<table width="100%" border="0" cellspacing="0" cellpadding="0">
+																<tr>
+																	<td width="35%" rowspan="2">
+																		<img src="<%= invoice.product.user_avatar_url %>" width="60" class="img-circle"></td>
+																	<td width="65%">
+																		<h6><%= invoice.product.user.full_name %></h6>
+																	</td>
+																</tr>
+																<tr>
+																	<td>
+																		<p><%= link_to 'View Receipt', invoice_path(invoice) %></p>
+																	</td>
+																</tr>
+															</table>
+														</td>
+														<td>
+															<p>
+																<%= invoice.product.name %>
+															</p>
+															<p>
+																<%= truncate(strip_tags(invoice.product.highlight), length: 100, escape: false) %>
+															</p>
+															<p>
+																<%= get_all_currency_symbols[invoice.currency] %><%= invoice.amount_cents / 100 %>
+															</p>
+														</td>
+													</tr>
 												<% end %>
-											</a>
-										</div>
-
-										<div class="col-md-7">
-											<h5><%= invoice.product.name %>, for traveller in <%= invoice.product.city %></h5>
-											<p>Manage Listing and Calendar</p>
-										</div>
-
-										<div class="col-md-2">
-											
-										</div>
-									</div>
-									<% unless index == @upcomming_invoices.count - 1 %>
-										<!-- <hr> -->
-									<% end %>
-								<% end %>
-								<% if @upcomming_invoices.count == 0 %>
-									<div class="col-md-12">
+											</tbody>
+										</table>
+									<% else %>
 										<div class="col-md-3">
 											<a href="#" class="thumbnail">
 												<img src="<%= asset_url('placehold_200_200.png') %>" alt="...">
@@ -68,53 +103,88 @@
 
 										<div class="col-md-7">
 											<h5>There is no upcomming trip.</h5>
-											<!-- <p>Manage Listing and Calendar</p> -->
 										</div>
 
 										<div class="col-md-2">
 											
 										</div>
-									</div>
-								<% end %>
+									<% end %>
+								</div>
 							</div>
-						</div>
+					 	</div>
 					</div>
 
 					<div class="panel panel-default previous">
-						<div class="panel-heading"> 
-							<h5 class="panel-title">
-								Previous
-							</h5> 
-						</div> 
-						<div class="panel-body">
-							<div class="row">
-								<% @previous_invoices.each_with_index do |invoice, index|%>
-									<div class="col-md-12">
-										<div class="col-md-3">
-											<a href="#" class="thumbnail">
-												<% if invoice.product.product_overview_url.present? %>
-													<img src="<%= invoice.product.product_overview_url %>" alt="...">
-												<% else %>
-													<img src="<%= asset_url('placehold_200_200.png') %>" alt="...">
+						<div class="panel panel-default profile-photo">
+						<div class="panel-heading"><strong>Previous</strong></div>
+							<div class="panel-body">
+								<div class="col-md-12">
+									<% if @previous_invoices.count > 0 %>
+										<table class="table table-bordered">
+											<thead>
+												<tr>
+													<th width="12%">Status</th>
+													<th width="19%">Date & Locations</th>
+													<th width="36%">Merchant</th>
+													<th width="33%">Details</th>
+												</tr>
+											</thead>
+											<tbody>
+												
+												<% @previous_invoices.each do |invoice| %>
+													<tr>
+														<th scope="row">
+															<!-- <p class="merchant-status"><%= invoice.get_merchant_status %></p> -->
+															<% if invoice.fullfilled? %>
+																<select class="form-control change-status" title="Dropdown" invoice-id="<%= invoice.id %>" >
+																	<option value="fullfilled" style="display: none;">Fullfilled</option>
+																	<% invoice.get_guest_available_status_list.each do |status| %>
+																		<option value="<%= status %>"><%= status.capitalize %></option>
+																	<% end %>
+																</select>
+															<% else %>
+																<p class="merchant-status"><%= invoice.status.capitalize %></p>
+															<% end %>
+															
+															
+														</th>
+														<td>
+															<p><%= invoice.booking_date.strftime('%d %B %Y') %><br>
+																<%= invoice.product.full_address %>
+															</p>
+														</td>
+														<td>
+															<table width="100%" border="0" cellspacing="0" cellpadding="0">
+																<tr>
+																	<td width="35%" rowspan="2">
+																		<img src="<%= invoice.product.user_avatar_url %>" width="60" class="img-circle"></td>
+																	<td width="65%">
+																		<h6><%= invoice.product.user.full_name %></h6>
+																	</td>
+																</tr>
+																<tr>
+																	<td>
+																		<p><%= link_to 'View Receipt', '#' %></p>
+																	</td>
+																</tr>
+															</table>
+														</td>
+														<td>
+															<p>
+																<%= invoice.product.name %>
+															</p>
+															<p>
+																<%= truncate(strip_tags(invoice.product.highlight), length: 100, escape: false) %>
+															</p>
+															<p>
+																<%= get_all_currency_symbols[invoice.currency] %><%= invoice.amount_cents / 100 %>
+															</p>
+														</td>
+													</tr>
 												<% end %>
-											</a>
-										</div>
-
-										<div class="col-md-7">
-											<h5><%= invoice.product.name %>, for traveller in <%= invoice.product.city %></h5>
-											<p>Manage Listing and Calendar</p>
-										</div>
-
-										<div  class="col-md-2">
-											
-										</div>
-									</div>
-									<% unless index == @previous_invoices.count - 1 %>
-										<!-- <hr> -->
-									<% end %>
-								<% end %>
-								<% if @previous_invoices.count == 0 %>
-									<div class="col-md-12">
+											</tbody>
+										</table>
+									<% else %>
 										<div class="col-md-3">
 											<a href="#" class="thumbnail">
 												<img src="<%= asset_url('placehold_200_200.png') %>" alt="...">
@@ -123,16 +193,15 @@
 
 										<div class="col-md-7">
 											<h5>There is no previous trip.</h5>
-											<!-- <p>Manage Listing and Calendar</p> -->
 										</div>
 
 										<div class="col-md-2">
 											
 										</div>
-									</div>
-								<% end %>
+									<% end %>
+								</div>
 							</div>
-						</div>
+					 	</div>
 					</div>
 				</div>
 			</div>
@@ -220,7 +289,52 @@
 				$('.panel.previous').fadeIn('slow');
 			}
 		})
+
+		$(document).on('change', '.change-status', function() {
+			var invoice_id = $(this).attr('invoice-id');
+			var update_status = $(this).val();
+			var $parent = $(this).parent();
+
+			var formData = new FormData();
+  		formData.append('status', $(this).val());
+			$.ajax({
+			  url: '/trips/' + invoice_id + '/update_status',
+			  // dataType: "json",
+			  data: formData,
+			  cache: false,
+			  contentType: false,
+			  processData: false,
+			  type: 'POST',
+			  success: function(data) {
+			  	console.log('update status success');
+			  	$parent.empty();
+			  	$parent.append('<p class="guest-status">' + update_status.charAt(0).toUpperCase() + update_status.slice(1) + '</p>');
+
+			  },
+			  error: function(error) {
+	      	console.log(error);
+	      },
+	      timeout: 10000
+			});
+
+		})
+
 	})
 
 
 </script>
+
+
+<!-- custom css by me -->
+<style>
+	.change-status {
+		min-width: 120px;
+	}
+
+	.panel.upcomming, .panel.previous {
+		border: none;
+	}
+	.merchant-status {
+		min-width: 120px;
+	}
+</style>

@@ -24,11 +24,14 @@
 						<h6 class="review-name"><%= product_review.user.profile.first_name if product_review.user.profile.present? %></h6>
 						<p><%= product_review.message %></p>
 						<hr>
+						<% if product_review.user_id == current_user.id %>
+							<a class="remove-review" href="#" review-id="<%= product_review.id %>" product-id="<%= @product.id %>"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></a>
+						<% end %>
 					</div>
 				</div>
 			<% end %>
 
-			<% if current_user.present? && @product.user != current_user %>
+			<% if current_user.present? && @product.user != current_user && current_user.is_buyed_product?(@product) %>
 				<div class="row">
 					<form id="product-show" action="/products/<%= @product.id %>/write_comment" method="post">
 						<%= tag(:input, :name => 'authenticity_token', :type => "hidden", :value => form_authenticity_token) %>
@@ -36,7 +39,7 @@
 							<h4>Post a recommendation</h4>
 							
 						</div>
-						<div class="col-md-6 col-xs-offset-1">
+						<div class="col-md-6 col-xs-offset-1 star-container">
 							<p class="star-rating" name="star-rating">
 								<span class="icon-star glyphicon glyphicon-star"></span>
 								<span class="icon-star glyphicon glyphicon-star"></span>
@@ -47,7 +50,7 @@
 							<input type="hidden" name="rating-stars" value="0" id="rating-stars">
 						</div>
 						
-						<div class="col-md-6 col-xs-offset-1">
+						<div class="col-md-6 col-xs-offset-1 text-container">
 							<br>
 							<textarea class="form-control testimonials" rows="3" name="message" id="message"></textarea>
 						</div>
@@ -145,11 +148,62 @@
 			
 		})
 
+		$(document).on('click', '.remove-review', function(event) {
+			event.preventDefault();
+			var review_id = $(this).attr('review-id');
+			var product_id = $(this).attr('product-id');
+			var formData = new FormData();
+			formData.append('review_id', review_id);
+			
+			$this = $(this);
+			// $('body').loading({ message: 'Deleting...'});
+			$.ajax({
+				url: "/products/" + product_id + '/remove_comment',
+			  dataType: "json",
+			  data: formData,
+			  cache: false,
+			  contentType: false,
+			  processData: false,
+			  type: 'POST',
+				success: function(data){
+					
+					if (data.status == 'success') {
+						console.log('deleted review');
+						$this.closest('.row').fadeIn('slow', function() {
+							$(this).remove();
+						});
+					} else {
+						console.log('error deleting review');
+					}
+					
+				},
+				error: function(error) {
+					console.log(error);
+					// $('body').loading('stop');
+				}
+			});
+		})
+
 	});
 </script>
 
 <style>
 	.star-rating .icon-star.hover {
 		color: #ffcd00;
+	}
+	.remove-review {
+		position: absolute;
+    top: 10px;
+    right: 0;
+    color: red;
+	}
+	#product-show.fv-form-bootstrap .fv-icon-no-label {
+		right: 15px;
+	}
+	#product-show.fv-form-bootstrap .star-container .fv-icon-no-label {
+		top: -8px;
+	}
+	#product-show.fv-form-bootstrap .text-container .fv-icon-no-label {
+		top: 18px;
 	}
 </style>

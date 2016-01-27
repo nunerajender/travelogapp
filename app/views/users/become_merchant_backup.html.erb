@@ -22,19 +22,19 @@
 				<div class="col-md-10 merchant-section">
 					<div class="panel panel-default">
 						<div class="panel-body">
-							
-							<div class="form-group col-md-6">
-								<%= f.text_field :phone_hp, :class => 'form-control', :placeholder => 'Phone number' %>
+							<div class="row">
+								<div class="form-group col-md-6">
+									<%= f.text_field :phone_hp, :class => 'form-control', :placeholder => 'Phone number' %>
+								</div>
+								<div class="form-group  col-md-6">
+								</div>
 							</div>
-							<div class="form-group  col-md-6">
-								
-							</div>
-
-							<div class="checkbox col-md-6">
-								
-							</div>
-							<div class="col-md-6">
-								<button type="submit" id="merchant-next" class="btn btn-success btn-next pull-right">Next</button>
+							<div class="row">
+								<div class="checkbox col-md-6">
+								</div>
+								<div class="col-md-6">
+									<button type="submit" id="merchant-next" class="btn btn-success btn-next pull-right">Next</button>
+								</div>
 							</div>
 							
 						</div>
@@ -46,20 +46,22 @@
 				<div class="col-md-10 store-section">
 					<div class="panel panel-default">
 						<div class="panel-body">
-							
-							<div class="form-group col-md-6">
-								<%= f.text_field :store_username, :class => 'form-control', :placeholder => 'Store Username' %>
+							<div class="row">
+								<div class="form-group col-md-6">
+									<%= f.text_field :store_username, :class => 'form-control', :placeholder => 'Store Username' %>
+								</div>
+								<div class="form-group  col-md-6">
+									<%= f.text_field :store_name, :class => 'form-control', :placeholder => 'Store Name' %>
+								</div>
 							</div>
-							<div class="form-group  col-md-6">
-								<%= f.text_field :store_name, :class => 'form-control', :placeholder => 'Store Name' %>
-							</div>
+							<div class="row">
+								<div class="col-md-6">
+									<button type="button" class="btn btn-success btn-next pull-left" id="store-prev">Previous</button>
+								</div>
 
-							<div class="col-md-6">
-								<button type="button" class="btn btn-success btn-next pull-left" id="store-prev">Previous</button>
-							</div>
-
-							<div class="col-md-6">
-								<button type="submit" class="btn btn-success btn-next pull-right" id="store-next">Next</button>
+								<div class="col-md-6">
+									<button type="submit" class="btn btn-success btn-next pull-right" id="store-next">Next</button>
+								</div>
 							</div>
 							
 						</div>
@@ -72,30 +74,22 @@
 				<div class="col-md-10 photo-section">
 					<div class="panel panel-default">
 						<div class="panel-body">
-							<div class="row">
-								<div class="col-xs-12 col-sm-12 col-lg-12">
-									<h4>Photo</h4>
-									<!-- <p> Add photos of areas guests have access to. You can always come back later and add more.</p> -->
-									<hr>
-									<div class="form-group">
-										<div class="fileUpload btn btn-large btn-upload">
-											<span>Upload</span>
-											<input name="file_attachment" type="file" id="file_upload" class="upload">
-										</div>
-									</div>
-									<hr>
+							<div class="row form-group" name="photo-container">
+								<div class="col-md-3 profileholder" name="profileholder">
+									<a class="remove-profile" href="#"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></a>
+									<img src="<%= image_url('placehold_150_150.png') %>" class="img-circle">
 									
-								</div>
-							</div>
-							
-							<div class="row attachments-container">
-								<div class="col-xs-6 col-md-4">
-									<div class="thumbnail panel photo-item empty-photo-frame" name="empty-photo-frame">
-										<img src="<%= asset_url('placehold.png') %>">
-									</div>
-								</div>
+								</div> 
 								
+								<div class="col-md-9">
+									<p>Clear frontal face photos are an important way for hosts and guests to learn about each other. It’s not much fun to host a landscape! Please upload a photo that clearly shows your face.</p>
+									
+									<span class="btn btn-default btn-profile" style="margin-bottom: 20px;">
+										Upload a file form your computer <input type="file" id="file_upload">
+									</span>
+								</div>
 							</div>
+
 							<div class="row">
 								<div class="col-md-6">
 									<button type="button" class="btn btn-success btn-next pull-left" id="photo-prev">Previous</button>
@@ -192,36 +186,69 @@
     background-color: #e6e6e6;
     border-color: #adadad;
 	}
+
+	ul.sidebar {padding:0;}
+		ul.sidebar li{ list-style:none;margin: 10px 0; }
+		ul.sidebar li a{ color:#adadad;}
+		.profile-details {background-color: #FFF;
+			border:1px solid #e6e6e6; padding:40px 20px;}
+			.profile-form input {background-color: #FFF;
+				border:1px solid #adadad;
+			}
+			.profile-form select {background-color: #FFF;
+				border:1px solid #adadad; width:100px;
+			}
+			.btn-viewprofile { width:200px;color: #333;
+				background-color: #FFF;
+				border-color: #adadad; margin-top:20px;}
+				.birthdate .dropdown-menu {
+					top: 33px;
+				}
+				.profile-details .dropdown-toggle {
+					width: 130px;
+				}
+				.profile-page {
+					padding-top: 40px;
+					background: #fafafa;
+				}
+				.nav-second-profile {    background: #DBDDDE; padding-top:0;}
+				.nav-second-profile li.active {font-weight: bold; color:#000;}
+				.nav-second-profile .navbar-nav>li>a {
+					padding-top: 15px;
+					color: #777;
+				}
+				
+				.profile-photo p{ font-size: 14px;     color: #333; font-family:Arial, Helvetica, sans-serif;}
+				
+				
+				.btn-profile {
+					position: relative;
+					overflow: hidden;
+				}
+				.btn-profile input[type=file] {
+					position: absolute;
+					top: 0;
+					right: 0;
+					min-width: 100%;
+					min-height: 100%;
+					font-size: 100px;
+					text-align: right;
+					filter: alpha(opacity=0);
+					opacity: 0;
+					outline: none;
+					background: white;
+					cursor: inherit;
+					display: block;
+				}
+				.profileholder { background:#fafafa;padding: 10px;}
+				.remove-profile { position:absolute;    position: absolute;
+					top: 10px;
+					left: 178px;
+					color: red;}
 </style>
 
 <script>
 	$(document).ready(function() {
-		
-
-		$('.attachments-container').on('click', '.delete-attachment', function(event) {
-			$(this).parent().parent().fadeOut('slow', function() {
-				$(this).remove();
-				$('#new_store_setting').formValidation('revalidateField', 'empty-photo-frame');
-			});
-			var attachment_id = $(this).parent().find('input[name="store_image[id]"]').val();
-			$.ajax({
-				type: "POST",
-				url: "/store_images/" + attachment_id,
-				dataType: "json",
-				data: { "_method": "delete" },
-				complete: function(){
-					console.log('deleted attachment');
-				}
-			});
-			event.preventDefault();
-
-		})
-
-		// validate for store_username
-		$(document).on('click', '#sf-next', function() {
-			
-		})
-
 		
 		$('.merchant-section').show();
 		$('.store-section').hide();
@@ -267,13 +294,13 @@
 						}
 					}
 				},
-				'empty-photo-frame': {
+				'profileholder': {
 					row: '.col-xs-12',
 					validators: {
 						callback: {
 							message: 'The photo is required',
 							callback: function(value, validator, $field) {
-								var photo_count = $('.attachments-container .upload-photo-frame').length;
+								var photo_count = $('[name="store_image[id]"]').length;
 								return (photo_count > 0)
 							}
 						}
@@ -334,11 +361,12 @@
 		})
 
 		$('#file_upload').on('change', function() {
-			var photo_count = $('.photo-item.upload-photo-frame').length
-			if (photo_count >= 1) {
+
+			if ($('[name="store_image[id]"]').length > 0) {
 				alert("Can't upload more than 1.");
-				return false;
+				return;
 			};
+
 			$('body').loading({});
 
 			var formData = new FormData();
@@ -353,22 +381,13 @@
 			  type: 'POST',
 			  success: function(data) {
 			  	console.log('success');
-			  	$empty_photo = $($('.empty-photo-frame.photo-item')[0]);
-			  	$clone = $empty_photo.parent().clone();
-			  	$empty_photo.removeClass('empty-photo-frame').addClass('upload-photo-frame').append('<input type="hidden" name="store_image[id]" value="' + data.id + '">');
-			  	$empty_photo.append('<button type="button" class="btn btn-default delete-attachment">Delete</button>');
-			  	$empty_photo.find('img').attr({'src': data.store_img.small.url, 'data-id': data.id });
+			  	$('.profileholder img').attr('src', data.store_img.small.url);
+					$('[name="store_image[id]"]').remove();
+					$('.profileholder').append('<input type="hidden" name="store_image[id]" value="' + data.id + '">');
 
-			  	$empty_photo.find('i').remove();
-			  	$empty_photo.find('small').remove();
-			  	$clone.find('i').remove();
-			  	$clone.find('small').remove();
-
-					$('.attachments-container').append($clone);
 					$('#file_upload').val('');
-
-					$('#new_store_setting').formValidation('revalidateField', 'empty-photo-frame');
-			  	$('body').loading('stop');
+					$('#new_store_setting').formValidation('revalidateField', 'profileholder');
+					$('body').loading('stop');
 			  },
 			  error: function(error) {
 	      	console.log(error);
@@ -376,6 +395,37 @@
 	      },
 	      timeout: 100000
 			});
+
+		})
+
+		$(document).on('click', '.remove-profile', function(event) {
+			event.preventDefault();
+			if ($(this).parent().find('input[name="store_image[id]"]').length == 0) {
+				return;
+			}
+
+			$this = $(this)
+			$('body').loading({ message: 'Deleting...'});
+			
+			var attachment_id = $(this).parent().find('input[name="store_image[id]"]').val();
+			$.ajax({
+			  type: "POST",
+	      url: "/store_images/" + attachment_id,
+	      dataType: "json",
+	      data: { "_method": "delete" },
+	      success: function(){
+	        $('.profileholder img').attr('src', "<%= image_url('placehold_150_150.png') %>");
+					$('[name="store_image[id]"]').remove();
+					$('body').loading('stop');
+					
+					console.log('deleted attachment');
+	      },
+	      error: function(error) {
+					console.log(error);
+					$('body').loading('stop');
+				}
+			});
+			event.preventDefault();
 
 		})
 		

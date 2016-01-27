@@ -1,6 +1,7 @@
 source 'https://rubygems.org'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
+ruby '2.2.3'
 gem 'rails', '4.2.3'
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 5.0'
@@ -34,6 +35,7 @@ gem 'rails_12factor'
 
 gem 'pg'
 gem 'devise'
+gem 'devise_invitable', '~> 1.5.2'
 gem 'omniauth-facebook'
 #angular rails
 # gem 'angularjs-rails', '~> 1.4', '>= 1.4.8'

@@ -3,30 +3,130 @@
 <% end %>
 
 <style>
-	ul.sidebar {padding:0;}
-	ul.sidebar li{ list-style:none;margin: 10px 0; }
-	ul.sidebar li a{ color:#adadad;}
-		.profile-details {background-color: #FFF;
-		border:1px solid #e6e6e6; padding:40px 20px;}
-		.profile-form input {background-color: #FFF;
-		border:1px solid #adadad;
-	}
-	.profile-form select {background-color: #FFF;
-		border:1px solid #adadad; width:100px;
-	}
-	.btn-viewprofile { width:200px;color: #333;
-		background-color: #FFF;
-		border-color: #adadad; margin-top:20px;}
-		.birthdate .dropdown-menu {
-		top: 33px;
-	}
-	.profile-details .dropdown-toggle {
-		width: 130px;
-	}
-	.profile-page {
-		padding-top: 70px;
-		background: #fafafa;
-	}
+         ul.sidebar {padding:0;}
+         ul.sidebar li{ list-style:none;margin: 10px 0; }
+         ul.sidebar li a{ color: #000;
+    line-height: 22px;
+    font-size: 14px;
+    font-weight: normal;
+    padding: 16px 15px 5px;}
+         .profile-details {background-color: #FFF;
+         border:1px solid #e6e6e6; padding:40px 40px 10px;}
+         .profile-form input {background-color: #FFF;
+         border:1px solid #adadad;
+         }
+         .profile-form select {background-color: #FFF;
+         border:1px solid #adadad; width:100px;
+         }
+         .btn-viewprofile { width:200px;border: 1px solid;
+    border-radius: 2px;
+    color: #6A707D;
+    text-shadow: 0 1px 0 #FFF;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
+    border-color: rgba(204, 206, 210, 0.67) rgba(205, 206, 208, 0.78) rgba(182, 183, 185, 0.67);
+    background: #F4F4F5;
+    background: -webkit-linear-gradient(top,#FFF,#F6F7F8);
+    background: -ms-linear-gradient(top,#FFFFFF,#f9f9f9);
+    background: -moz-linear-gradient(top,#FFFFFF,#f9f9f9);
+    background: -o-linear-gradient(top,#FFFFFF,#f9f9f9);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#FFFFFF',endColorstr='#f9f9f9');
+ margin-top:20px;}
+         .birthdate .dropdown-menu {
+         top: 33px;
+         }
+         .profile-details .dropdown-toggle {
+         width: 130px;    border-radius: 2px;
+         }
+         .profile-page {
+         padding-top: 40px;
+         background: #fafafa;
+         }
+         .nav-second-profile {   
+		 background: #EEEFF0;
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f4f5f6', endColorstr='#EEEFF0', GradientType=0);
+    background: -webkit-gradient(linear,left top,left bottom,from(#F4F5F6),to(#EEEFF0));
+    background: -webkit-linear-gradient(top,#F4F5F6,#EEEFF0);
+    background: -moz-linear-gradient(top,#f4f5f6,#eeeff0);
+    background: -o-linear-gradient(top,#f4f5f6,#eeeff0);
+    background: linear-gradient(top,#f4f5f6,#eeeff0);
+    -webkit-box-shadow: inset 0 1px 0 #F8F9F9,0 0 0 1px rgba(14, 16, 18, 0.1),0 1px 2px 0 rgba(14, 16, 18, 0.1);
+    -moz-box-shadow: inset 0 1px 0 #F8F9F9,0 0 0 1px rgba(14, 16, 18, 0.1),0 1px 2px 0 rgba(14, 16, 18, 0.1);
+    box-shadow: inset 0 1px 0 #F8F9F9,0 0 0 1px rgba(14, 16, 18, 0.1),0 1px 2px 0 rgba(14, 16, 18, 0.1);
+   z-index: 99;margin-bottom: 0;}
+         .nav-second-profile li.active {font-weight: bold; color:#000;}
+         .nav-second-profile .navbar-nav>li>a {
+         padding-top: 15px;
+         color: #777;
+         }
+		 
+		 .profile-photo p{ font-size: 14px;     color: #333; font-family:Arial, Helvetica, sans-serif;}
+		 
+		 
+		 	.btn-profile {
+    position: relative;
+    overflow: hidden;border: 1px solid;
+    border-radius: 2px;
+    color: #6A707D;
+    text-shadow: 0 1px 0 #FFF;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
+    border-color: rgba(204, 206, 210, 0.67) rgba(205, 206, 208, 0.78) rgba(182, 183, 185, 0.67);
+    background: #F4F4F5;
+    background: -webkit-linear-gradient(top,#FFF,#F6F7F8);
+    background: -ms-linear-gradient(top,#FFFFFF,#f9f9f9);
+    background: -moz-linear-gradient(top,#FFFFFF,#f9f9f9);
+    background: -o-linear-gradient(top,#FFFFFF,#f9f9f9);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#FFFFFF',endColorstr='#f9f9f9');
+
+}
+.btn-profile input[type=file] {
+    position: absolute;
+    top: 0;
+    right: 0;
+    min-width: 100%;
+    min-height: 100%;
+    font-size: 100px;
+    text-align: right;
+    filter: alpha(opacity=0);
+    opacity: 0;
+    outline: none;
+    background: white;
+    cursor: inherit;
+    display: block;
+}
+.profileholder { background:#fafafa;padding: 10px;}
+.remove-profile { position:absolute;    position: absolute;
+    top: 10px;
+    left: 178px;
+    color: red;}
+	
+	.form-horizontal .form-group {
+    margin-bottom: 40px;
+}
+
+.panel-heading {
+    color: #333;
+    background: #F4F5F6;
+    border-bottom: 1px solid #E1E3E5;
+    text-shadow: 0 1px 0 rgba(255, 255, 255, 0.57);
+    font-weight: bold;
+    box-shadow: none;
+    font-size: 14px;
+    color: #5A626B;    padding: 15px 15px;
+}
+	.btn-save { background:#F4511E; color:#FFF; border:0; padding:10px 40px; border-radius:2px;}
+	
+	         /*Footer*/
+         .bottom-below-footer { margin-top:100px;}
+         .btn-currency { border-radius:1px; background:none; border:1px solid #999;}
+         .btn-currency:hover, focus, active {background:none;}
+         .btn-currency:hover,active {  background:none;}
+         .open > ul.currency-dropdown-menu {
+         margin-top: 0;
+         }
+         .open .dropdown-toggle.btn-default.btn-currency {
+         background: #000;
+         }
+         /*Footer*/
 </style>
 
 <%= render "shared/settings_nav", :obj => 'accounts' %>
@@ -36,28 +136,28 @@
 			 <div class="row ">
 					<%= render 'shared/accounts_nav' %>
 					<div class="col-md-8">
-						<div class="panel-header">
+						<!-- <div class="panel-header">
 							Required
-						</div>
+						</div> -->
 						</div>
 						<div class="col-md-8">
 						 <div class="profile-details">
 								<%= form_for @store_setting, url: {action: "accounts"}, :html => {:class => "form-horizontal profile-form" } do |f| %>
 									<div class="form-group">
-										<%= f.label :phone_hp, 'Phone number', :class=>"col-sm-2 control-label"  %>
-											<div class="col-sm-10">
+										<%= f.label :phone_hp, 'Phone number', :class=>"col-sm-3 control-label"  %>
+											<div class="col-sm-9">
 												 <%= f.text_field :phone_hp, :class => 'form-control', :placeholder => 'First Name' %>
 											</div>
 									</div>
 									<div class="form-group">
-										<%= f.label :store_username, 'Store Username', :class=>"col-sm-2 control-label"  %>
-										<div class="col-sm-10">
+										<%= f.label :store_username, 'Store Username', :class=>"col-sm-3 control-label"  %>
+										<div class="col-sm-9">
 											 <%= f.text_field :store_username, :class => 'form-control', :placeholder => 'Last Name', disabled: true %>
 										</div>
 									</div>
 									<div class="form-group">
-										<%= f.label :store_name, 'Store Name', :class=>"col-sm-2 control-label"  %>
-										<div class="col-sm-10">
+										<%= f.label :store_name, 'Store Name', :class=>"col-sm-3 control-label"  %>
+										<div class="col-sm-9">
 											 <%= f.text_field :store_name, :class => 'form-control', :placeholder => 'Last Name' %>
 										</div>
 									</div>
@@ -80,7 +180,7 @@
 									
 									
 									<div class="form-group">
-										<div class="col-sm-offset-2 col-sm-10">
+										<div class="col-sm-offset-3 col-sm-9">
 											 <%= f.submit 'Submit', :class => 'btn btn-default' %>
 										</div>
 									</div>

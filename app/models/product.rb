@@ -8,7 +8,7 @@ class Product < ActiveRecord::Base
 	has_many :variants, dependent: :destroy
 	accepts_nested_attributes_for :variants, reject_if: proc { |attributes| attributes['name'].blank? }
 
-	after_initialize :init
+	after_create :init
 
 	has_many :product_reviews
 	#-------
@@ -34,6 +34,8 @@ class Product < ActiveRecord::Base
 	attr_accessor :product_overview_url
 	attr_accessor :user_avatar_url
 
+	attr_accessor :store_logo_url
+
 	attr_accessor :price_with_currency
 	attr_accessor :current_currency
 
@@ -49,4 +51,12 @@ class Product < ActiveRecord::Base
 	def init
 		self.currency = 'MYR'
 	end
+
+	def full_address
+		full_address = "#{self.city}, self.country"
+		full_address = "#{self.address}, #{full_address}" if self.address.present?
+		full_address
+	end
+
+	
 end

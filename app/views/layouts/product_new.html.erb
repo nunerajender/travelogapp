@@ -8,14 +8,16 @@
 	<meta name="author" content="">
 	<link rel="icon" href="../../favicon.ico">
   <title><%= page_title yield(:page_title) %></title>
-  <%= stylesheet_link_tag    'application_old', media: 'all' %>
-  <%= javascript_include_tag 'application_products' %>
+  <%= stylesheet_link_tag    'application_product_new', media: 'all' %>
+  <%= javascript_include_tag 'application_old' %>
   <%= csrf_meta_tags %>
   <%= Gon::Base.render_data %>
 </head>
 <body>
 
-	<%= render 'layouts/white_header_fixed' %>
+	<%= render 'layouts/fixed_header' %>
+	<!-- Second navbar -->
+	<%= render 'products/nav_second', :obj => '' %>
 	<%= yield %>
 	
 	<style type="text/css">
