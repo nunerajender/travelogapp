@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-	skip_before_action :authenticate_user!, only:[:become_merchant, :invite, :fbshare, :fbshare_accept]
+	skip_before_action :authenticate_user!, only:[:become_merchant, :invite, :fbshare, :fbshare_accept, :about, :blog, :career, :contact, :press, :terms, :policy, :help]
 	before_action :set_user_profile, only: [:profile, :profile_avatar, :profile_accounts]
 	before_action :set_accounts, only: [:accounts, :accounts_photo]
 
