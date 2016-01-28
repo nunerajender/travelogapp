@@ -86,6 +86,14 @@
 								</div>
 							<% end %>
 						</div>
+
+						<% if @product.refundable == 1 %>
+							<p class="refund">Refundable</p>
+							<p class="refund refund-sub"><%= "refund percent: #{@product.refund_percent}%" %></p>
+							<p class="refund refund-sub"><%= "refund day: #{@product.refund_day}%" %></p>
+						<% else %>
+							<p class="refund">Non-refundable</p>
+						<% end %>
 						<% if @is_variants %>
 							<hr>
 						<% end %>
@@ -142,5 +150,12 @@
 	/* style for adjusting validation mark */
 	#booking-form.fv-form-bootstrap .fv-icon-no-label {
 		right: 15px;
+	}
+	label.refund, p.refund {
+		color: #7f8c8d;
+	}
+
+	p.refund.refund-sub {
+		margin-left: 15px;
 	}
 </style>
