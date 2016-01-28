@@ -144,6 +144,11 @@ class ProductsController < ApplicationController
 						variant.name = param_variant[:name]
 						variant.price_cents = param_variant[:price_cents].to_i * 100
 						variant.product = @product
+						variant.min_count = param_variant[:min_count].to_i if param_variant[:min_count].present?
+						variant.max_count = param_variant[:max_count].to_i if param_variant[:max_count].present?
+						if variant.min_count.present? && variant.max_count.present? && variant.max_count < variant.min_count
+							variant.max_count = variant.min_count
+						end
 						variant.save  
 					end
 				end
@@ -260,8 +265,8 @@ class ProductsController < ApplicationController
 						variant.product = @product
 						variant.min_count = param_variant[:min_count].to_i if param_variant[:min_count].present?
 						variant.max_count = param_variant[:max_count].to_i if param_variant[:max_count].present?
-						if variant.min_count.present? && variant.max_count.present? && variant.max_count <= variant.min_count
-							variant.max_count = variant.min_count + 1
+						if variant.min_count.present? && variant.max_count.present? && variant.max_count < variant.min_count
+							variant.max_count = variant.min_count
 						end
 						variant.save
 					end

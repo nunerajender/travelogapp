@@ -318,8 +318,9 @@
 		</div>
 
 		<div class="form-group row">
+			<label class="col-xs-12 control-label">Variants</label>
 			<div class="col-sm-6">
-				<button type="button" id="add-variant-button" class="btn btn-default btn-sm active">Add Variant</button>
+				<button type="button" id="add-variant-button" class="btn btn-default btn-sm active"><i class="fa fa-plus"></i></button>
 			</div>
 		</div>
 		<div class="variants-container form-group">
@@ -347,7 +348,7 @@
 					
 				</div>
 				<div class="col-xs-4">
-					<button type="button" class="btn btn-default removeButton"><i class="fa fa-minus"></i></button>
+					<button type="button" class="btn btn-default removeButton active"><i class="fa fa-minus"></i></button>
 				</div>
 				
 			</div>
@@ -378,7 +379,7 @@
 
 						</div>
 						<div class="col-xs-4">
-							<button type="button" class="btn btn-default removeButton"><i class="fa fa-minus"></i></button>
+							<button type="button" class="btn btn-default removeButton active"><i class="fa fa-minus"></i></button>
 						</div>
 					</div>
 				<% end %>
@@ -1105,5 +1106,13 @@
 	
 	.variants-container .has-feedback label ~ .form-control-feedback {
 		right: 15px;
+	}
+
+	.variants-container .btn-default {
+		padding: 5px 10px;
+	}
+	#add-variant-button.btn-default {
+		padding: 5px 10px;
+		margin-left: 15px;
 	}
 </style>
