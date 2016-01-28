@@ -23,7 +23,7 @@
 						<li><a href="">Selangor</a></li>
 						<li><a href="">Terengganu</a></li>
 						<li><a href="">Labuan</a></li> -->
-						<% get_all_cities.each do |city| %>
+						<% @cities.each do |city| %>
 							<% if @count_per_city[city] >= 6 %>
 								<li><a href=""><%= city %></a></li>
 							<% end %>

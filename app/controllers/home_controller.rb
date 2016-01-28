@@ -18,17 +18,34 @@ class HomeController < ApplicationController
 		@product_attachments = ProductAttachment.all 
 		#logger.info "status=Fetching Home Product image=#{@products.product_attachments.try(:first).attachment}" 
 
-		countries = Product.select(:country).distinct.where("country is not null and country <> ''").pluck(:country)
-		cities = Product.select(:city).distinct.where("city is not null and city <> ''").pluck(:city)
-		# countries += cities
-		gon.search_location_list = countries + cities
+		@countries = Product.select(:country).distinct.where("country is not null and country <> ''").pluck(:country)
+		@cities = Product.select(:city).distinct.where("city is not null and city <> ''").pluck(:city)
+		
+		# process for case insentive
+		# @countries.each do |country|
+		# 	country = country.split.map(&:capitalize).join(' ')
+		# end
+
+		@countries.map! {|country| country.split.map(&:capitalize).join(' ')}
+
+		# @cities.each do |city|
+		# 	city = city.split.map(&:capitalize).join(' ')
+		# end
+
+		@cities.map! {|city| city.split.map(&:capitalize).join(' ')}
+
+		@countries = @countries.uniq
+		@cities = @cities.uniq
+
+
+		gon.search_location_list = @countries + @cities
 		gon.search_interests = ProductCategory.select(:name).pluck(:name)
-		@search_location_list = countries + cities
+		@search_location_list = @countries + @cities
 		# gon.home_products = @products
 
 		# count per city
 		@count_per_city = {}
-		get_all_cities.each do |city|
+		@cities.each do |city|
 			@count_per_city[city] = Product.where(:step => 5).where("lower(city) LIKE ? or lower(country) like ?", "%#{city.downcase}%", "%#{city.downcase}%").count
 		end
 
