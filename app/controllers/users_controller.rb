@@ -175,7 +175,47 @@ class UsersController < ApplicationController
 
   # dashboard page
   def dashboard
-  	
+
+  end
+
+  def about
+  	@nav_obj = 'about'
+  	render :layout => 'static'
+  end
+
+  def blog
+  	@nav_obj = 'blog'
+  	render :layout => 'static'
+  end
+
+  def career
+  	@nav_obj = 'career'
+  	render :layout => 'static'
+  end
+
+  def contact
+  	@nav_obj = 'contact'
+  	render :layout => 'static'
+  end
+
+  def press
+  	@nav_obj = 'press'
+  	render :layout => 'static'
+  end
+
+  def terms
+  	@nav_obj = 'terms'
+  	render :layout => 'static'
+  end
+
+  def policy
+  	@nav_obj = 'policy'
+  	render :layout => 'static'
+  end
+
+  def help
+  	@nav_obj = 'help'
+  	render :layout => 'static'
   end
 
 	private

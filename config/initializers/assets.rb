@@ -34,3 +34,6 @@ Rails.application.config.assets.precompile += %w( application_merchant.js )
 
 Rails.application.config.assets.precompile += %w( application_user_invite.css )
 Rails.application.config.assets.precompile += %w( application_user_invite.js )
+
+Rails.application.config.assets.precompile += %w( application_static.css )
+Rails.application.config.assets.precompile += %w( application_static.js )
