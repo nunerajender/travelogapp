@@ -90,7 +90,7 @@
 						<% if @product.refundable == 1 %>
 							<p class="refund">Refundable</p>
 							<p class="refund refund-sub"><%= "refund percent: #{@product.refund_percent}%" %></p>
-							<p class="refund refund-sub"><%= "refund day: #{@product.refund_day}%" %></p>
+							<p class="refund refund-sub"><%= "refund day: #{@product.refund_day}days" %></p>
 						<% else %>
 							<p class="refund">Non-refundable</p>
 						<% end %>

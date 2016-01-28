@@ -124,7 +124,6 @@
 			},
 			fields: {
 				'store_setting[phone_hp]': {
-					row: '.col-xs-12',
 					validators: {
 						notEmpty: {
 							message: 'The phone number is required'
@@ -132,7 +131,6 @@
 					}
 				},
 				'store_setting[store_username]': {
-					row: '.col-xs-12',
 					validators: {
 						notEmpty: {
 							message: 'The store username is required'
@@ -147,7 +145,6 @@
 					}
 				},
 				'store_setting[store_name]': {
-					row: '.col-xs-12',
 					validators: {
 						notEmpty: {
 							message: 'The store name is required'
@@ -155,7 +152,6 @@
 					}
 				},
 				'profileholder': {
-					row: '.col-xs-12',
 					validators: {
 						callback: {
 							message: 'The photo is required',
@@ -477,3 +473,18 @@
          /*marchant*/
       </style>
 
+
+
+<style>
+	.btn.btn-default {
+		color: #333;
+	}
+	.form-control-feedback.fv-icon-no-label {
+		right: 15px;
+	}
+	.btn.btn-default.btn-profile:hover {
+		color: #333;
+    background-color: #e6e6e6;
+    border-color: #adadad;
+	}
+</style>

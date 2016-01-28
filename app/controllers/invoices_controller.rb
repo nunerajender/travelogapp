@@ -1,285 +1,331 @@
 class InvoicesController < ApplicationController
 
 	def layout_by_resource
-    "product"
-  end
+		"product"
+	end
 
-  def index
-    @invoices = Invoice.where.not(:payer_id => nil)
-    current_time = DateTime.now.strftime('%F')
-    @upcomming_invoices = Invoice.where.not(:payer_id => nil).where("booking_date > ?", current_time)
-    @previous_invoices = Invoice.where.not(:payer_id => nil).where("booking_date <= ?", current_time)
-  end
+	def index
+		@invoices = Invoice.where.not(:payer_id => nil)
+		current_time = DateTime.now.strftime('%F')
+		@upcomming_invoices = Invoice.where.not(:payer_id => nil).where("booking_date > ?", current_time)
+		@previous_invoices = Invoice.where.not(:payer_id => nil).where("booking_date <= ?", current_time)
+	end
 
-  def new
-  	@invoice = Invoice.new
-  	if request.post?
-      
-      @invoice.booking_date = params[:datepicker]
-  		@invoice.product_id = params["product-id"]
-  		param_variants = params[:variant]
-      param_variants = [] if param_variants.blank?
-      param_variants.delete_if{|sa| sa.stringify_keys['count'].to_i == 0 }
+	def new
+		@invoice = Invoice.new
+		if request.post?
+			
+			@invoice.booking_date = params[:datepicker]
+			@invoice.product_id = params["product-id"]
+			param_variants = params[:variant]
+			param_variants = [] if param_variants.blank?
+			param_variants.delete_if{|sa| sa.stringify_keys['count'].to_i == 0 }
 
-      # for cancel checkout
-      @variant_params = param_variants.clone
+			# for cancel checkout
+			@variant_params = param_variants.clone
 
-      if param_variants.count > 0
-        @invoice.variants = param_variants 
-      end
-      
-      @product = Product.find(params["product-id"])
-      @prodcut_image_url = @product.product_attachments[0].attachment.medium.url if @product.product_attachments.present? && @product.product_attachments.count > 0
-      @invoice.currency = @product.currency
+			if param_variants.count > 0
+				param_variants.each do |variant|
 
-      if param_variants.count > 0
-        total_price_cents = 0
-        param_variants.each do |variant|
-          total_price_cents += variant["count"].to_i * variant["price_cents"].to_i
-        end
-        @invoice.amount_cents = total_price_cents
-      else
-        @invoice.amount_cents = @product.price_cents
-      end
-      gon.is_display_currency_exchange = false
-      @invoice_params = {}
-      @contact_detail_params = {}
-    else
-      @invoice.booking_date = params[:invoice][:booking_date]
-      @invoice.product_id = params[:invoice][:product_id]
-      param_variants = params[:variant]
-      param_variants = [] if param_variants.blank?
-      param_variants.delete_if{|sa| sa.stringify_keys['count'].to_i == 0 }
+				end
+				@invoice.variants = param_variants 
+			end
+			
+			@product = Product.find(params["product-id"])
+			@prodcut_image_url = @product.product_attachments[0].attachment.medium.url if @product.product_attachments.present? && @product.product_attachments.count > 0
+			@invoice.currency = @product.currency
 
-      # for cancel checkout
-      @variant_params = param_variants.clone
+			if param_variants.count > 0
+				total_price_cents = 0
+				param_variants.each do |variant|
+					total_price_cents += variant["count"].to_i * variant["price_cents"].to_i
+				end
+				@invoice.amount_cents = total_price_cents
+			else
+				@invoice.amount_cents = @product.price_cents
+			end
+			gon.is_display_currency_exchange = false
+			@invoice_params = {}
+			@contact_detail_params = {}
 
-      if param_variants.count > 0
-        @invoice.variants = param_variants 
-      end
-      
-      # binding.pry
-      @product = Product.find(params[:invoice][:product_id])
-      @prodcut_image_url = @product.product_attachments[0].attachment.medium.url if @product.product_attachments.present? && @product.product_attachments.count > 0
-      @invoice.currency = @product.currency
+			# if current_user.reward_credit >= 5
+			#   reward_credit = 5
+			#   if @invoice.currency.downcase != "usd"
+			#     rate = session["currency-convert-#{@invoice.currency}"].to_f
+			#     reward_credit = (5 * rate).round(2)
+			#     @invoice.reward_credit = reward_credit
+			#   end
+			#   @invoice.is_reward_credit = true
+			#   @invoice.reward_credit = reward_credit
+			# end
 
-      # calculating the invoice amount cents from booking variant count.
-      # binding.pry
-      if param_variants.count > 0
-        total_price_cents = 0
-        param_variants.each do |variant|
-          total_price_cents += variant["count"].to_i * variant["price_cents"].to_i
-        end
-        @invoice.amount_cents = total_price_cents
-      else
-        @invoice.amount_cents = @product.price_cents
-      end
-      @invoice_params = params[:invoice]
-      gon.is_display_currency_exchange = false
+			# binding.pry
+		else
+			@invoice.booking_date = params[:invoice][:booking_date]
+			@invoice.product_id = params[:invoice][:product_id]
+			param_variants = params[:variant]
+			param_variants = [] if param_variants.blank?
+			param_variants.delete_if{|sa| sa.stringify_keys['count'].to_i == 0 }
 
-      @contact_detail_params = params[:contact_detail]
-  	end
+			# for cancel checkout
+			@variant_params = param_variants.clone
 
-    set_invoice_currency_attributes(@invoice)
-  end
+			if param_variants.count > 0
+				@invoice.variants = param_variants 
+			end
+			
+			# binding.pry
+			@product = Product.find(params[:invoice][:product_id])
+			@prodcut_image_url = @product.product_attachments[0].attachment.medium.url if @product.product_attachments.present? && @product.product_attachments.count > 0
+			@invoice.currency = @product.currency
 
-  def create
+			# calculating the invoice amount cents from booking variant count.
+			# binding.pry
+			if param_variants.count > 0
+				total_price_cents = 0
+				param_variants.each do |variant|
+					total_price_cents += variant["count"].to_i * variant["price_cents"].to_i
+				end
+				@invoice.amount_cents = total_price_cents
+			else
+				@invoice.amount_cents = @product.price_cents
+			end
+			@invoice_params = params[:invoice]
+			gon.is_display_currency_exchange = false
 
-    @invoice = Invoice.new(invoice_params)
-    @invoice.user = current_user
-    param_variants = params[:variant]
-    param_variants = [] if param_variants.blank?
-    param_variants.delete_if{|sa| sa.stringify_keys['count'].to_i == 0 }
-    
-    if param_variants.count > 0
-      @invoice.variants = param_variants 
-    end
-    paypal_options = {
-      no_shipping: true, # if you want to disable shipping information
-      allow_note: false, # if you want to disable notes
-      pay_on_paypal: true # if you don't plan on showing your own confirmation step
-    }
-    # binding.pry
-    request = Paypal::Express::Request.new(
-      :username   => PAYPAL_CONFIG[:username],
-      :password   => PAYPAL_CONFIG[:password],
-      :signature  => PAYPAL_CONFIG[:signature]
-    )
-    payment_requests = []
-    items = []
-    if @invoice.variants.present? && @invoice.variants.count > 0
-      seller_id = SecureRandom.hex(5)
-      puts seller_id  
-      @invoice.variants.each do |variant|
-        
-        request_id = SecureRandom.hex(5)
-        puts request_id
-        
-        item_price = variant["price_cents"].to_i / 100
-        item_count = variant["count"].to_i
-        item = {
-          :name => variant["name"],
-          :description => variant["name"],
-          :quantity      => item_count,
-          :amount => item_price,
-          # :category => :Digital
-        }
-        items << item
-      end
-    else
-      product = Product.find(params[:invoice][:product_id])
-      item = {
-        :name => product.name,
-        :description => product.name,
-        :quantity      => 1,
-        :amount => product.price_cents / 100,
-        # :category => :Digital
-      }
-      items << item
-    end
+			@contact_detail_params = params[:contact_detail]
+		end
 
-    # travelog credit 
-    reward_credit = 0
-    if current_user.reward_credit >= 5
-      reward_credit = 5
-      # convert by currency
-      if @invoice.currency.downcase != "usd"
-        rate = session["currency-convert-#{@invoice.currency}"].to_f
-        reward_credit = (5 * rate).round(2)
-        @invoice.reward_credit = reward_credit
-      end
-      @invoice.is_reward_credit = true
-      @invoice.reward_credit = reward_credit
-      
-      item = {
-        :name => 'Travelog Credit',
-        :description => 'Travelog Credit',
-        :quantity      => 1,
-        :amount => (-1) * reward_credit,
-        # :category => :Digital
-      }
-      items << item
-    end
-    
-    payment_request = Paypal::Payment::Request.new(
-      :currency_code => @invoice.currency,   # 
-      :description   => 'booking travel',    # item description
-      :quantity      => 1,      # item quantity
-      :items => items,
-      :amount        => @invoice.amount_cents / 100 - reward_credit  # item value
-    )
+		set_invoice_currency_attributes(@invoice)
+	end
 
-    # binding.pry
+	def create
 
-    begin
-      response = request.setup(
-        payment_request,
-        invoices_success_checkout_url,
-        # invoices_cancel_checkout_url,
-        new_invoice_url(params),
-        paypal_options  # Optional
-      )
+		@invoice = Invoice.new(invoice_params)
+		@invoice.user = current_user
+		param_variants = params[:variant]
+		param_variants = [] if param_variants.blank?
+		param_variants.delete_if{|sa| sa.stringify_keys['count'].to_i == 0 }
+		
+		if param_variants.count > 0
+			@invoice.variants = param_variants 
+		end
 
-      if response.ack == 'Success'
-        
-        @invoice.token = response.token
-        @invoice.save!
+		
+		paypal_options = {
+			no_shipping: true, # if you want to disable shipping information
+			allow_note: false, # if you want to disable notes
+			pay_on_paypal: true # if you don't plan on showing your own confirmation step
+		}
+		# binding.pry
+		request = Paypal::Express::Request.new(
+			:username   => PAYPAL_CONFIG[:username],
+			:password   => PAYPAL_CONFIG[:password],
+			:signature  => PAYPAL_CONFIG[:signature]
+		)
+		payment_requests = []
+		items = []
+		if @invoice.variants.present? && @invoice.variants.count > 0
+			seller_id = SecureRandom.hex(5)
+			puts seller_id  
+			@invoice.variants.each do |variant|
+				
+				request_id = SecureRandom.hex(5)
+				puts request_id
+				
+				item_price = variant["price_cents"].to_i / 100
+				item_count = variant["count"].to_i
+				item = {
+					:name => variant["name"],
+					:description => variant["name"],
+					:quantity      => item_count,
+					:amount => item_price,
+					# :category => :Digital
+				}
+				items << item
+			end
+		else
+			product = Product.find(params[:invoice][:product_id])
+			item = {
+				:name => product.name,
+				:description => product.name,
+				:quantity      => 1,
+				:amount => product.price_cents / 100,
+				# :category => :Digital
+			}
+			items << item
+		end
 
-        contact_detail = ContactDetail.new(contact_detail_params)
-        contact_detail.invoice = @invoice
-        contact_detail.save!
+		# travelog credit 
+		reward_credit = 0
+		if current_user.reward_credit >= 5
+			reward_credit = 5
+			# convert by currency
+			if @invoice.currency.downcase != "usd"
+				rate = session["currency-convert-#{@invoice.currency}"].to_f
+				reward_credit = (5 * rate).round(2)
+				@invoice.reward_credit = reward_credit
+			end
+			@invoice.is_reward_credit = true
+			@invoice.reward_credit = reward_credit
+			
+			item = {
+				:name => 'Travelog Credit',
+				:description => 'Travelog Credit',
+				:quantity      => 1,
+				:amount => (-1) * reward_credit,
+				# :category => :Digital
+			}
+			items << item
+		end
+		
+		payment_request = Paypal::Payment::Request.new(
+			:currency_code => @invoice.currency,   # 
+			:description   => 'booking travel',    # item description
+			:quantity      => 1,      # item quantity
+			:items => items,
+			:amount        => @invoice.amount_cents / 100 - reward_credit  # item value
+		)
 
-        redirect_to response.redirect_uri
-      else
-        flash[:alert] = "There is an error while processing the payment"
-        redirect_to product_url
-      end  
-    rescue Paypal::Exception::APIError => e
-      # puts e.response for debugging.
-      binding.pry
-      print(e.response.details)
-      redirect_to new_invoice_url(params)
-    end
+		# binding.pry
 
-  end
+		begin
+			response = request.setup(
+				payment_request,
+				invoices_success_checkout_url,
+				# invoices_cancel_checkout_url,
+				new_invoice_url(params),
+				paypal_options  # Optional
+			)
 
-  def success_checkout
+			if response.ack == 'Success'
+				
+				@invoice.token = response.token
+				@invoice.save!
 
-    token = params[:token]
-    payer_id = params[:PayerID]
-    @invoice = Invoice.find_by_token(token)
-    # binding.pry
+				contact_detail = ContactDetail.new(contact_detail_params)
+				contact_detail.invoice = @invoice
+				contact_detail.save!
 
-    request = Paypal::Express::Request.new(
-      :username   => PAYPAL_CONFIG[:username],
-      :password   => PAYPAL_CONFIG[:password],
-      :signature  => PAYPAL_CONFIG[:signature]
-    )
+				redirect_to response.redirect_uri
+			else
+				flash[:alert] = "There is an error while processing the payment"
+				redirect_to product_url
+			end  
+		rescue Paypal::Exception::APIError => e
+			# puts e.response for debugging.
+			binding.pry
+			print(e.response.details)
+			redirect_to new_invoice_url(params)
+		end
 
-    payment_request = Paypal::Payment::Request.new(
-      :currency_code => @invoice.currency,   
-      :description   => "New payment for travel booking",
-      :quantity      => 1,
-      :amount        => @invoice.amount_cents.to_i / 100
-    )
+	end
 
-    response = request.checkout!(
-      params[:token],
-      params[:PayerID],
-      payment_request
-    )
+	def success_checkout
 
-    gon.is_display_currency_exchange = false
-    @currency_symbol = get_all_currency_symbols[@invoice.currency]
+		token = params[:token]
+		payer_id = params[:PayerID]
+		@invoice = Invoice.find_by_token(token)
+		# binding.pry
 
-    if response.ack == 'Success'
-      @invoice.update_attributes(:payer_id => payer_id, :status => "paid")
-      current_user.reward_credit -= 5
-      current_user.save   
-      flash[:alert] = "Thanks for your submission."
-    else
-      flash[:alert] = "There is an error while processing the payment"
-    end
+		request = Paypal::Express::Request.new(
+			:username   => PAYPAL_CONFIG[:username],
+			:password   => PAYPAL_CONFIG[:password],
+			:signature  => PAYPAL_CONFIG[:signature]
+		)
 
-  end
+		payment_request = Paypal::Payment::Request.new(
+			:currency_code => @invoice.currency,   
+			:description   => "New payment for travel booking",
+			:quantity      => 1,
+			:amount        => @invoice.amount_cents.to_i / 100
+		)
 
-  def show
-    @invoice = Invoice.find(params[:id])
-    render :success_checkout
-  end
+		response = request.checkout!(
+			params[:token],
+			params[:PayerID],
+			payment_request
+		)
 
-  def cancel_checkout
-    gon.is_display_currency_exchange = false
-  end
+		gon.is_display_currency_exchange = false
+		@currency_symbol = get_all_currency_symbols[@invoice.currency]
 
-  private
-    def set_product_attributs(products)
-      products.each do |product|
-        if product.product_attachments.present? && product.product_attachments.count > 0
-          product.product_overview_url = product.product_attachments[0].attachment.medium.url
-        end
-        product.user_avatar_url = product.user.get_avatar_url
-      end
-    end
+		if response.ack == 'Success'
+			@invoice.update_attributes(:payer_id => payer_id, :status => "paid")
+			current_user.reward_credit -= 5
+			current_user.save   
+			flash[:alert] = "Thanks for your submission."
+		else
+			flash[:alert] = "There is an error while processing the payment"
+		end
 
-    def invoice_params
-      params.require(:invoice).permit(:billing_country, :payment_type, :valid_month, :valid_day, :security_code, 
-        :booking_date, :product_id, 
-        :currency, :amount_cents)
-    end
+	end
 
-    def contact_detail_params
-      params.require(:contact_detail).permit(:first_name, :last_name, :email, :phone_number, :message)
-    end
+	def show
+		@invoice = Invoice.find(params[:id])
+		render :success_checkout
+	end
 
-    def set_invoice_currency_attributes(invoice)
-      if invoice.currency != session[:currency]
-        rate = (session["currency-convert-#{session[:currency]}"].to_f / session["currency-convert-#{invoice.currency}"].to_f).round(2)
-      else
-        rate = 1.0
-      end
-      invoice.price_with_currency = (invoice.amount_cents * rate / 100).round(2)
-      invoice.current_currency = session[:currency]
-      invoice.currency_rate = rate
-    end
+	def cancel_checkout
+		gon.is_display_currency_exchange = false
+	end
+
+	private
+		def set_product_attributs(products)
+			products.each do |product|
+				if product.product_attachments.present? && product.product_attachments.count > 0
+					product.product_overview_url = product.product_attachments[0].attachment.medium.url
+				end
+				product.user_avatar_url = product.user.get_avatar_url
+			end
+		end
+
+		def invoice_params
+			params.require(:invoice).permit(:billing_country, :payment_type, :valid_month, :valid_day, :security_code, 
+				:booking_date, :product_id, 
+				:currency, :amount_cents)
+		end
+
+		def contact_detail_params
+			params.require(:contact_detail).permit(:first_name, :last_name, :email, :phone_number, :message)
+		end
+
+		def set_invoice_currency_attributes(invoice)
+			if invoice.currency != session[:currency]
+				rate = (session["currency-convert-#{session[:currency]}"].to_f / session["currency-convert-#{invoice.currency}"].to_f).round(2)
+			else
+				rate = 1.0
+			end
+			invoice.price_with_currency = (invoice.amount_cents * rate / 100).round(2)
+			invoice.current_currency = session[:currency]
+			invoice.currency_rate = rate
+
+			invoice.variants.each do |variant|
+				variant[:price_with_currency] = (variant[:price_cents].to_f * rate / 100).round(2)
+				variant[:total_with_currency] = (variant[:price_with_currency] * variant[:count].to_i).round(2)
+				variant[:total] = (variant[:price_cents].to_f * variant[:count].to_i / 100).round(2)
+			end
+
+			invoice.real_total = (invoice.amount_cents / 100).round(2)
+			invoice.real_total_with_currency = invoice.price_with_currency
+			
+			if current_user.reward_credit >= 5
+				reward_credit = 5
+				invoice.reward_credit_with_currency = reward_credit
+				if session[:currency].downcase != "usd"
+					rate = session["currency-convert-#{session[:currency]}"].to_f
+					invoice.reward_credit_with_currency = (reward_credit * rate).round(2)
+				end
+				if invoice.currency.downcase != "usd"
+					rate = session["currency-convert-#{invoice.currency}"].to_f
+					reward_credit = (5 * rate).round(2)
+					invoice.reward_credit = reward_credit
+				end
+				invoice.is_reward_credit = true
+				invoice.reward_credit = reward_credit
+				invoice.real_total -= invoice.reward_credit
+				invoice.real_total_with_currency -= invoice.reward_credit_with_currency
+			end
+		end
+
 end

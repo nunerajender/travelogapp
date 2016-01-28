@@ -147,17 +147,24 @@
 							<hr>
 							<% if @invoice.variants.present? && @invoice.variants.count > 0 %>
 								<% @invoice.variants.each do |variant| %>
-									<p><%= variant[:count] %> x <%= variant[:name] %></p>
+									<p>
+										<%= variant[:count] %> x <%= variant[:name] %> <%= get_all_currency_symbols[@invoice.current_currency] %><%= variant[:total_with_currency] %>(<%= get_all_currency_symbols[@invoice.currency] %><%= variant[:total] %>)
+									</p>
 								<% end %>
 							<% else %>
 								<p>1 x <%= @invoice.product.name %></p>
+							<% end %>
+							<% if @invoice.is_reward_credit %>
+								<p>
+									credit <%= get_all_currency_symbols[@invoice.current_currency] %><%= @invoice.reward_credit_with_currency %>(<%= get_all_currency_symbols[@invoice.currency] %><%= @invoice.reward_credit %>)
+								</p>
 							<% end %>
 							<!-- <p>2 x Adults</p> -->
 							<hr>
 							<!-- <p class="totalprice">Total : <%= get_all_currency_symbols[@invoice.currency] %><%= @invoice.amount_cents / 100 %></p> -->
 							<p class="totalprice">
-								Total : <%= get_all_currency_symbols[@invoice.current_currency] %><%= @invoice.price_with_currency %>
-								<span> (<%= get_all_currency_symbols[@invoice.currency] %><%= @invoice.amount_cents / 100 %>)</span>
+								Total : <%= get_all_currency_symbols[@invoice.current_currency] %><%= @invoice.real_total_with_currency %>
+								<span> (<%= get_all_currency_symbols[@invoice.currency] %><%= @invoice.real_total %>)</span>
 							</p>
 							<% if @invoice.currency != 'MYR' %>
 								<div class="panel-total-charge" style="">
