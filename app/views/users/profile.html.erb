@@ -190,26 +190,10 @@
 										</div>
 									</div>
 									<div class="form-group birthdate">
-										<label for="" class="col-sm-3 control-label">Birth Date</label>
+										<%= f.label :birthday ,'Birth Date', :class=>"col-sm-3 control-label" %>
 										<div class="col-sm-9">
-											 <div class="col-md-3 paddingzero">
-													<select class="form-control">
-														 <option>Day</option>
-														 <option>-</option>
-													</select>
-											 </div>
-											 <div class="col-md-3 paddingzero">
-													<select class="form-control">
-														 <option>Month</option>
-														 <option>-</option>
-													</select>
-											 </div>
-											 <div class="col-md-3 paddingzero">
-													<select class="form-control">
-														 <option>Year</option>
-														 <option>-</option>
-													</select>
-											 </div>
+											
+    									<%= f.date_select :birthday, :start_year=>1900,:class => 'form-control' %>
 										</div>
 									</div>
 									<div class="form-group">

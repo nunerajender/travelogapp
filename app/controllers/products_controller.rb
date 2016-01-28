@@ -429,112 +429,57 @@ class ProductsController < ApplicationController
 
 	if current_user.status == 'merchant'
 
-	
 		@user_id = current_user.id
 
-		@product =Product.joins(:invoices, :product_reviews).where(:user_id => @user_id).distinct
+		@product =Product.joins(:invoices, :product_reviews).where(:user_id => @user_id).where("invoices.user_id = product_reviews.user_id").distinct
 
-	
+		@reviews = ProductReview.where(:product_id => @product)
+
+
+=begin
+
+	@product.each do |product|
+
+			if product.product_attachments.present? && product.product_attachments.count > 0
+				product.product_overview_url = product.product_attachments[0].attachment.medium.url
+			end
+			product.user_avatar_url = product.user.get_avatar_url
+		end
         #@reviews = ProductReview.where(:product_id => @product)
 
       #set_product_attributs(@product)
 
+=end
 
 
         @product_id = Product.where(:user_id => @user_id)
 
 		@rechived_reviews = ProductReview.where(:product_id => @product_id)
 
+=begin
 				
 			@rechived_reviews.each do |rechived_review|
+
+				rechived_review.product.user_avatar_url = rechived_review.product.user.get_avatar_url
 
 			@message = rechived_review.message
 			@rating_stars = rechived_review.rating_stars	
 
 			end
 
-			
+=end
+	
 
 		
 			
-		else
+	else
+
 			redirect_to root_path
+
+
+
 		end
-#-------------------------------------------------
 
-
-#@product1 = Product.find(current_user.id)
-			#@product = Product.where(:user_id => current_user.id)
-
-			#@product_id = Invoice.includes(:product).where.not(:payer_id => nil)
-
-  # @Product = Product.where(:id => @product_id).includes(:invoice).all
-
-
-
-
-#@reviews = ProductReview.joins(:products).where(:product_id => @product).distinct
-
-
-		#Client.joins(:orders).where('invoices.product_id' => product)
-
-
-  #@product_id = Invoice.where(:product_id => @product_name.id).includes(:product)
-
-
-
-
-
-
-  #@Product = Product.find_by_sql ["SELECT * FROM products"]
-
-		#@product = Product.where(:user_id => current_user.id).includes(:product_reviews).where(:product_id => ).all
-			#@product = Invoice.where(:user_id => current_user.id , ).includes(:product).includes(:product_reviews)
-
-
-			#puts  "-------------------------#{@product.id}--"
-  #@product = Invoice.includes(:product).where(:product_id => @product1.id)
-
-		#@product = Invoice.includes(:product)#
-
-
-	#@user_id = current_user.id
-
- 	#@Product_id = Invoice.includes(:product).where.not(:payer_id => nil)
-
-  #@Product_name = Product.where(:user_id => @user_id AND :id => @Product_id ) 
-
-  #@product_name =Product.where(:user_id => @user_id)
-
-  #@product_id = Invoice.where(:product_id => @product_name.id).includes(:product)
-
-#@product_reviews = ProductReview.includes(:product).where(:user_id => current_user.id)
-
-#@product_reviews = ProductReview.includes(:product).where(:user_id => current_user.id, :product_id => @product.id)
-#@upcomming_invoices = Invoice.includes(:product).where.not(:payer_id => nil).where("booking_date > ?", current_time).where(:user_id => current_user.id)
-#@products = current_user.products
-				
-			#SS@rechived_reviews = @products.where(:step => 5).includes(:product_reviews)
-
-			#product.user_avatar_url = product.user.get_avatar_url
-
-			#@unlisted_products = @products.where.not(:step => 5).includes(:product_attachments).includes(:product_reviews)
-
-			#@listed_products = @products.where(:step => 5).includes(:product_attachments).includes(:product_reviews)
-
-			# set_product_attributs(@products)
-			#set_product_attributs(@rechived_reviews)
-			#set_product_attributs(@listed_products)
-
-
-=begin
-
-		@upcomming_invoices = Invoice.includes(:product).where.not(:payer_id => nil).where("booking_date > ?", current_time).where(:user_id => current_user.id)
-		@previous_invoices = Invoice.includes(:product).where.not(:payer_id => nil).where("booking_date <= ?", current_time).where(:user_id => current_user.id)
-		set_product_attributs(@upcomming_invoices)
-		set_product_attributs(@previous_invoices)
-
-=end
 
 
 
