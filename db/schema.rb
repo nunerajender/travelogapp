@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160126103628) do
+ActiveRecord::Schema.define(version: 20160127170708) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -41,13 +41,15 @@ ActiveRecord::Schema.define(version: 20160126103628) do
     t.integer  "valid_year"
     t.string   "security_code"
     t.string   "currency"
-    t.integer  "status",          limit: 2, default: 0
+    t.integer  "status",           limit: 2,                         default: 0
     t.string   "token"
     t.string   "payer_id"
-    t.datetime "created_at",                            null: false
-    t.datetime "updated_at",                            null: false
+    t.datetime "created_at",                                                         null: false
+    t.datetime "updated_at",                                                         null: false
     t.integer  "user_id"
-    t.integer  "merchant_status", limit: 2, default: 0
+    t.integer  "merchant_status",  limit: 2,                         default: 0
+    t.boolean  "is_reward_credit",                                   default: false
+    t.decimal  "reward_credit",              precision: 5, scale: 2
   end
 
   add_index "invoices", ["product_id"], name: "index_invoices_on_product_id", using: :btree
@@ -164,18 +166,18 @@ ActiveRecord::Schema.define(version: 20160126103628) do
   add_index "user_avatars", ["profile_id"], name: "index_user_avatars_on_profile_id", using: :btree
 
   create_table "users", force: :cascade do |t|
-    t.string   "email",                            default: "", null: false
-    t.string   "encrypted_password",               default: "", null: false
+    t.string   "email",                            default: "",    null: false
+    t.string   "encrypted_password",               default: "",    null: false
     t.string   "reset_password_token"
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
-    t.integer  "sign_in_count",                    default: 0,  null: false
+    t.integer  "sign_in_count",                    default: 0,     null: false
     t.datetime "current_sign_in_at"
     t.datetime "last_sign_in_at"
     t.string   "current_sign_in_ip"
     t.string   "last_sign_in_ip"
-    t.datetime "created_at",                                    null: false
-    t.datetime "updated_at",                                    null: false
+    t.datetime "created_at",                                       null: false
+    t.datetime "updated_at",                                       null: false
     t.string   "provider"
     t.string   "uid"
     t.integer  "status",                 limit: 2, default: 0
@@ -187,6 +189,9 @@ ActiveRecord::Schema.define(version: 20160126103628) do
     t.integer  "invited_by_id"
     t.string   "invited_by_type"
     t.integer  "invitations_count",                default: 0
+    t.integer  "reward_credit",                    default: 0
+    t.string   "fb_share_token"
+    t.boolean  "is_fb_invited",                    default: false
   end
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree

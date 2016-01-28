@@ -14,3 +14,5 @@
 //= require jquery_ujs
 //= require lib/bootstrap
 
+//= require lib/formValidation.min
+//= require lib/formValidation_bootstrap.min

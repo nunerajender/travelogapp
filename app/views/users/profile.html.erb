@@ -127,11 +127,8 @@
          background: #000;
          }
          /*Footer*/
-
-		 
-      </style>
-				
 </style>
+
 <%= render "shared/settings_nav", :obj => 'profile' %>
 <div class="side-collapse-container">
 	<section class="header-11-sub profile-page">
@@ -145,63 +142,73 @@
 						</div>
 						<div class="col-md-8">
 						 <div class="profile-details">
-								<%= form_for @profile, url: {action: "profile"}, :html => {:class => "form-horizontal profile-form" } do |f| %>
-									<div class="form-group">
-										<%= f.label :first_name, 'First Name', :class=>"col-sm-3 control-label"  %>
-											<div class="col-sm-9">
-												 <%= f.text_field :first_name, :class => 'form-control', :placeholder => 'First Name' %>
-											</div>
-									</div>
-									<div class="form-group">
-										<%= f.label :last_name, 'Last Name', :class=>"col-sm-3 control-label"  %>
+						 	<% if current_user.errors.full_messages.count > 0 %>
+							 	<div class="error col-sm-offset-3">
+							 		<% current_user.errors.full_messages.each do |message| %>
+							 			<p><%= message %></p>
+							 		<% end %>
+							 	</div>
+							<% end %>
+					 		
+							<%= form_for @profile, url: {action: "profile"}, :html => {:class => "form-horizontal profile-form" } do |f| %>
+								<div class="form-group">
+									<%= f.label :first_name, 'First Name', :class=>"col-sm-3 control-label"  %>
 										<div class="col-sm-9">
-											 <%= f.text_field :last_name, :class => 'form-control', :placeholder => 'Last Name' %>
+											 <%= f.text_field :first_name, :class => 'form-control', :placeholder => 'First Name' %>
 										</div>
+								</div>
+								<div class="form-group">
+									<%= f.label :last_name, 'Last Name', :class=>"col-sm-3 control-label"  %>
+									<div class="col-sm-9">
+										 <%= f.text_field :last_name, :class => 'form-control', :placeholder => 'Last Name' %>
 									</div>
-									<div class="form-group">
-										<%= f.label :user_new_password, 'New Password', :class=>"col-sm-3 control-label"  %>
-										<div class="col-sm-9">
-										<input class="form-control" placeholder="New Password" type="password" name="user[new_password]" id="user_new_password">
-										</div>
+								</div>
+								<div class="form-group">
+									<%= f.label :user_new_password, 'New Password', :class=>"col-sm-3 control-label"  %>
+									<div class="col-sm-9">
+									<input class="form-control" placeholder="New Password" type="password" name="user[new_password]" id="user_new_password">
 									</div>
-									<div class="form-group">
-										<%= f.label :user_new_password, 'Confirm Password', :class=>"col-sm-3 control-label"  %>
-										<div class="col-sm-9">
-										<input class="form-control" placeholder="Confirm Password" type="password" name="user[confirm_password]" id="user_new_password">
-										</div>
+								</div>
+								<div class="form-group">
+									<%= f.label :user_confirm_password, 'Confirm Password', :class=>"col-sm-3 control-label"  %>
+									<div class="col-sm-9">
+									<input class="form-control" placeholder="Confirm Password" type="password" name="user[confirm_password]" id="user_confirm_password">
+									</div>
+								</div>
+
+								<div class="form-group">
+									<%= f.label :gender, 'Gender', :class=>"col-sm-3 control-label"  %>
+									<div class="col-sm-9">
+									
+									<%= f.select(:gender, [ ['Male',1],['Female',2] ] , :class => 'form-control') %>
+									
+									</div>
+								</div>
+
+								<div class="form-group">
+									<label for="" class="col-sm-3 control-label">I Am</label>
+									<div class="col-sm-9">
+										 <select class="form-control">
+												<option>Male</option>
+												<option>Female</option>
+										 </select>
 									</div>
 
-									<div class="form-group">
-										<%= f.label :gender, 'Gender', :class=>"col-sm-3 control-label"  %>
-										<div class="col-sm-9">
-										
-										<%= f.select(:gender, [ ['Male',1],['Female',2] ] , :class => 'form-control') %>
-										
-										</div>
-									</div>
-
-									<div class="form-group">
-										<label for="" class="col-sm-3 control-label">I Am</label>
-										<div class="col-sm-9">
-											 <select class="form-control">
-													<option>Male</option>
-													<option>Female</option>
-											 </select>
-										</div>
-									</div>
 									<div class="form-group birthdate">
 										<%= f.label :birthday ,'Birth Date', :class=>"col-sm-3 control-label" %>
 										<div class="col-sm-9">
 											
     									<%= f.date_select :birthday, :start_year=>1900,:class => 'form-control' %>
 										</div>
+
 									</div>
-									<div class="form-group">
-										<div class="col-sm-offset-3 col-sm-9">
-											 <%= f.submit 'Submit', :class => 'btn btn-default' %>
-										</div>
+								</div>
+								<div class="form-group">
+									<div class="col-sm-offset-3 col-sm-9">
+										 <%= f.submit 'Submit', :class => 'btn btn-default' %>
 									</div>
-								<% end %>
+								</div>
+							<% end %>
 						 </div>
 					</div>
 			 </div>
@@ -209,30 +216,13 @@
  	</section>
 </div>
 
-
-
+<!-- added by me -->
 <style type="text/css">
-	.profile {
-		padding: 70px 30px;
-	}
-	input[type=file] {
-		display: none;
-	}
-	.attachments-container .btn.delete-attachment {
-		position: absolute;
-		top: 0;
-		right: 15px;
-		height: inherit;
-		padding: 2px 10px;
-		border-radius: 0;
-		opacity: 0.8;
-		background-color: #ccc;
-	}
-	.attachments-container .form-group.col-md-4 {
-		position: relative;
-	}
-	.attachments-container img {
-		width: 100%
+	.error p {
+		color: red;
+    opacity: 1;
+    font-size: 18px;
+    padding-left: 7px;
 	}
 </style>
 
@@ -303,3 +293,28 @@
 		})
 	})
 </script>
+
+<style type="text/css">
+	.profile {
+		padding: 70px 30px;
+	}
+	input[type=file] {
+		display: none;
+	}
+	.attachments-container .btn.delete-attachment {
+		position: absolute;
+		top: 0;
+		right: 15px;
+		height: inherit;
+		padding: 2px 10px;
+		border-radius: 0;
+		opacity: 0.8;
+		background-color: #ccc;
+	}
+	.attachments-container .form-group.col-md-4 {
+		position: relative;
+	}
+	.attachments-container img {
+		width: 100%
+	}
+</style>

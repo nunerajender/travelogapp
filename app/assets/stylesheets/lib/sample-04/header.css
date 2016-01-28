@@ -31,7 +31,7 @@
 
 /*----------------------------------------------------------HEADER----------------------------------------------------------*/
 /*the logo*/
-.header-10 .navbar .brand { margin-top: -9px;padding-top: 0;}
+.header-10 .navbar .brand { margin-top: -9px;padding: 0;}
 /*the whole header*/
 .header-10 {
 background:#FFF;border-bottom: 1px solid #EEEEEE;
@@ -187,15 +187,36 @@ font-size: 15px;
          filter: alpha(opacity=85);
          }
 		 
-		 .invitefriends-content { background:#F5F5F5;padding-top: 40px;
+		 .invitefriends-content { background:#F5F5F5;padding-top: 40px; min-height:500px;
     padding-bottom: 80px;}
 	
-	.btn-sharefacebook { background:#3b5999; border-radius:1px; margin-left:2px; color:#FFF;    width: 150px;}
-	.btn-shareemail { background:#DC4E41; border-radius:1px; margin-left:2px; color:#FFF;    width: 150px;}
+	.invitefriends-content h6 { color:#212121;}
 	
+	.invitefriends-content a { color:#F4511E;}
 	
+	.btn-sharefacebook {     background: #3b5999;
+    border-radius: 1px;
+    margin-left: -4px;
+    color: #FFF;
+    width: 150px;
+    font-size: 16px;
+    padding: 9px;}
+	.btn-shareemail { background:#DC4E41;border-radius: 1px;
+    margin-left: -4px;
+    color: #FFF;
+    width: 150px;
+    font-size: 16px;
+    padding: 9px;}
 	
+	.btn-sharefacebook:hover {  color:#FFF;}
+	.btn-shareemail:hover {  color:#FFF;}
 	
+	.hero-unit.invitefriends p { color:#FFF; font-size:20px;}
+	
+	.invitefriends-form { margin-top:40px;}
+	.invitefriends-form .form-control {    width: 300px;    padding: 20px 10px;}
+	
+	.friendslist { margin-top:80px; padding-top:80px; border-top:1px solid #E0E0E0;}
 	
 	
 	
@@ -339,6 +360,29 @@ font-size: 15px;
     border:0px !important;
 }
 
+	/*----------------------------------------------------------INVITE USERS----------------------------------------------------------*/
+.header-10-sub .background.inviteuserbackground {
+         background-image: url(/assets/img/sample-04/inviteusers.jpg);
+         opacity: 85;
+         filter: alpha(opacity=8500);
+         opacity: 0.85;
+         filter: alpha(opacity=85);
+         }
+
+
+.hero-unit.userinvitehero p{ color:#FFF;    font-size: 16px;}
+.btn-usersignup { background:#FF5722; color:#FFF; border-radius:2px; border:1px solid #BF360C;padding: 10px 40px;
+    font-size: 16px;}
+
+.btn-usersignup:hover { color:#FFF;background:#BF360C;}
+
+.header-10-sub .hero-unit .termssmall { font-size:14px; color:#FFF;}
+
+.hero-unit.userinvitehero h1 { margin:0;}
+
+.inviteuserprofileimg {    border: solid 3px #FFF;
+    -webkit-box-shadow: 0 2px 2px 0 rgba(0,0,0,0.25);
+    box-shadow: 0 2px 2px 0 rgba(0,0,0,0.25); margin-bottom:40px;}
 
 	/*----------------------------------------------------------ABOUT----------------------------------------------------------*/
 

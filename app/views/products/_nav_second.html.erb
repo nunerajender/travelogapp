@@ -2,7 +2,7 @@
 	<div class="container">
 		<div id="" class="">
 			<ul class="nav navbar-nav">
-				<li><a href="#">Dashboard</a></li>
+				<li class="<%= 'active' if obj == 'dashboard' %>"><a href="/dashboard">Dashboard</a></li>
 				<li><a href="#">Inbox</a></li>
 				<li class="<%= 'active' if obj == 'listing' %>"><a href="/products">Listing</a></li>
 				<li class="<%= 'active' if obj == 'trips' %>"><a href="/trips">Trips</a></li>

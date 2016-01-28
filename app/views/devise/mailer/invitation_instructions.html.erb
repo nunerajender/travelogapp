@@ -2,7 +2,7 @@
 <p><%= "Hello #{@resource.email}" %></p>
 
 <p><%= "#{@resource.invited_by.full_name} has invited you to Travelog, you can accept it through the link below." %></p>
-<p><%= link_to "Accept invitation", "#{CUSTOM_CONFIG[:root_url]}users/invitation/accept?invitation_token=#{@token}" %></p>
+<p><%= link_to "Accept invitation", "#{CUSTOM_CONFIG[:root_url]}users/invitation/invite?invitation_token=#{@token}&user_id=#{User.current_user.id}" %></p>
 
 <% if @resource.invitation_due_at %>
   <p><%= "This invitation will be due in #{@resource.invitation_due_at}" %></p>

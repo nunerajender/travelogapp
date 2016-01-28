@@ -24,7 +24,7 @@
 						<h6 class="review-name"><%= product_review.user.profile.first_name if product_review.user.profile.present? %></h6>
 						<p><%= product_review.message %></p>
 						<hr>
-						<% if product_review.user_id == current_user.id %>
+						<% if user_signed_in? && product_review.user_id == current_user.id %>
 							<a class="remove-review" href="#" review-id="<%= product_review.id %>" product-id="<%= @product.id %>"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></a>
 						<% end %>
 					</div>

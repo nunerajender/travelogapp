@@ -497,9 +497,6 @@ class ProductsController < ApplicationController
 		end
 	end
 
-
-	
-
 	private
 		def set_product
 			@product = Product.find(params[:id])
@@ -507,6 +504,9 @@ class ProductsController < ApplicationController
 
 		def set_product_widget
 			set_product
+			if @product.user != current_user
+				redirect_to root_path
+			end
 			@categories = ProductCategory.all
 		end
 

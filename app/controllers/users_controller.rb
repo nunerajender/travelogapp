@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-	skip_before_action :authenticate_user!, only:[:become_merchant]
+	skip_before_action :authenticate_user!, only:[:become_merchant, :invite, :fbshare, :fbshare_accept]
 	before_action :set_user_profile, only: [:profile, :profile_avatar, :profile_accounts]
 	before_action :set_accounts, only: [:accounts, :accounts_photo]
 
@@ -40,10 +40,15 @@ class UsersController < ApplicationController
 			
 			if params[:user][:new_password].present?
 				current_user.password = params[:user][:new_password]
-				current_user.save
+				if current_user.save
+					redirect_to root_path
+				else
+					return render
+				end
+			else
+				redirect_to root_path
 			end
 
-			redirect_to root_path
 		end
 	end
 
@@ -145,6 +150,49 @@ class UsersController < ApplicationController
 			end
 		end
 	end
+
+	# GET /resource/invitation/invite?invitation_token=abcdef 
+	# for invitation by email: the page for invitee
+  def invite
+  	if current_user
+  		return redirect_to root_path
+  	end
+    @invitation_token = params[:invitation_token]
+    @user = User.find_by_id(params[:user_id])
+    render :invite
+  end
+
+  # for fb share page for inviter
+  def fbshare
+  	@fb_share_token = params[:token]
+  	@original_url = request.original_url
+
+  	@user = User.find_by_fb_share_token(@fb_share_token)
+  	if @user.blank?
+  		return redirect_to root_path
+  	end
+  	render 'fbshare'
+  end
+
+  # fb invite page for invitee
+  def fbshare_accept
+  	@fb_share_token = params[:token]
+  	if current_user
+  		return redirect_to root_path
+  	end
+    @inviter = User.find_by_fb_share_token(@fb_share_token)
+    if @inviter.blank?
+  		return redirect_to root_path
+  	end
+  	@user = User.new
+    render :template => 'users/fbshare_accept', :layout => 'users'
+  end
+
+
+  # dashboard page
+  def dashboard
+  	
+  end
 
 	private
 		def store_setting_params

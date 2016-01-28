@@ -1,0 +1,34 @@
+<% content_for :head do %>
+  <meta property="og:site_name" content="Travelog">
+  <meta property="og:title" content="Get $20 off your first adventure!">
+  <meta property="og:description" content="<%= "Join #{@user.full_name} on Travelog and find over one million unique places to stay anywhere in the world." %>">
+  <meta property="og:image" content="https://s3-us-west-2.amazonaws.com/travelog/assets/inviteusers.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:url" content="<%= @original_url %>">
+  <meta property="og:locale" content="en_US">
+<% end %>
+
+<section class="header-10-sub v-center ">
+	<div class="background inviteuserbackground">
+		&nbsp;
+	</div>
+	<div>
+		<div class="container">
+			<div class="hero-unit userinvitehero">
+				
+				<img src="<%= @user.get_avatar_url %>" class="img-circle inviteuserprofileimg"/>
+				
+				<h1><%= @user.full_name %> gave you RM85 to travel.</h1>
+				<p>
+					Travelog is the best way to travel with any budget.
+				</p>
+				
+				<a class="btn btn-usersignup" href="<%= "/users/fbshare_accept?token=#{@fb_share_token}" %>">Sign up to claim your credit</a>
+				<br><br>
+				<a href="#" class="termssmall">Terms and Conditions</a>
+				
+			</div>
+		</div>
+	</div>
+</section>

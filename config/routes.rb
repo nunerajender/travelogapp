@@ -3,6 +3,11 @@ Rails.application.routes.draw do
  
   devise_for :users, :controllers => {:omniauth_callbacks => "users/omniauth_callbacks",
                                       :registrations => "registrations", :invitations => 'invitations'}
+
+
+  get '/users/invitation/invite' => 'users#invite'
+  get '/users/fbshare' => 'users#fbshare'
+  get '/users/fbshare_accept' => 'users#fbshare_accept'
   root 'home#index'
 
   get 'products/review' => 'products#review'
@@ -57,6 +62,7 @@ Rails.application.routes.draw do
   get 'profile/photos' => 'users#photos'
   post 'profile/photos' => 'users#photos'
   post 'complete_merchant' => 'users#complete_merchant'
+  get 'dashboard' => 'users#dashboard'
 
   get 'users/verify_store_username' => 'users#verify_store_username'
 

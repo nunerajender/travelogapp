@@ -138,12 +138,35 @@ class InvoicesController < ApplicationController
       items << item
     end
 
+    # travelog credit 
+    reward_credit = 0
+    if current_user.reward_credit >= 5
+      reward_credit = 5
+      # convert by currency
+      if @invoice.currency.downcase != "usd"
+        rate = session["currency-convert-#{@invoice.currency}"].to_f
+        reward_credit = (5 * rate).round(2)
+        @invoice.reward_credit = reward_credit
+      end
+      @invoice.is_reward_credit = true
+      @invoice.reward_credit = reward_credit
+      
+      item = {
+        :name => 'Travelog Credit',
+        :description => 'Travelog Credit',
+        :quantity      => 1,
+        :amount => (-1) * reward_credit,
+        # :category => :Digital
+      }
+      items << item
+    end
+    
     payment_request = Paypal::Payment::Request.new(
       :currency_code => @invoice.currency,   # 
       :description   => 'booking travel',    # item description
       :quantity      => 1,      # item quantity
       :items => items,
-      :amount        => @invoice.amount_cents / 100   # item value
+      :amount        => @invoice.amount_cents / 100 - reward_credit  # item value
     )
 
     # binding.pry
@@ -173,7 +196,7 @@ class InvoicesController < ApplicationController
       end  
     rescue Paypal::Exception::APIError => e
       # puts e.response for debugging.
-      # binding.pry
+      binding.pry
       print(e.response.details)
       redirect_to new_invoice_url(params)
     end
@@ -210,7 +233,9 @@ class InvoicesController < ApplicationController
     @currency_symbol = get_all_currency_symbols[@invoice.currency]
 
     if response.ack == 'Success'
-      @invoice.update_attributes(:payer_id => payer_id, :status => "paid")      
+      @invoice.update_attributes(:payer_id => payer_id, :status => "paid")
+      current_user.reward_credit -= 5
+      current_user.save   
       flash[:alert] = "Thanks for your submission."
     else
       flash[:alert] = "There is an error while processing the payment"

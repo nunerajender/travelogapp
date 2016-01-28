@@ -17,6 +17,7 @@ class User < ActiveRecord::Base
   has_many :product_reviews
 
   attr_accessor :avatar_url
+  cattr_accessor :current_user
   
   def self.from_omniauth(auth)
   	
@@ -100,10 +101,25 @@ class User < ActiveRecord::Base
   def sign_up
     save
   end
+
+
+  def set_fb_share_token
+    self.fb_share_token = generate_fb_share_token
+    save
+  end
+
+
   private
 
     def send_welcome_message
       UserMailer.welcome_message(self).deliver
+    end
+
+    def generate_fb_share_token
+      loop do
+        token = "#{Devise.friendly_token}"
+        break token unless User.where(fb_share_token: token).first
+      end
     end
 
 end
