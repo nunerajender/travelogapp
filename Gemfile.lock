@@ -8,6 +8,13 @@ GIT
       json (>= 1.7)
       mime-types (>= 1.16)
 
+GIT
+  remote: git://github.com/pallymore/wkhtmltopdf-binary-edge.git
+  revision: 278b58088851e86808e942e060a3d2a6ff83e492
+  tag: v0.12.2
+  specs:
+    wkhtmltopdf-binary (0.12.2)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -397,6 +404,7 @@ GEM
       binding_of_caller (>= 0.7.2)
       railties (>= 4.0)
       sprockets-rails (>= 2.0, < 4.0)
+    wicked_pdf (1.0.4)
     wysiwyg-rails (2.0.5)
       font-awesome-rails (~> 4.4, >= 4.4.0.0)
       railties (>= 3.2, < 5.0)
@@ -442,8 +450,10 @@ DEPENDENCIES
   tzinfo-data
   uglifier (>= 1.3.0)
   web-console (~> 2.0)
+  wicked_pdf
+  wkhtmltopdf-binary!
   wysiwyg-rails
   yaml_db
 
 BUNDLED WITH
-   1.10.2
+   1.10.6

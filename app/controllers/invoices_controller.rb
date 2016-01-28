@@ -59,7 +59,6 @@ class InvoicesController < ApplicationController
 			#   @invoice.reward_credit = reward_credit
 			# end
 
-			# binding.pry
 		else
 			@invoice.booking_date = params[:invoice][:booking_date]
 			@invoice.product_id = params[:invoice][:product_id]
@@ -74,13 +73,11 @@ class InvoicesController < ApplicationController
 				@invoice.variants = param_variants 
 			end
 			
-			# binding.pry
 			@product = Product.find(params[:invoice][:product_id])
 			@prodcut_image_url = @product.product_attachments[0].attachment.medium.url if @product.product_attachments.present? && @product.product_attachments.count > 0
 			@invoice.currency = @product.currency
 
 			# calculating the invoice amount cents from booking variant count.
-			# binding.pry
 			if param_variants.count > 0
 				total_price_cents = 0
 				param_variants.each do |variant|
@@ -111,13 +108,12 @@ class InvoicesController < ApplicationController
 			@invoice.variants = param_variants 
 		end
 
-		
+
 		paypal_options = {
 			no_shipping: true, # if you want to disable shipping information
 			allow_note: false, # if you want to disable notes
 			pay_on_paypal: true # if you don't plan on showing your own confirmation step
 		}
-		# binding.pry
 		request = Paypal::Express::Request.new(
 			:username   => PAYPAL_CONFIG[:username],
 			:password   => PAYPAL_CONFIG[:password],
@@ -187,7 +183,6 @@ class InvoicesController < ApplicationController
 			:amount        => @invoice.amount_cents / 100 - reward_credit  # item value
 		)
 
-		# binding.pry
 
 		begin
 			response = request.setup(
@@ -214,7 +209,6 @@ class InvoicesController < ApplicationController
 			end  
 		rescue Paypal::Exception::APIError => e
 			# puts e.response for debugging.
-			binding.pry
 			print(e.response.details)
 			redirect_to new_invoice_url(params)
 		end
@@ -226,7 +220,6 @@ class InvoicesController < ApplicationController
 		token = params[:token]
 		payer_id = params[:PayerID]
 		@invoice = Invoice.find_by_token(token)
-		# binding.pry
 
 		request = Paypal::Express::Request.new(
 			:username   => PAYPAL_CONFIG[:username],
@@ -253,7 +246,12 @@ class InvoicesController < ApplicationController
 		if response.ack == 'Success'
 			@invoice.update_attributes(:payer_id => payer_id, :status => "paid")
 			current_user.reward_credit -= 5
-			current_user.save   
+			current_user.save
+
+			(1..3).each do |i|
+				InvoiceMailer.checkout(@invoice, i).deliver_later
+			end
+
 			flash[:alert] = "Thanks for your submission."
 		else
 			flash[:alert] = "There is an error while processing the payment"
@@ -264,6 +262,7 @@ class InvoicesController < ApplicationController
 	def show
 		@invoice = Invoice.find(params[:id])
 		render :success_checkout
+
 	end
 
 	def cancel_checkout

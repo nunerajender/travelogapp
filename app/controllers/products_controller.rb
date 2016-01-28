@@ -390,7 +390,6 @@ class ProductsController < ApplicationController
 		# filter by price
 		set_product_currency_attributes(@products)
 
-		# binding.pry
 
 		if params[:start_price].present?
 			start_price = params[:start_price].to_f
@@ -402,7 +401,6 @@ class ProductsController < ApplicationController
 		end
 
 		@total_count = @products.count
-		# binding.pry
 		if @products.class == Array
 			@products = Kaminari.paginate_array(@products).page(params[:page]).per(8)
 		else

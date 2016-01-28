@@ -63,8 +63,9 @@ class InvitationsController < Devise::InvitationsController
 
         flash_message = resource.active_for_authentication? ? :updated : :updated_not_active
         set_flash_message :notice, flash_message if is_flashing_format?
+        
+        UserMailer.welcome_message(resource).deliver_later
         sign_in(resource_name, resource)
-        binding.pry
         respond_with resource, :location => after_accept_path_for(resource)
       else
         set_flash_message :notice, :updated_not_active if is_flashing_format?

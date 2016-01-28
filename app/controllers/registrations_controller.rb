@@ -17,6 +17,7 @@ class RegistrationsController < Devise::RegistrationsController
 		end
 		if @user.sign_up
 			@inviter.save if @inviter.present?
+			UserMailer.welcome_message(@user).deliver_later
 			sign_in_and_redirect(:user, @user)
 		else
 			if @inviter.present?

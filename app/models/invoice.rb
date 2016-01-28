@@ -3,6 +3,8 @@ class Invoice < ActiveRecord::Base
 	belongs_to :product
 	serialize :variants, Array
 
+	has_one :contact_detail
+
 	enum status: {
 		pending: 0,
 		paid: 1,
