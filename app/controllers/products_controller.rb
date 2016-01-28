@@ -44,6 +44,8 @@ class ProductsController < ApplicationController
 			variant.price_with_currency = (variant.price_cents * rate / 100).round(2)
 		end
 
+		gon.variants = @product.variants if @is_variants
+
 		set_product_currency_attributes(@other_products)
 		@current_currency = get_all_currency_symbols[session[:currency]]
 
@@ -65,7 +67,6 @@ class ProductsController < ApplicationController
 		else
 			@product.review_mark = 0
 		end
-		
 		
 		@product_reviews = Kaminari.paginate_array(@product_reviews).page(params[:page]).per(10)
 
@@ -257,6 +258,11 @@ class ProductsController < ApplicationController
 						variant.name = param_variant[:name]
 						variant.price_cents = param_variant[:price_cents].to_i * 100
 						variant.product = @product
+						variant.min_count = param_variant[:min_count].to_i if param_variant[:min_count].present?
+						variant.max_count = param_variant[:max_count].to_i if param_variant[:max_count].present?
+						if variant.min_count.present? && variant.max_count.present? && variant.max_count <= variant.min_count
+							variant.max_count = variant.min_count + 1
+						end
 						variant.save
 					end
 				end

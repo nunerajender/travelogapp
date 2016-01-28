@@ -331,12 +331,18 @@
 					</div>
 					<div class="col-xs-12">
 						<label for="variant_price">Variant Price:</label><br>
-						
-
 						<div class="input-group">
 							<div class="input-group-addon currency-symbol">$</div>
 							<input class="form-control" type="text" name="variant[][price_cents]" id="variant_price">
 						</div>
+					</div>
+					<div class="col-xs-12">
+						<label for="variant_min_count">Min Count:</label><br>
+						<input class="form-control" type="text" name="variant[][min_count]" id="variant_min_count">
+					</div>
+					<div class="col-xs-12">
+						<label for="variant_max_count">Max Count:</label><br>
+						<input class="form-control" type="text" name="variant[][max_count]" id="variant_max_count">
 					</div>
 					
 				</div>
@@ -360,6 +366,16 @@
 									<input class="form-control" type="text" value="<%= variant.price_cents / 100 %>" name="variant[][price_cents]" id="variant_price">
 								</div>
 							</div>
+
+							<div class="col-xs-12">
+								<label for="variant_min_count">Min Count:</label><br>
+								<input class="form-control" type="text" value="<%= variant.min_count %>" name="variant[][min_count]" id="variant_min_count">
+							</div>
+							<div class="col-xs-12">
+								<label for="variant_max_count">Max Count:</label><br>
+								<input class="form-control" type="text" value="<%= variant.max_count %>" name="variant[][max_count]" id="variant_max_count">
+							</div>
+
 						</div>
 						<div class="col-xs-4">
 							<button type="button" class="btn btn-default removeButton"><i class="fa fa-minus"></i></button>
@@ -872,7 +888,10 @@
 						validators: {
 							notEmpty: {
 								message: 'The discount is required'
-							}
+							},
+							numeric: {
+                message: 'The discount must be a numeric number'
+              }
 						}
 					},
 					'variant[][name]': {
@@ -888,7 +907,26 @@
 						validators: {
 							notEmpty: {
 								message: 'The variant price is required'
-							}
+							},
+							numeric: {
+                message: 'The price must be a numeric number'
+              }
+						}
+					},
+					'variant[][min_count]': {
+						row: '.col-xs-12',
+						validators: {
+							numeric: {
+                message: 'The min count must be a numeric number'
+              }
+						}
+					},
+					'variant[][max_count]': {
+						row: '.col-xs-12',
+						validators: {
+							numeric: {
+                message: 'The max count must be a numeric number'
+              }
 						}
 					},
 					'empty-photo-frame': {

@@ -90,18 +90,37 @@
 
 		$('.booking-variants-container').on('click', 'button.addButton', function() {
 			$variant_count = $(this).parent().find('[name="variant[][count]"]');
+
+			var index = $(this).closest('.form-group').index();
+			var min_count = gon.variants[index].min_count;
+			var max_count = gon.variants[index].max_count;
+
 			var count = parseInt($variant_count.val());
 			if (isNaN(count)) {
 				count = 0;
 			} else {
 				count++;
 			}
+
+			if (min_count > 0 && count < min_count) {
+				count = min_count;
+			};
+
+			if (max_count > 0 && count > max_count) {
+				count = max_count;
+			};
+
 			$variant_count.val(count.toString());
 			showResultBooking();
 		})
 
 		$('.booking-variants-container').on('click', 'button.removeButton', function() {
 			$variant_count = $(this).parent().find('[name="variant[][count]"]');
+
+			var index = $(this).closest('.form-group').index();
+			var min_count = gon.variants[index].min_count;
+			var max_count = gon.variants[index].max_count;
+
 			var count = parseInt($variant_count.val());
 			if (isNaN(count)) {
 				count = 0;
@@ -110,6 +129,15 @@
 				if (count < 0)
 					count = 0;
 			}
+
+			if (min_count > 0 && count < min_count) {
+				count = 0;
+			};
+
+			if (max_count > 0 && count > max_count) {
+				count = max_count;
+			};
+
 			$variant_count.val(count.toString());
 			showResultBooking();
 		})
