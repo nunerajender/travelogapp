@@ -46,20 +46,23 @@
 				<div class="col-md-10 store-section">
 					<div class="panel panel-default">
 						<div class="panel-body">
-
-							
-							<div class="form-group col-md-6">
-								<%= f.text_field :store_username, :class => 'form-control', :placeholder => 'Store Username' %>
-							</div>
-							<div class="form-group  col-md-6">
-								<%= f.text_field :store_name, :class => 'form-control', :placeholder => 'Store Name' %>
-							</div>
-							<div class="form-group col-md-6">
+							<div class="row">
+								<div class="form-group col-md-6">
+									<%= f.text_field :store_username, :class => 'form-control', :placeholder => 'Store Username' %>
+								</div>
+								<div class="form-group  col-md-6">
+									<%= f.text_field :store_name, :class => 'form-control', :placeholder => 'Store Name' %>
+								</div>
+								<div class="form-group col-md-6">
 								<%=  f.country_select( "country", [ "Malaysia" ]) %>
 							</div>
 							<div class="form-group  col-md-6">
 								<%= f.text_field :city, :class => 'form-control', :placeholder => 'City Name' %>
-							</div>				
+							</div>
+
+
+							</div>
+							<div class="row">
 								<div class="col-md-6">
 									<button type="button" class="btn btn-success btn-proceed btn-next pull-left" id="store-prev">Previous</button>
 								</div>
@@ -175,7 +178,7 @@
 						}
 					}
 				},
-				'empty-photo-frame': {
+				'profileholder': {
 					row: '.col-xs-12',
 					validators: {
 						callback: {
@@ -317,12 +320,10 @@
 </script>
 
 
-
 <!-- original css -->
 <style type="text/css">
 	
 	
-
 	.btn-upload {
 		border-color: #c4c4c4;
 		background: white;

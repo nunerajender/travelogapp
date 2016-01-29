@@ -68,7 +68,13 @@
 			<% slice.each do |product| %>
 			<div class="col-md-3 portfolio-item">
 				<p class="price"><%= @current_currency %> <%= product.price_with_currency %></p>
-				<a href="<%= product_path product %>"><img src="<%= product.user.store_setting.store_image.store_img.small%>" class="img-circle user-thumb" width="52"/></a>
+				
+				<a href="<%= product_path product %>">
+<% if product.user.store_setting != nil %>
+					<img src="<%= product.user.store_setting.store_image.store_img.small %>" class="img-circle user-thumb" width="52"/></a>
+					<%else%>
+					<img src="#" class="img-circle user-thumb" width="52"/></a>
+				<%end%>
 				<a href="<%= product_path product %>">
 				<img class="" src="<%= product.product_attachments.first.attachment.small.url if product.product_attachments.first.present? %>" width="262" alt="">
 				</a>
