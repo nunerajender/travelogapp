@@ -3,6 +3,8 @@ class Invoice < ActiveRecord::Base
 	belongs_to :product
 	serialize :variants, Array
 
+	has_one :contact_detail
+
 	enum status: {
 		pending: 0,
 		paid: 1,
@@ -23,6 +25,11 @@ class Invoice < ActiveRecord::Base
 	attr_accessor :price_with_currency
 	attr_accessor :current_currency
 	attr_accessor :currency_rate
+
+	attr_accessor :reward_credit_with_currency
+
+	attr_accessor :real_total
+	attr_accessor :real_total_with_currency
 
 	# def get_merchant_status
 	# 	status = 'Pending'

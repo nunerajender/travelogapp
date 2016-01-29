@@ -52,7 +52,7 @@ module ApplicationHelper
   end
 
   def get_all_currency_symbols
-  	{ "USD" => "$", "MYR" => "RM", "SGD" => "SGD", "THB" => "฿", "PHP" => "₱", "TWD" => "NT$" }
+  	{ "USD" => "$", "MYR" => "RM", "SGD" => "$", "THB" => "฿", "PHP" => "₱", "TWD" => "NT$" }
   end
 
   def get_all_cities

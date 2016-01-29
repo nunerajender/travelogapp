@@ -37,20 +37,30 @@
 					<% if @invoice.variants.present? && @invoice.variants.count > 0 %>
 						<% @invoice.variants.each do |variant| %>
 							<tr>
-								<td><%= @currency_symbol %><%= variant["price_cents"].to_i / 100 %> x <%= variant["count"] %> <%= variant["name"] %></td>
-								<td><%= @currency_symbol %><%= variant["price_cents"].to_i / 100 * variant["count"].to_i %></td>
+								<td><%= get_all_currency_symbols[@invoice.currency] %><%= variant["price_cents"].to_i / 100 %>(<%= @invoice.currency %>) x <%= variant["count"] %> <%= variant["name"] %></td>
+								<td><%= get_all_currency_symbols[@invoice.currency] %><%= variant["price_cents"].to_i / 100 * variant["count"].to_i %>(<%= @invoice.currency %>)</td>
 							</tr>
 						<% end %>
 					<% else %>
 						<tr>
-							<td><%= @currency_symbol %><%= @invoice.amount_cents / 100 %> x 1 <%= @invoice.product.name %></td>
-							<td><%= @currency_symbol %><%= @invoice.amount_cents / 100 %></td>
+							<td><%= get_all_currency_symbols[@invoice.currency] %><%= @invoice.amount_cents / 100 %> x 1 <%= @invoice.product.name %></td>
+							<td><%= get_all_currency_symbols[@invoice.currency] %><%= @invoice.amount_cents / 100 %></td>
 						</tr>
 					<% end %>
-					
+
+					<% if @invoice.is_reward_credit %>
+						<tr>
+							<td>Travelog Credit</td>
+							<td><%= get_all_currency_symbols[@invoice.currency] %><%= @invoice.reward_credit %></td>
+						</tr>
+					<% end %>
 					<tr>
 						<td>Total</td>
-						<td><%= @currency_symbol %><%= @invoice.amount_cents / 100 %></td>
+						<% if @invoice.is_reward_credit %>
+							<td><%= get_all_currency_symbols[@invoice.currency] %><%= @invoice.amount_cents / 100 - @invoice.reward_credit %>(<%= @invoice.currency %>)</td>
+						<% else %>
+							<td><%= get_all_currency_symbols[@invoice.currency] %><%= @invoice.amount_cents / 100 %>(<%= @invoice.currency %>)</td>
+						<% end %>
 					</tr>
 				</table>
 			</div>

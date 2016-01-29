@@ -64,6 +64,15 @@ Rails.application.routes.draw do
   post 'complete_merchant' => 'users#complete_merchant'
   get 'dashboard' => 'users#dashboard'
 
+  get 'about' => 'users#about'
+  get 'blog' => 'users#blog'
+  get 'career' => 'users#career'
+  get 'contact' => 'users#contact'
+  get 'press' => 'users#press'
+  get 'terms' => 'users#terms'
+  get 'policy' => 'users#policy'
+  get 'help' => 'users#help'
+
   get 'users/verify_store_username' => 'users#verify_store_username'
 
   # get 'trips' => 'trips#index'
