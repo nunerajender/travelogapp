@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160128111245) do
+ActiveRecord::Schema.define(version: 20160129142342) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -192,6 +192,7 @@ ActiveRecord::Schema.define(version: 20160128111245) do
     t.integer  "reward_credit",                    default: 0
     t.string   "fb_share_token"
     t.boolean  "is_fb_invited",                    default: false
+    t.integer  "merchant_status",        limit: 2, default: 0
   end
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
